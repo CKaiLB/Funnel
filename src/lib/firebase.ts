@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
+import { sendWelcomeEmail } from './email';
 
 // Firebase configuration for client-side usage
 const firebaseConfig = {
@@ -11,83 +12,35 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-// Debug: Log configuration (without sensitive data)
-console.log('Firebase Config Check:', {
-  hasApiKey: !!firebaseConfig.apiKey,
-  hasAuthDomain: !!firebaseConfig.authDomain,
-  hasProjectId: !!firebaseConfig.projectId,
-  hasStorageBucket: !!firebaseConfig.storageBucket,
-  hasMessagingSenderId: !!firebaseConfig.messagingSenderId,
-  hasAppId: !!firebaseConfig.appId,
-  projectId: firebaseConfig.projectId,
-});
-
 // Initialize Firebase
-let app;
-let db;
+const app = initializeApp(firebaseConfig);
+export const db = getFirestore(app);
 
-try {
-  console.log('Initializing Firebase app...');
-  app = initializeApp(firebaseConfig);
-  console.log('Firebase app initialized successfully');
-  
-  console.log('Getting Firestore instance...');
-  db = getFirestore(app);
-  console.log('Firestore instance created successfully');
-} catch (error) {
-  console.error('Firebase initialization error:', error);
-  throw new Error(`Firebase initialization failed: ${error.message}`);
-}
-
-export { db };
-
-// Function to add email and name to Firestore
-export const addEmailToCollection = async (email: string, name: string) => {
-  console.log('addEmailToCollection called with:', { email, name });
-  
-  if (!db) {
-    console.error('Firestore db is not initialized');
-    throw new Error('Firebase database not initialized');
-  }
-
+// Function to add email and name to Firestore and send welcome email
+export const addEmailToCollection = async (email: string, name: string, funnelType: 'PDF' | 'Training' = 'PDF') => {
   try {
-    console.log('Creating collection reference for "Emails"...');
-    const emailsCollection = collection(db, 'Emails');
-    console.log('Collection reference created:', emailsCollection);
-
-    const emailData = {
+    // First, add to Firestore
+    const docRef = await addDoc(collection(db, 'Emails'), {
       email: email.toLowerCase().trim(),
       name: name.trim(),
       timestamp: new Date(),
       source: 'funnel',
+      funnel_type: funnelType,
       createdAt: new Date().toISOString(),
-    };
+    });
+
+    // Then, send welcome email with roadmap PDF
+    const emailSent = await sendWelcomeEmail(email, name, funnelType);
     
-    console.log('Preparing to add document with data:', emailData);
-    
-    const docRef = await addDoc(emailsCollection, emailData);
-    console.log('Email added successfully with ID:', docRef.id);
+    if (emailSent) {
+      console.log('Email stored and welcome email sent successfully');
+    } else {
+      console.log('Email stored but welcome email failed to send');
+    }
+
     return docRef.id;
   } catch (error) {
-    console.error('Detailed error in addEmailToCollection:', {
-      error: error,
-      errorMessage: error.message,
-      errorCode: error.code,
-      errorStack: error.stack,
-      dbExists: !!db,
-      email: email,
-      name: name
-    });
-    
-    // Provide more specific error messages
-    if (error.code === 'permission-denied') {
-      throw new Error(`Firestore permission denied. Check security rules for "Emails" collection. Error: ${error.message}`);
-    } else if (error.code === 'unavailable') {
-      throw new Error(`Firebase service unavailable. Check your internet connection and Firebase project status. Error: ${error.message}`);
-    } else if (error.code === 'unauthenticated') {
-      throw new Error(`Firebase authentication failed. Check your API key and project configuration. Error: ${error.message}`);
-    } else {
-      throw new Error(`Firebase error (${error.code || 'unknown'}): ${error.message}`);
-    }
+    console.error('Error adding email to collection:', error);
+    throw error;
   }
 }; 

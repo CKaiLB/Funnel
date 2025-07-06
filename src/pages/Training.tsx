@@ -22,7 +22,7 @@ const Training = () => {
       
       try {
         // Store email and name in Firebase
-        await addEmailToCollection(email, name);
+        await addEmailToCollection(email, name, 'Training');
         
         // Simulate additional processing delay
         await new Promise(resolve => setTimeout(resolve, 1000));
@@ -31,26 +31,7 @@ const Training = () => {
         navigate("/congratulations");
       } catch (error) {
         console.error('Error submitting form:', error);
-        
-        // Show more detailed error messages to help with debugging
-        if (error instanceof Error) {
-          if (error.message.includes('permission-denied')) {
-            setError("Database access denied. Please contact support.");
-          } else if (error.message.includes('unavailable')) {
-            setError("Service temporarily unavailable. Please check your internet connection and try again.");
-          } else if (error.message.includes('unauthenticated')) {
-            setError("Authentication failed. Please refresh the page and try again.");
-          } else if (error.message.includes('Firebase initialization failed')) {
-            setError("Service configuration error. Please contact support.");
-          } else if (error.message.includes('Firebase database not initialized')) {
-            setError("Database connection failed. Please refresh the page and try again.");
-          } else {
-            setError(`Error: ${error.message}`);
-          }
-        } else {
-          setError("An unexpected error occurred. Please try again.");
-        }
-        
+        setError("There was an error processing your request. Please try again.");
         setIsLoading(false);
       }
     }
