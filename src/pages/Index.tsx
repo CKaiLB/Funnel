@@ -22,7 +22,7 @@ const Index = () => {
           
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-6">
-            <a href="#roadmap" className="text-gray-600 hover:text-blue-600 transition-colors">Roadmap</a>
+            <a href="#training" className="text-gray-600 hover:text-blue-600 transition-colors">Training</a>
             <a href="#results" className="text-gray-600 hover:text-blue-600 transition-colors">Results</a>
           </nav>
 
@@ -40,11 +40,11 @@ const Index = () => {
           <nav className="md:hidden mt-4 pb-4 border-t border-gray-100">
             <div className="flex flex-col space-y-3 pt-4">
               <a 
-                href="#roadmap" 
+                href="#training" 
                 className="text-gray-600 hover:text-blue-600 transition-colors py-2 px-3 rounded-lg hover:bg-gray-50"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Roadmap
+                Training
               </a>
               <a 
                 href="#results" 
