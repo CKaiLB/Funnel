@@ -3,9 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { Play, CheckCircle, Clock, Users, TrendingUp, Mail } from "lucide-react";
+import { Play, CheckCircle, Clock, Users, TrendingUp, Mail, Star } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { addEmailToCollection } from "@/lib/firebase";
+
+const WEBHOOK_URL = import.meta.env.VITE_FUNNEL_EMAIL_WEBHOOK_URL;
 
 const Training = () => {
   const [email, setEmail] = useState("");
@@ -21,7 +23,21 @@ const Training = () => {
       setError("");
       
       try {
-        // Store email and name in Firebase
+        // First, submit to webhook
+        const response = await fetch(WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: name.trim(),
+            email: email.toLowerCase().trim(),
+            funnel_type: "Training",
+            source: "funnel",
+            timestamp: new Date().toISOString(),
+          }),
+        });
+        if (!response.ok) throw new Error("Failed to submit. Please try again.");
+        
+        // Then, store email in Firebase
         await addEmailToCollection(email, name, 'Training');
         
         // Simulate additional processing delay
@@ -44,7 +60,7 @@ const Training = () => {
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-3">
             <img 
-              src="/dist/lovable-uploads/Sweep_LOGO.png" 
+              src="/dist/lovable-uploads/2e025803-adcb-4eb0-8995-15991e0213a4.png" 
               alt="Sweep Logo" 
               className="h-20 w-auto"
             />
@@ -59,14 +75,18 @@ const Training = () => {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8 md:mb-12">
             <div className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full mb-4 md:mb-6">
-              <Mail className="w-8 h-8 md:w-10 md:h-10 text-white" />
+              <Play className="w-8 h-8 md:w-10 md:h-10 text-white" />
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 md:mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent px-2">
-              Free 27-Minute AI Training
+              FREE: The 3 AI Systems That Are Transforming Fitness Businesses Right Now
             </h1>
-            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-4">
-              Get instant access to the 3 AI Systems That Helped Fitness Businesses Increase Revenue by 40% in 90 Days - delivered straight to your inbox
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-4 mb-6">
+              In just 15 minutes, discover the exact AI automation systems that helped fitness business owners increase revenue by 40% in 90 days—while saving 15+ hours weekly.
             </p>
+            <div className="inline-flex items-center space-x-2 bg-red-100 px-4 py-2 rounded-full text-sm md:text-base mb-6">
+              <Clock className="w-4 h-4 md:w-5 md:h-5 text-red-600" />
+              <span className="text-red-800 font-semibold">Limited Time: Training Available for Next 24 Hours Only</span>
+            </div>
           </div>
 
           <div className="max-w-2xl mx-auto">
@@ -77,11 +97,16 @@ const Training = () => {
                   <Play className="w-6 h-6 md:w-8 md:h-8 text-white ml-1" />
                 </div>
                 <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4 text-gray-800">
-                  Get Your Free Training Now
+                  Get Instant Access to the Training
                 </h2>
-                <p className="text-sm md:text-lg text-gray-600">
-                  Enter your details below and we'll send the complete 27-minute training directly to your inbox within minutes
+                <p className="text-sm md:text-lg text-gray-600 mb-4">
+                  Enter your details below and we'll send the complete 15-minute training directly to your inbox within 2 minutes
                 </p>
+                <div className="bg-gradient-to-r from-green-50 to-blue-50 p-3 rounded-lg border border-green-200">
+                  <p className="text-sm text-green-800 font-medium">
+                    🎯 <strong>What You'll Get:</strong> 3 proven AI systems + Implementation guide + Case studies
+                  </p>
+                </div>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -124,10 +149,10 @@ const Training = () => {
                   {isLoading ? (
                     <>
                       <LoadingSpinner size="sm" color="white" />
-                      Sending...
+                      Sending Training...
                     </>
                   ) : (
-                    "Send Me The Free Training →"
+                    "Send Me The FREE Training Now →"
                   )}
                 </Button>
 
@@ -158,19 +183,19 @@ const Training = () => {
               <div className="space-y-2 md:space-y-3">
                 <div className="flex items-start space-x-2 md:space-x-3">
                   <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm md:text-base text-gray-700">The #1 AI system for automating member onboarding and retention</span>
+                  <span className="text-sm md:text-base text-gray-700">The #1 AI system for automating member onboarding and reducing churn by 60%</span>
                 </div>
                 <div className="flex items-start space-x-2 md:space-x-3">
                   <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm md:text-base text-gray-700">How to implement smart scheduling that eliminates no-shows</span>
+                  <span className="text-sm md:text-base text-gray-700">Smart scheduling automation that eliminates no-shows and optimizes capacity</span>
                 </div>
                 <div className="flex items-start space-x-2 md:space-x-3">
                   <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm md:text-base text-gray-700">The content creation systems used to automate social media marketing</span>
+                  <span className="text-sm md:text-base text-gray-700">Content creation systems that automate social media marketing 24/7</span>
                 </div>
                 <div className="flex items-start space-x-2 md:space-x-3">
                   <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                  <span className="text-sm md:text-base text-gray-700">Real case studies from fitness businesses achieving automated growth</span>
+                  <span className="text-sm md:text-base text-gray-700">Real case studies from fitness businesses achieving 40% revenue growth</span>
                 </div>
               </div>
 
@@ -182,7 +207,7 @@ const Training = () => {
                   </div>
                   <div>
                     <Users className="w-5 h-5 md:w-6 md:h-6 text-purple-600 mx-auto mb-1 md:mb-2" />
-                    <span className="text-xs md:text-sm text-gray-700 font-medium">10,000+ trained</span>
+                    <span className="text-xs md:text-sm text-gray-700 font-medium">300+ trained</span>
                   </div>
                   <div>
                     <TrendingUp className="w-5 h-5 md:w-6 md:h-6 text-purple-600 mx-auto mb-1 md:mb-2" />
@@ -206,7 +231,11 @@ const Training = () => {
                   </div>
                   <div>
                     <div className="font-semibold text-gray-800 text-sm md:text-base">Mike Rodriguez</div>
-                    <div className="text-gray-600 text-xs md:text-sm">CrossFit Dynamo</div>
+                    <div className="flex items-center space-x-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                  ))}
+                </div>
                   </div>
                 </div>
                 <p className="text-sm md:text-base text-gray-700 italic">
@@ -222,7 +251,11 @@ const Training = () => {
                   </div>
                   <div>
                     <div className="font-semibold text-gray-800 text-sm md:text-base">Jessica Lee</div>
-                    <div className="text-gray-600 text-xs md:text-sm">Zen Yoga Studio</div>
+                    <div className="flex items-center space-x-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                  ))}
+                </div>
                   </div>
                 </div>
                 <p className="text-sm md:text-base text-gray-700 italic">
@@ -238,7 +271,11 @@ const Training = () => {
                   </div>
                   <div>
                     <div className="font-semibold text-gray-800 text-sm md:text-base">David Thompson</div>
-                    <div className="text-gray-600 text-xs md:text-sm">Iron Peak Fitness</div>
+                    <div className="flex items-center space-x-1">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                  ))}
+                </div>
                   </div>
                 </div>
                 <p className="text-sm md:text-base text-gray-700 italic">

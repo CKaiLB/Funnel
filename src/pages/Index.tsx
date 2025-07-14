@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { CheckCircle, Zap, TrendingUp, Users, Clock, Target, Mail, Menu } from "lucide-react";
+import { CheckCircle, Zap, TrendingUp, Users, Clock, Target, Mail, Menu, Play, Brain } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
@@ -14,15 +14,15 @@ const Index = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <img 
-              src="/dist/lovable-uploads/Sweep_LOGO.png" 
+              src="/dist/lovable-uploads/2e025803-adcb-4eb0-8995-15991e0213a4.png" 
               alt="Sweep Logo" 
-              className="h-12 md:h-20 w-auto"
+              className="h-20 w-auto"
             />
           </div>
           
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-6">
-            <a href="#newsletter" className="text-gray-600 hover:text-blue-600 transition-colors">Newsletter</a>
+            <a href="#roadmap" className="text-gray-600 hover:text-blue-600 transition-colors">Roadmap</a>
             <a href="#results" className="text-gray-600 hover:text-blue-600 transition-colors">Results</a>
           </nav>
 
@@ -40,11 +40,11 @@ const Index = () => {
           <nav className="md:hidden mt-4 pb-4 border-t border-gray-100">
             <div className="flex flex-col space-y-3 pt-4">
               <a 
-                href="#newsletter" 
+                href="#roadmap" 
                 className="text-gray-600 hover:text-blue-600 transition-colors py-2 px-3 rounded-lg hover:bg-gray-50"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Newsletter
+                Roadmap
               </a>
               <a 
                 href="#results" 
@@ -61,40 +61,39 @@ const Index = () => {
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-8 md:py-12 text-center">
         <div className="max-w-4xl mx-auto">
-          <div className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full mb-4 md:mb-6">
-            <Mail className="w-8 h-8 md:w-10 md:h-10 text-white" />
+          <div className="inline-flex items-center justify-center w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full mb-4 md:mb-6">
+            <Play className="w-8 h-8 md:w-10 md:h-10 text-white" />
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent leading-tight px-2">
-            Get Your FREE Weekly AI Toolkit
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-purple-600 via-blue-600 to-purple-800 bg-clip-text text-transparent leading-tight px-2">
+            Discover the Systems That Help Fitness Businesses Scale by 40% in 90 Days
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-6 md:mb-8 leading-relaxed px-4">
-            Join 5,000+ fitness business owners receiving cutting-edge AI automation strategies, 
-            tools, and case studies that generate 40% more revenue every month.
+            Watch this FREE 15-minute training and learn the exact AI automation systems that are helping fitness business owners save 15+ hours weekly while scaling their revenue—no tech skills required.
           </p>
           
-          {/* Primary CTA */}
+          {/* Primary CTA - Training */}
           <div className="max-w-sm md:max-w-md mx-auto mb-8 md:mb-12 px-4">
-            <Card className="p-6 md:p-8 bg-gradient-to-br from-blue-500 to-blue-600 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
-              <Zap className="w-10 h-10 md:w-12 md:h-12 mb-4 mx-auto" />
-              <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">Weekly AI Toolkit Newsletter</h3>
-              <p className="mb-4 md:mb-6 text-blue-100 text-sm md:text-base">
-                Get proven AI automation tools, implementation strategies, and updates
+            <Card className="p-6 md:p-8 bg-gradient-to-br from-purple-500 to-blue-600 text-white transform hover:scale-105 transition-all duration-300 shadow-xl">
+              <Play className="w-10 h-10 md:w-12 md:h-12 mb-4 mx-auto" />
+              <h3 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">FREE 15-Minute AI Training</h3>
+              <p className="mb-4 md:mb-6 text-purple-100 text-sm md:text-base">
+                Learn the 3 proven AI systems that are transforming fitness businesses right now.
               </p>
-              <Link to="/newsletter">
-                <Button size="lg" className="w-full bg-white text-blue-600 hover:bg-gray-100 font-semibold text-base md:text-lg py-3 md:py-4 touch-manipulation">
-                  Get My Free AI Toolkit →
+              <Link to="/training">
+                <Button size="lg" className="w-full bg-white text-purple-600 hover:bg-gray-100 font-semibold text-base md:text-lg py-3 md:py-4 touch-manipulation">
+                  Watch FREE Training Now →
                 </Button>
               </Link>
             </Card>
           </div>
 
-          {/* Secondary offer */}
+          {/* Secondary offer - Roadmap */}
           <div className="mb-8 md:mb-12 px-4">
-            <p className="text-gray-600 mb-4 text-sm md:text-base">Or watch our free training first:</p>
-            <Link to="/training">
-              <Button variant="outline" size="lg" className="border-2 border-purple-300 text-purple-600 hover:bg-purple-50 font-semibold w-full sm:w-auto touch-manipulation">
-                <TrendingUp className="w-4 h-4 md:w-5 md:h-5 mr-2" />
-                Watch 15-Minute Free Training
+            <p className="text-gray-600 mb-4 text-sm md:text-base">Or get a personalized AI roadmap:</p>
+            <Link to="/roadmap">
+              <Button variant="outline" size="lg" className="border-2 border-blue-300 text-blue-600 hover:bg-blue-50 font-semibold w-full sm:w-auto touch-manipulation">
+                <Brain className="w-4 h-4 md:w-5 md:h-5 mr-2" />
+                Get My Custom AI Roadmap
               </Button>
             </Link>
           </div>
@@ -117,53 +116,53 @@ const Index = () => {
         </div>
       </section>
 
-      {/* What You'll Get Section */}
-      <section id="newsletter" className="py-12 md:py-20 bg-white">
+      {/* What You'll Learn Section */}
+      <section id="training" className="py-12 md:py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 md:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-800">What You'll Get Every Week</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-800">What You'll Learn in This FREE Training</h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4">
-              Proven AI automation strategies that fitness business owners are using to scale efficiently
+              The exact AI systems that are helping fitness business owners automate their operations and scale their revenue—delivered in just 15 minutes.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto mb-8 md:mb-12">
             <div className="text-center p-4 md:p-6">
-              <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
+              <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
                 <Users className="w-6 h-6 md:w-8 md:h-8 text-white" />
               </div>
-              <h3 className="text-lg md:text-2xl font-bold mb-2 md:mb-3 text-gray-800">AI Automation Strategies</h3>
+              <h3 className="text-lg md:text-2xl font-bold mb-2 md:mb-3 text-gray-800">AI Member Onboarding System</h3>
               <p className="text-sm md:text-base text-gray-600">
-                Step-by-step guides for automating member management, retention campaigns, and personalized experiences
+                Learn how to automate member onboarding and retention using AI—the #1 system for reducing churn by 60%.
               </p>
             </div>
 
             <div className="text-center p-4 md:p-6">
-              <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
+              <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
                 <Clock className="w-6 h-6 md:w-8 md:h-8 text-white" />
               </div>
-              <h3 className="text-lg md:text-2xl font-bold mb-2 md:mb-3 text-gray-800">Time-Saving Tools</h3>
+              <h3 className="text-lg md:text-2xl font-bold mb-2 md:mb-3 text-gray-800">Smart Scheduling Automation</h3>
               <p className="text-sm md:text-base text-gray-600">
-                AI-powered tools for scheduling, operations management, and administrative tasks that save 15+ hours weekly
+                Discover how to implement intelligent scheduling that eliminates no-shows and optimizes your class capacity.
               </p>
             </div>
 
             <div className="text-center p-4 md:p-6">
               <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
-                <Target className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                <TrendingUp className="w-6 h-6 md:w-8 md:h-8 text-white" />
               </div>
-              <h3 className="text-lg md:text-2xl font-bold mb-2 md:mb-3 text-gray-800">Revenue Growth Cases</h3>
+              <h3 className="text-lg md:text-2xl font-bold mb-2 md:mb-3 text-gray-800">Content Creation Automation</h3>
               <p className="text-sm md:text-base text-gray-600">
-                Real case studies showing how fitness businesses increased revenue by 40% using our AI systems
+                See how AI can automate your social media marketing and content creation to attract more members 24/7.
               </p>
             </div>
           </div>
 
-          {/* Newsletter CTA */}
+          {/* Training CTA */}
           <div className="text-center px-4">
-            <Link to="/newsletter">
-              <Button size="lg" className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 font-semibold py-3 md:py-4 px-6 md:px-8 text-base md:text-lg w-full sm:w-auto touch-manipulation">
-                Join 5,000+ Fitness Owners - Get Your Free Toolkit
+            <Link to="/training">
+              <Button size="lg" className="bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 font-semibold py-3 md:py-4 px-6 md:px-8 text-base md:text-lg w-full sm:w-auto touch-manipulation">
+                Watch FREE 15-Minute Training
               </Button>
             </Link>
           </div>
@@ -171,13 +170,13 @@ const Index = () => {
       </section>
 
       {/* Results Section */}
-      <section id="results" className="py-12 md:py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+      <section id="results" className="py-12 md:py-20 bg-gradient-to-br from-gray-50 to-purple-50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12 md:mb-16">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-800">The Results Our Clients Get</h2>
               <p className="text-lg md:text-xl text-gray-600 px-4">
-                Fitness businesses using our weekly AI strategies see dramatic improvements
+                Fitness businesses using these AI systems see dramatic improvements in just 90 days
               </p>
             </div>
 
@@ -189,7 +188,7 @@ const Index = () => {
                   </div>
                   <div>
                     <h3 className="text-lg md:text-xl font-semibold mb-1 md:mb-2 text-gray-800">40% Revenue Increase</h3>
-                    <p className="text-sm md:text-base text-gray-600">Average revenue growth within 90 days of implementation</p>
+                    <p className="text-sm md:text-base text-gray-600">Average revenue growth within 90 days of implementing these AI systems</p>
                   </div>
                 </div>
 
@@ -208,23 +207,23 @@ const Index = () => {
                     <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg md:text-xl font-semibold mb-1 md:mb-2 text-gray-800">25% Manual Labor Reduction</h3>
-                    <p className="text-sm md:text-base text-gray-600">Reduced time spent on manual tasks and administrative works</p>
+                    <h3 className="text-lg md:text-xl font-semibold mb-1 md:mb-2 text-gray-800">60% Reduced Customer Churn</h3>
+                    <p className="text-sm md:text-base text-gray-600">Intelligent follow-up systems keep customers engaged and coming back</p>
                   </div>
                 </div>
               </div>
 
               <div className="bg-white rounded-2xl p-6 md:p-8 shadow-xl">
                 <blockquote className="text-base md:text-lg text-gray-700 mb-4 md:mb-6 italic">
-                  "It was super easy & I know very little about setting up technology. If I could get sweep integrated into my site using their services, then anyone else could too."
+                  "It was super easy & I know very little about setting up technology. If I could get sweep integrated into my site using their services, then anyone else could too.""
                 </blockquote>
                 <div className="flex items-center space-x-3 md:space-x-4">
-                  <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm md:text-base">
-                    BB
+                  <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm md:text-base">
+                    MR
                   </div>
                   <div>
                     <div className="font-semibold text-gray-800 text-sm md:text-base">Brandon Bergeron</div>
-                    <div className="text-gray-600 text-xs md:text-sm">Owner, St Paul Brazillian Jiu Jitsu</div>
+                    <div className="text-gray-600 text-xs md:text-sm">Owner, St Paul BJJ</div>
                   </div>
                 </div>
               </div>
@@ -234,25 +233,25 @@ const Index = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700">
+      <section className="py-20 bg-gradient-to-r from-purple-600 via-blue-600 to-purple-700">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto text-white">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Ready to Scale Your Fitness Business with AI?
+              Ready to Transform Your Fitness Business with AI?
             </h2>
-            <p className="text-xl mb-8 text-blue-100">
-              Join 5,000+ fitness business owners getting our proven AI automation strategies every week
+            <p className="text-xl mb-8 text-purple-100">
+              Watch the FREE 15-minute training and discover the AI systems that are helping fitness businesses scale with minimal effort.
             </p>
             
-            <Link to="/newsletter">
-              <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100 font-semibold py-4 px-8 text-lg mb-4">
-                Get My Free Weekly AI Toolkit
+            <Link to="/training">
+              <Button size="lg" className="bg-white text-purple-600 hover:bg-gray-100 font-semibold py-4 px-8 text-lg mb-4">
+                Watch FREE Training Now
               </Button>
             </Link>
             
             <div className="mt-4">
-              <Link to="/training" className="text-blue-200 hover:text-white underline">
-                Or watch our free 27-minute training first
+              <Link to="/roadmap" className="text-purple-200 hover:text-white underline">
+                Or get a personalized AI roadmap for your business
               </Link>
             </div>
           </div>
@@ -267,7 +266,7 @@ const Index = () => {
               <img 
                 src="/lovable-uploads/2e025803-adcb-4eb0-8995-15991e0213a4.png" 
                 alt="Sweep Logo" 
-                className="h-8 w-auto"
+                className="h-20 w-auto"
               />
             </div>
             <div className="text-gray-400 text-sm">

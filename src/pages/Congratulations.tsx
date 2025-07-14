@@ -55,7 +55,7 @@ const Congratulations = () => {
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-3">
             <img 
-              src="/dist/lovable-uploads/Sweep_LOGO.png" 
+              src="/dist/lovable-uploads/2e025803-adcb-4eb0-8995-15991e0213a4.png" 
               alt="Sweep Logo" 
               className="h-20 w-auto"
             />
@@ -74,7 +74,7 @@ const Congratulations = () => {
               🎉 You've Unlocked A Free AI Consultation!
             </h1>
             <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4">
-              Congratulations! You now have exclusive access to a FREE 45-minute strategy call with our AI automation experts.
+              Congratulations! You now have exclusive access to a limited time FREE 45-minute strategy call with our AI automation experts.
             </p>
           </div>
 
@@ -85,11 +85,11 @@ const Congratulations = () => {
                 <Calendar className="w-8 h-8 md:w-10 md:h-10" />
               </div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 md:mb-4">
-                Your FREE $1000 Call Awaits
+                Your FREE $500 Call Awaits
               </h2>
               <p className="text-blue-100 mb-4 md:mb-6 text-base md:text-lg max-w-2xl mx-auto">
-                This isn't just any consultation. You'll get a personalized AI automation strategy 
-                specifically designed for your fitness business, normally valued at $1,000.
+                This isn't just any call. You'll get a personalized AI automation strategy 
+                specifically designed for your fitness business, normally valued at $500.
               </p>
             </div>
 
@@ -148,14 +148,14 @@ const Congratulations = () => {
                 </>
               ) : (
                 <>
-                  Book My FREE $1000 Consultation Now <ArrowRight className="w-5 h-5 md:w-6 md:h-6 ml-2" />
+                  Book My FREE $500 Consultation Now <ArrowRight className="w-5 h-5 md:w-6 md:h-6 ml-2" />
                 </>
               )}
             </Button>
 
             <div className="text-center">
               <p className="text-blue-100 text-base md:text-lg font-medium">
-                ⚡ Only 3 spots available this week - Secure yours now!
+                ⚡ Only 3 spots available per week - Secure yours now!
               </p>
               <p className="text-blue-200 text-sm md:text-base mt-2">
                 No fluff. Just pure value and actionable strategies.
@@ -214,7 +214,7 @@ const Congratulations = () => {
               )}
             </Button>
             <p className="text-gray-500 text-xs md:text-sm mt-3">
-              Normally $1000 • Yours FREE today • Limited spots available
+              Normally $500 • Yours FREE today • Limited spots available
             </p>
           </div>
         </div>

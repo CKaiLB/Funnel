@@ -17,7 +17,7 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
 // Function to add email and name to Firestore and send welcome email
-export const addEmailToCollection = async (email: string, name: string, funnelType: 'PDF' | 'Training' = 'PDF') => {
+export const addEmailToCollection = async (email: string, name: string, funnelType: 'PDF' | 'Training' | 'Roadmap' = 'PDF') => {
   try {
     // First, add to Firestore
     const docRef = await addDoc(collection(db, 'Emails'), {

@@ -44,7 +44,7 @@ const Newsletter = () => {
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-3">
             <img 
-              src="/dist/lovable-uploads/Sweep_LOGO.png" 
+              src="/lovable-uploads/2e025803-adcb-4eb0-8995-15991e0213a4.png" 
               alt="Sweep Logo" 
               className="h-20 w-auto"
             />

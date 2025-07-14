@@ -11,7 +11,7 @@ export const isValidEmail = (email: string): boolean => {
 };
 
 // Send welcome email via custom API webhook
-export const sendWelcomeEmail = async (email: string, name: string, funnelType: 'PDF' | 'Training'): Promise<boolean> => {
+export const sendWelcomeEmail = async (email: string, name: string, funnelType: 'PDF' | 'Training' | 'Roadmap'): Promise<boolean> => {
   if (!isValidEmail(email)) {
     console.error('Invalid email format:', email);
     return false;
