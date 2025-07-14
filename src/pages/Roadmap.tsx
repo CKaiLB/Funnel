@@ -57,7 +57,7 @@ export default function Roadmap() {
       <header className="container mx-auto px-4 py-6">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-3">
-            <img src="/dist/lovable-uploads/2e025803-adcb-4eb0-8995-15991e0213a4.png" alt="Sweep Logo" className="h-20 w-auto" />
+            <img src="/lovable-uploads/2e025803-adcb-4eb0-8995-15991e0213a4.png" alt="Sweep Logo" className="h-20 w-auto" />
           </Link>
           <Link to="/" className="text-gray-600 hover:text-blue-600 transition-colors">
             ← Back to Home

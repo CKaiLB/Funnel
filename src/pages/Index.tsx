@@ -14,7 +14,7 @@ const Index = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <img 
-              src="/dist/lovable-uploads/2e025803-adcb-4eb0-8995-15991e0213a4.png" 
+              src="/lovable-uploads/2e025803-adcb-4eb0-8995-15991e0213a4.png" 
               alt="Sweep Logo" 
               className="h-20 w-auto"
             />
