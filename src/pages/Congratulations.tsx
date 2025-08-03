@@ -32,8 +32,8 @@ const Congratulations = () => {
     // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 1500));
     
-    // In a real app, this would integrate with a scheduling system like Calendly
-    window.open("https://sweepai.site/interest-form", "_blank");
+    // Replace current tab with Calendly link
+    window.location.href = "https://sweepai.site/interest-form";
     
     setIsLoading(false);
   };

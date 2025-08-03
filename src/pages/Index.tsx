@@ -4,6 +4,10 @@ import { CheckCircle, Zap, TrendingUp, Users, Clock, Target, Mail, Menu, Play, B
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
+// Debug: Show webhook URL on the main page
+const WEBHOOK_URL = import.meta.env.VITE_FUNNEL_EMAIL_WEBHOOK_URL;
+console.log('🔗 INDEX PAGE - Webhook URL:', WEBHOOK_URL);
+
 const Index = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -70,6 +74,25 @@ const Index = () => {
           <p className="text-lg sm:text-xl md:text-2xl text-gray-600 mb-6 md:mb-8 leading-relaxed px-4">
             Watch this FREE 15-minute training and learn the exact AI automation systems that are helping fitness business owners save 15+ hours weekly while scaling their revenue—no tech skills required.
           </p>
+          
+          {/* Video Section */}
+          <div className="max-w-4xl mx-auto mb-8 md:mb-12 px-4">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 rounded-lg blur-xl opacity-150 animate-pulse"></div>
+              <div className="relative bg-white rounded-lg p-1">
+                <video 
+                  className="w-full rounded-lg shadow-lg" 
+                  controls 
+                  preload="metadata"
+                  autoPlay
+                  muted
+                >
+                  <source src="/VSL.mp4"/>
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
+          </div>
           
           {/* Primary CTA - Training */}
           <div className="max-w-sm md:max-w-md mx-auto mb-8 md:mb-12 px-4">

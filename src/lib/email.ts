@@ -1,6 +1,15 @@
 // Custom API webhook URL from environment variables
 const WEBHOOK_URL = import.meta.env.VITE_FUNNEL_EMAIL_WEBHOOK_URL;
 
+// Debug: Log the webhook URL being used
+console.log('🔗 Webhook URL loaded:', WEBHOOK_URL);
+console.log('🔗 Environment variable check:', import.meta.env.VITE_FUNNEL_EMAIL_WEBHOOK_URL);
+
+// Show alert for immediate debugging
+if (typeof window !== 'undefined') {
+  console.log('🔗 BROWSER DEBUG - Webhook URL:', WEBHOOK_URL);
+}
+
 // PDF file path
 const ROADMAP_PDF_URL = '/dist/assets/30-Day-AI-Implementation-Roadmap-Advanced-Version-with-Actionable-Steps-and-Resources.pdf';
 

@@ -12,6 +12,9 @@ import { CheckCircle, Zap, TrendingUp, Users, Clock, Target, Mail, Brain, Rocket
 
 const WEBHOOK_URL = import.meta.env.VITE_FUNNEL_EMAIL_WEBHOOK_URL;
 
+// Debug: Log the webhook URL being used
+console.log('🔗 Roadmap page webhook URL:', WEBHOOK_URL);
+
 export default function Roadmap() {
   const form = useForm({
     defaultValues: {

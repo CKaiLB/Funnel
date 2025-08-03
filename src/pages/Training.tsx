@@ -9,6 +9,9 @@ import { addEmailToCollection } from "@/lib/firebase";
 
 const WEBHOOK_URL = import.meta.env.VITE_FUNNEL_EMAIL_WEBHOOK_URL;
 
+// Debug: Log the webhook URL being used
+console.log('🔗 Training page webhook URL:', WEBHOOK_URL);
+
 const Training = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");

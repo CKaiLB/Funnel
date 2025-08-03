@@ -10,6 +10,10 @@ import Congratulations from "./pages/Congratulations";
 import NotFound from "./pages/NotFound";
 import Roadmap from "./pages/Roadmap";
 
+// Debug: Show webhook URL at app level
+const WEBHOOK_URL = import.meta.env.VITE_FUNNEL_EMAIL_WEBHOOK_URL;
+console.log('🔗 APP LEVEL - Webhook URL:', WEBHOOK_URL);
+
 const queryClient = new QueryClient();
 
 const App = () => (
