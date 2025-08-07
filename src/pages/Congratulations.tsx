@@ -33,7 +33,7 @@ const Congratulations = () => {
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     // Replace current tab with Calendly link
-    window.location.href = "https://sweepai.site/interest-form";
+    window.location.href = "https://sweepai.site/get-started";
     
     setIsLoading(false);
   };
