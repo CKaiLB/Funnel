@@ -25,6 +25,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Large video files
-public/VSL.mp4
-*.mp4
+# Large video files (exclude original, allow compressed)
+public/VSL_original.mp4
