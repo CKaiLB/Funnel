@@ -75,7 +75,7 @@ const Index = () => {
             Watch this FREE 15-minute training and learn the exact AI automation systems that are helping fitness business owners save 15+ hours weekly while scaling their revenue—no tech skills required.
           </p>
           
-          {/* Video Section */}
+          {/* Video Section
           <div className="max-w-4xl mx-auto mb-8 md:mb-12 px-4">
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 rounded-lg blur-xl opacity-150 animate-pulse"></div>
@@ -92,7 +92,7 @@ const Index = () => {
                 </video>
               </div>
             </div>
-          </div>
+          </div> */}
           
           {/* Primary CTA - Training */}
           <div className="max-w-sm md:max-w-md mx-auto mb-8 md:mb-12 px-4">
