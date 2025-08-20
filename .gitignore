@@ -27,4 +27,3 @@ yarn-error.log*
 
 # Large video files (exclude original, allow compressed)
 public/VSL_original.mp4
-public/VSL.mp4
