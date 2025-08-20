@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { CheckCircle, Lock, Unlock, Star, Zap, Users, TrendingUp, Play, Pause, Volume2, VolumeX } from "lucide-react";
+import { Analytics } from "@vercel/analytics/react";
 
 export default function Congratulations() {
   const [unlockStep, setUnlockStep] = useState(0);
@@ -320,6 +321,7 @@ export default function Congratulations() {
           </div>
         )}
       </div>
+      <Analytics />
     </div>
   );
 }

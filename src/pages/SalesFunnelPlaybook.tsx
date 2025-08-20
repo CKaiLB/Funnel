@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { addEmailToCollection } from "@/lib/firebase";
 import { CheckCircle, BookOpen, Star, TrendingUp, Clock, DollarSign, UserCheck, ArrowRight } from "lucide-react";
+import { Analytics } from "@vercel/analytics/react";
 
 const WEBHOOK_URL = import.meta.env.VITE_FUNNEL_EMAIL_WEBHOOK_URL;
 
@@ -310,6 +311,7 @@ export default function SalesFunnelPlaybook() {
           </div>
         </div>
       </div>
+      <Analytics />
     </div>
   );
 }

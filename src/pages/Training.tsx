@@ -6,6 +6,7 @@ import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { Play, CheckCircle, Clock, Users, TrendingUp, Mail, Star } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { addEmailToCollection } from "@/lib/firebase";
+import { Analytics } from "@vercel/analytics/react";
 
 const WEBHOOK_URL = import.meta.env.VITE_FUNNEL_EMAIL_WEBHOOK_URL;
 
@@ -290,6 +291,7 @@ const Training = () => {
           </div>
         </div>
       </div>
+      <Analytics />
     </div>
   );
 };

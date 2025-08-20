@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useNavigate, Link } from "react-router-dom";
 import { BookOpen, CheckCircle, DollarSign, Clock, UserCheck, X, Brain, Star, TrendingUp, Zap, Target, ArrowRight } from "lucide-react";
+import { Analytics } from "@vercel/analytics/react";
 
 export default function Index() {
   const navigate = useNavigate();
@@ -440,6 +441,7 @@ export default function Index() {
           </div>
         </div>
       )}
+      <Analytics />
     </div>
   );
 }

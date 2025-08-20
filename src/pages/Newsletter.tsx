@@ -6,6 +6,7 @@ import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { CheckCircle, Mail, Calendar, Star, ArrowRight } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { addEmailToCollection } from "@/lib/firebase";
+import { Analytics } from "@vercel/analytics/react";
 
 const Newsletter = () => {
   const [email, setEmail] = useState("");
@@ -233,6 +234,7 @@ const Newsletter = () => {
           </div>
         </div>
       </div>
+      <Analytics />
     </div>
   );
 };

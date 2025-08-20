@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { addEmailToCollection } from "@/lib/firebase";
 import { CheckCircle, Brain, Zap, TrendingUp, Clock, Target, Star, Lock } from "lucide-react";
+import { Analytics } from "@vercel/analytics/react";
 
 const WEBHOOK_URL = import.meta.env.VITE_FUNNEL_EMAIL_WEBHOOK_URL;
 
@@ -241,6 +242,7 @@ export default function CompleteSystem() {
           </div>
         </div>
       </div>
+      <Analytics />
     </div>
   );
 }
