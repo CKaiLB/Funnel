@@ -55,7 +55,7 @@ export default function Index() {
               <BookOpen className="w-8 h-10 md:w-12 md:h-14 text-white" />
             </div>
             <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 md:mb-8 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent leading-tight px-2 animate-fade-in">
-              The #1 Sales Funnel Every Fitness Coach Needs to Book More Clients on Autopilot
+              The AI Optimized Sales System Every Fitness Coach Needs to Book More Clients on Autopilot
             </h1>
             <p className="text-lg md:text-xl lg:text-2xl text-gray-600 max-w-4xl mx-auto px-2 md:px-4 mb-6 md:mb-10 leading-relaxed">
               Step-by-step playbook to turn conversations into paying clients — without ads or complex tech.
