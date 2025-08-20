@@ -8,7 +8,9 @@ import Newsletter from "./pages/Newsletter";
 import Training from "./pages/Training";
 import Congratulations from "./pages/Congratulations";
 import NotFound from "./pages/NotFound";
-import Roadmap from "./pages/Roadmap";
+import AIRoadmap from "./pages/AIRoadmap";
+import SalesFunnelPlaybook from "./pages/SalesFunnelPlaybook";
+import CompleteSystem from "./pages/CompleteSystem"; // New import
 
 // Debug: Show webhook URL at app level
 const WEBHOOK_URL = import.meta.env.VITE_FUNNEL_EMAIL_WEBHOOK_URL;
@@ -27,7 +29,9 @@ const App = () => (
           <Route path="/newsletter" element={<Newsletter />} />
           <Route path="/training" element={<Training />} />
           <Route path="/congratulations" element={<Congratulations />} />
-          <Route path="/roadmap" element={<Roadmap />} />
+          <Route path="/ai-roadmap" element={<AIRoadmap />} />
+          <Route path="/sales-funnel-playbook" element={<SalesFunnelPlaybook />} />
+          <Route path="/complete-system" element={<CompleteSystem />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

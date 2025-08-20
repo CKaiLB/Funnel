@@ -17,30 +17,29 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
 // Function to add email and name to Firestore and send welcome email
-export const addEmailToCollection = async (email: string, name: string, funnelType: 'PDF' | 'Training' | 'Roadmap' = 'PDF') => {
+export const addEmailToCollection = async (email: string, name: string, phone: string, funnelType: 'PDF' | 'Training' | 'Roadmap' | 'Fitness_Funnel_Playbook' | 'AI_Roadmap' | 'Complete_System' = 'PDF') => {
   try {
     // First, add to Firestore
     const docRef = await addDoc(collection(db, 'Emails'), {
       email: email.toLowerCase().trim(),
       name: name.trim(),
+      phone: phone.trim(),
       timestamp: new Date(),
       source: 'funnel',
       funnel_type: funnelType,
       createdAt: new Date().toISOString(),
     });
-
     // Then, send welcome email with roadmap PDF
-    const emailSent = await sendWelcomeEmail(email, name, funnelType);
-    
+    const emailSent = await sendWelcomeEmail(email, name, phone, funnelType);
     if (emailSent) {
-      console.log('Email stored and welcome email sent successfully');
+      console.log('✅ Email added to collection and welcome email sent successfully');
+      return { success: true, docId: docRef.id };
     } else {
-      console.log('Email stored but welcome email failed to send');
+      console.log('⚠️ Email added to collection but welcome email failed to send');
+      return { success: true, docId: docRef.id, emailWarning: true };
     }
-
-    return docRef.id;
   } catch (error) {
-    console.error('Error adding email to collection:', error);
+    console.error('❌ Error adding email to collection:', error);
     throw error;
   }
 }; 

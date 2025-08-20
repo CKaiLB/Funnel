@@ -100,6 +100,24 @@ export default {
 						opacity: '0'
 					}
 				},
+				'fade-in': {
+					from: {
+						opacity: '0'
+					},
+					to: {
+						opacity: '1'
+					}
+				},
+				'fade-in-up': {
+					from: {
+						opacity: '0',
+						transform: 'translateY(20px)'
+					},
+					to: {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				},
 				'confetti-fall': {
 					'0%': {
 						transform: 'translateY(-10vh) rotate(0deg)',
@@ -115,6 +133,8 @@ export default {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-out': 'fade-out 0.7s ease-in-out',
+				'fade-in': 'fade-in 1s ease-out',
+				'fade-in-up': 'fade-in-up 0.8s ease-out',
 				'confetti-fall': 'confetti-fall 3s linear forwards'
 			}
 		}

@@ -20,14 +20,14 @@ export const isValidEmail = (email: string): boolean => {
 };
 
 // Send welcome email via custom API webhook
-export const sendWelcomeEmail = async (email: string, name: string, funnelType: 'PDF' | 'Training' | 'Roadmap'): Promise<boolean> => {
+export const sendWelcomeEmail = async (email: string, name: string, phone: string, funnelType: 'PDF' | 'Training' | 'Roadmap' | 'Fitness_Funnel_Playbook' | 'AI_Roadmap' | 'Complete_System'): Promise<boolean> => {
   if (!isValidEmail(email)) {
     console.error('Invalid email format:', email);
     return false;
   }
 
   if (!WEBHOOK_URL) {
-    console.error('Webhook URL not configured. Please set VITE_FUNNEL_EMAIL_WEBHOOK_URL in your environment variables.');
+    console.error('Webhook URL not configured');
     return false;
   }
 
@@ -40,22 +40,22 @@ export const sendWelcomeEmail = async (email: string, name: string, funnelType: 
       body: JSON.stringify({
         email: email.toLowerCase().trim(),
         name: name.trim(),
+        phone: phone.trim(),
         funnel_type: funnelType,
-        roadmap_pdf_url: ROADMAP_PDF_URL,
         source: 'funnel',
         timestamp: new Date().toISOString(),
       }),
     });
 
     if (response.ok) {
-      console.log(`Welcome email sent successfully via webhook for ${funnelType} funnel`);
+      console.log('✅ Welcome email sent successfully via webhook');
       return true;
     } else {
-      console.error('Webhook API error:', response.status, response.statusText);
+      console.error('❌ Failed to send welcome email:', response.status, response.statusText);
       return false;
     }
   } catch (error) {
-    console.error('Error sending welcome email via webhook:', error);
+    console.error('❌ Error sending welcome email:', error);
     return false;
   }
 }; 
