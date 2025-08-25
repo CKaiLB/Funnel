@@ -1,13 +1,16 @@
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { useNavigate, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { Label } from "@/components/ui/label";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { CheckCircle, Star, TrendingUp, DollarSign, UserCheck, Clock, BookOpen, Calculator, ArrowRight } from "lucide-react";
 import { addEmailToCollection } from "@/lib/firebase";
-import { CheckCircle, BookOpen, Star, TrendingUp, Clock, DollarSign, UserCheck, ArrowRight } from "lucide-react";
+import { sendWelcomeEmail } from "@/lib/email";
+import { useToast } from "@/hooks/use-toast";
 import { Analytics } from "@vercel/analytics/react";
+import React from "react";
 
 // Meta Pixel TypeScript declarations
 declare global {
@@ -16,27 +19,24 @@ declare global {
   }
 }
 
-const WEBHOOK_URL = import.meta.env.VITE_FUNNEL_EMAIL_WEBHOOK_URL;
+interface FormData {
+  name: string;
+  email: string;
+  phone: string;
+}
 
 export default function SalesFunnelPlaybook() {
-  const form = useForm({
-    defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-    },
-  });
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Scroll to top when page loads
-  useEffect(() => {
+  React.useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   // Meta Pixel tracking
-  useEffect(() => {
+  React.useEffect(() => {
     // Load Meta Pixel script
     if (!window.fbq) {
       const script = document.createElement('script');
@@ -76,287 +76,330 @@ export default function SalesFunnelPlaybook() {
     };
   }, []);
 
-  async function onSubmit(values) {
-    setIsLoading(true);
-    setError("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormData>({
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+    },
+  });
+
+  const onSubmit = async (data: FormData) => {
+    setIsSubmitting(true);
     try {
-      // First, submit to webhook
-      const response = await fetch(WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...values,
-          funnel_type: "Fitness_Funnel_Playbook",
-          source: "funnel",
-          timestamp: new Date().toISOString(),
-        }),
+      await addEmailToCollection(data.email, data.name, data.phone, "Fitness_Funnel_Playbook");
+      await sendWelcomeEmail(data.email, data.name, data.phone, "Fitness_Funnel_Playbook");
+      
+      toast({
+        title: "Success!",
+        description: "Your playbook is on its way. Check your email!",
       });
-      if (!response.ok) throw new Error("Failed to submit. Please try again.");
       
-      // Then, store email in Firebase
-      await addEmailToCollection(values.email, values.name, values.phone, "Fitness_Funnel_Playbook");
-      
-      setIsLoading(false);
+      reset();
       navigate("/congratulations");
-    } catch (err) {
-      setError(err.message || "There was an error. Please try again.");
-      setIsLoading(false);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <header className="container mx-auto px-4 py-4 md:py-6">
-        <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center space-x-2 md:space-x-3">
-            <img src="/lovable-uploads/2e025803-adcb-4eb0-8995-15991e0213a4.png" alt="Sweep Logo" className="h-12 w-auto md:h-20" />
-          </Link>
+    <div className="min-h-screen bg-black overflow-x-hidden">
+      {/* Centered Sweep Logo */}
+      <div className="flex justify-center pt-8 pb-6">
+        <img 
+          src="/lovable-uploads/2e025803-adcb-4eb0-8995-15991e0213a4.png" 
+          alt="Sweep Logo" 
+          className="h-20 w-auto"
+        />
+      </div>
+
+      <div className="px-4 py-6 max-w-4xl mx-auto">
+        {/* Hero Section */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full mb-6 shadow-2xl shadow-purple-500/80 ring-4 ring-purple-400/60 ring-offset-4 ring-offset-black">
+            <BookOpen className="w-10 h-10 text-white" />
+          </div>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400 bg-clip-text text-transparent leading-tight drop-shadow-[0_0_20px_rgba(168,85,247,0.8)]">
+            Get Your Free Sales Funnel Playbook
+          </h1>
+          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed">
+            Complete system to automate your client booking process + AI ROI Calculator to predict your revenue growth.
+          </p>
+          
+          {/* Product Card - AI ROI Calculator + Playbook */}
+          <div className="mb-8">
+            <Card className="p-6 shadow-2xl bg-gray-900/80 border-2 border-purple-400/80 backdrop-blur-sm max-w-md mx-auto ring-4 ring-purple-400/50 ring-offset-4 ring-offset-black shadow-purple-500/50 shadow-blue-500/30">
+              <div className="text-center">
+                <div className="flex justify-center space-x-6 mb-6">
+                  <img 
+                    src="/lovable-uploads/SalesFunnel.png" 
+                    alt="Sales Funnel Playbook" 
+                    className="w-24 h-24 object-contain rounded-lg ring-4 ring-purple-400/60 shadow-lg shadow-purple-500/50"
+                  />
+                  <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-blue-600 rounded-lg flex items-center justify-center ring-4 ring-blue-400/60 shadow-lg shadow-blue-500/50">
+                    <Calculator className="w-10 h-10 text-white" />
+                  </div>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">Complete System + AI ROI Calculator</h3>
+                <p className="text-sm text-gray-300 mb-4">Sales funnel playbook + AI-powered ROI calculator to predict your revenue growth</p>
+                
+                {/* FREE Pricing Display */}
+                <div className="flex items-center justify-center space-x-3 mb-4">
+                  <span className="text-2xl font-bold text-green-400 drop-shadow-[0_0_10px_rgba(74,222,128,0.8)]">FREE</span>
+                  <span className="text-sm text-gray-400 line-through">$197</span>
+                  <span className="bg-green-900/50 text-green-400 px-2 py-1 rounded-full text-xs font-semibold border border-green-500/50 ring-1 ring-green-400/30">Limited Time</span>
+                </div>
+              </div>
+            </Card>
+          </div>
         </div>
-      </header>
 
-      <div className="container mx-auto px-4 py-6 md:py-16">
-        <div className="max-w-4xl mx-auto">
-          {/* Hero Section */}
-          <div className="text-center mb-12 md:mb-20">
-            <div className="inline-flex items-center justify-center w-16 h-16 md:w-24 md:h-24 bg-gradient-to-br from-green-500 to-blue-600 rounded-full mb-4 md:mb-8 shadow-lg">
-              <BookOpen className="w-8 h-10 md:w-12 md:h-14 text-white" />
-            </div>
-            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 md:mb-8 bg-gradient-to-r from-green-600 via-blue-600 to-green-800 bg-clip-text text-transparent leading-tight px-2">
-              Get Your FREE Fitness Sales Funnel Playbook
-            </h1>
-            <p className="text-lg md:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto px-2 md:px-4 mb-6 md:mb-8 leading-relaxed">
-              Transform your fitness business with our proven sales funnel system that books clients on autopilot.
-            </p>
-          </div>
-
-          {/* High-Value Conversion Section */}
-          <div className="mb-12 md:mb-16">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 md:mb-8 text-center text-gray-800">
-              Why This Playbook Will Transform Your Business
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-              <div className="space-y-4 md:space-y-6">
-                <div className="flex items-start space-x-3 md:space-x-4">
-                  <CheckCircle className="w-5 h-6 md:w-6 md:h-8 text-green-500 flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-1 md:mb-2">Proven Results</h3>
-                    <p className="text-sm md:text-base text-gray-600">Tested by hundreds of fitness coaches who've increased their client base 3-5x.</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3 md:space-x-4">
-                  <CheckCircle className="w-5 h-6 md:w-6 md:h-8 text-green-500 flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-1 md:mb-2">Time Savings</h3>
-                    <p className="text-sm md:text-base text-gray-600">Save 15-20 hours weekly on client communication and follow-ups.</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3 md:space-x-4">
-                  <CheckCircle className="w-5 h-6 md:w-6 md:h-8 text-green-500 flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-1 md:mb-2">Revenue Growth</h3>
-                    <p className="text-sm md:text-base text-gray-600">Increase your monthly revenue by 40-60% with systematic client acquisition.</p>
-                  </div>
-                </div>
-              </div>
-              <div className="space-y-4 md:space-y-6">
-                <div className="flex items-start space-x-3 md:space-x-4">
-                  <CheckCircle className="w-5 h-6 md:w-6 md:h-8 text-green-500 flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-1 md:mb-2">No Tech Skills Needed</h3>
-                    <p className="text-sm md:text-base text-gray-600">Step-by-step instructions anyone can follow, regardless of technical experience.</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3 md:space-x-4">
-                  <CheckCircle className="w-5 h-6 md:w-6 md:h-8 text-green-500 flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-1 md:mb-2">Copy-Paste Templates</h3>
-                    <p className="text-sm md:text-base text-gray-600">Ready-to-use messaging templates that convert prospects into paying clients.</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3 md:space-x-4">
-                  <CheckCircle className="w-5 h-6 md:w-6 md:h-8 text-green-500 flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-1 md:mb-2">Instant Access</h3>
-                    <p className="text-sm md:text-base text-gray-600">Download immediately and start implementing your funnel today.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Email Capture Form */}
-          <Card className="p-6 md:p-8 lg:p-12 shadow-2xl bg-white border-2 border-green-200 mb-12 md:mb-16">
-            <div className="text-center mb-6 md:mb-8">
-              <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-green-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6">
-                <BookOpen className="w-6 h-8 md:w-8 md:h-10 text-white" />
-              </div>
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-3 md:mb-4">
-                Get Your Free Playbook Now
+        {/* Opt-In Form Section */}
+        <div className="mb-12">
+          <Card className="p-6 md:p-8 shadow-2xl bg-gray-900/80 border-2 border-purple-500/30 backdrop-blur-sm ring-4 ring-purple-400/20 ring-offset-4 ring-offset-black shadow-purple-500/20">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 drop-shadow-[0_0_15px_rgba(168,85,247,0.6)]">
+                Get Instant Access
               </h2>
-              <p className="text-base md:text-lg lg:text-xl text-gray-600 mb-4 md:mb-6">
-                Enter your details below and get instant access to the complete sales funnel system.
+              <p className="text-lg text-gray-300">
+                Enter your details below to receive your free playbook and AI ROI calculator instantly.
               </p>
             </div>
-
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    rules={{ required: "Name is required" }}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-base md:text-lg font-semibold">Full Name</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Enter your full name" 
-                            className="h-12 md:h-14 text-base md:text-lg"
-                            {...field} 
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+            
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <Label htmlFor="name" className="text-white">Name</Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    {...register("name", { required: "Name is required" })}
+                    className="mt-1 bg-gray-800/50 border-2 border-purple-500/30 text-white ring-4 ring-purple-400/20 ring-offset-2 ring-offset-black"
+                    placeholder="Your full name"
                   />
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    rules={{ 
+                  {errors.name && (
+                    <p className="text-red-400 text-sm mt-1">{errors.name.message}</p>
+                  )}
+                </div>
+                
+                <div>
+                  <Label htmlFor="email" className="text-white">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    {...register("email", { 
                       required: "Email is required",
                       pattern: {
                         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                         message: "Invalid email address"
                       }
-                    }}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-base md:text-lg font-semibold">Email Address</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="email" 
-                            placeholder="Enter your email address" 
-                            className="h-12 md:h-14 text-base md:text-lg"
-                            {...field} 
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    })}
+                    className="mt-1 bg-gray-800/50 border-2 border-purple-500/30 text-white ring-4 ring-purple-400/20 ring-offset-2 ring-offset-black"
+                    placeholder="your@email.com"
                   />
-                  <FormField
-                    control={form.control}
-                    name="phone"
-                    rules={{ required: "Phone number is required" }}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-base md:text-lg font-semibold">Phone Number</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="tel" 
-                            placeholder="Enter your phone number" 
-                            className="h-12 md:h-14 text-base md:text-lg"
-                            {...field} 
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                  {errors.email && (
+                    <p className="text-red-400 text-sm mt-1">{errors.email.message}</p>
+                  )}
+                </div>
+                
+                <div>
+                  <Label htmlFor="phone" className="text-white">Phone</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    {...register("phone")}
+                    className="mt-1 bg-gray-800/50 border-2 border-purple-500/30 text-white ring-4 ring-purple-400/20 ring-offset-2 ring-offset-black"
+                    placeholder="(555) 123-4567"
                   />
                 </div>
-
-                {error && (
-                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-                    {error}
-                  </div>
-                )}
-
-                <div className="text-center">
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="w-full md:w-auto bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold py-4 md:py-5 px-8 md:px-12 text-lg md:text-xl rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isLoading ? (
-                      <div className="flex items-center justify-center space-x-2">
-                        <LoadingSpinner className="w-5 h-5" />
-                        <span>Getting your playbook...</span>
-                      </div>
-                    ) : (
-                      <div className="flex items-center justify-center space-x-2">
-                        <span>Get My Free Playbook</span>
-                        <ArrowRight className="w-5 h-5" />
-                      </div>
-                    )}
-                  </button>
-                </div>
-              </form>
-            </Form>
-
-            <div className="text-center text-sm md:text-base text-gray-500 mt-4 md:mt-6">
-              Your playbook will be delivered instantly • No credit card required
-            </div>
-          </Card>
-
-          {/* Additional Testimonials */}
-          <div className="mb-12 md:mb-16">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 md:mb-8 text-center text-gray-800">
-              What Coaches Are Saying
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-              <Card className="p-6 md:p-8 shadow-lg">
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                      <Star className="w-6 h-8 md:w-8 md:h-10 text-white" />
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center mb-2">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 md:w-5 md:h-5 text-yellow-400 fill-current" />
-                      ))}
-                    </div>
-                    <blockquote className="text-sm md:text-base text-gray-700 italic mb-3 md:mb-4">
-                      "This funnel system is pure gold. I went from struggling to book calls to having a waiting list. The automation handles everything."
-                    </blockquote>
-                    <p className="text-sm md:text-base font-semibold text-gray-800">- David Park, Personal Trainer</p>
-                  </div>
-                </div>
-              </Card>
+              </div>
               
-              <Card className="p-6 md:p-8 shadow-lg">
-                <div className="flex items-start space-x-4">
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-green-500 to-blue-600 rounded-full flex items-center justify-center">
-                      <TrendingUp className="w-6 h-8 md:w-8 md:h-10 text-white" />
-                    </div>
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center mb-2">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 md:w-5 md:h-5 text-yellow-400 fill-current" />
-                      ))}
-                    </div>
-                    <blockquote className="text-sm md:text-base text-gray-700 italic mb-3 md:mb-4">
-                      "My revenue doubled in 3 months using this system. The templates and scripts are worth 10x the price."
-                    </blockquote>
-                    <p className="text-sm md:text-base font-semibold text-gray-800">- Lisa Chen, Online Coach</p>
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                size="lg"
+                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-4 px-8 text-xl rounded-xl shadow-2xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-purple-400/80 ring-4 ring-purple-400/50 ring-offset-4 ring-offset-black shadow-purple-500/60 shadow-blue-500/40"
+              >
+                {isSubmitting ? "Sending..." : "Send Me the Playbook"}
+              </Button>
+              
+              <p className="text-sm text-gray-400 text-center">
+                We respect your inbox. Unsubscribe anytime.
+              </p>
+            </form>
+          </Card>
+        </div>
+
+        {/* Testimonials Section */}
+        <div className="mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center text-white drop-shadow-[0_0_15px_rgba(168,85,247,0.6)]">
+            What Other Coaches Are Saying
+          </h2>
+          <div className="space-y-6">
+            <Card className="p-6 md:p-8 shadow-2xl bg-gray-900/80 border-2 border-purple-500/30 backdrop-blur-sm ring-4 ring-purple-400/20 ring-offset-4 ring-offset-black shadow-purple-500/20 hover:shadow-purple-500/40 transition-all duration-300">
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0">
+                  <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center ring-4 ring-purple-400/60 shadow-lg shadow-purple-500/50">
+                    <Star className="w-6 h-8 md:w-8 md:h-10 text-white" />
                   </div>
                 </div>
-              </Card>
+                <div className="flex-1">
+                  <div className="flex items-center mb-2">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 md:w-5 md:h-5 text-yellow-400 fill-current drop-shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
+                    ))}
+                  </div>
+                  <blockquote className="text-base md:text-lg text-gray-300 italic mb-4">
+                    "I was spending 20+ hours weekly on client communication. Now it's all automated and I'm booking more clients than ever. This system pays for itself."
+                  </blockquote>
+                  <p className="text-sm md:text-base font-semibold text-white">- Alex Thompson, Fitness Coach</p>
+                </div>
+              </div>
+            </Card>
+            
+            <Card className="p-6 md:p-8 shadow-2xl bg-gray-900/80 border-2 border-purple-500/30 backdrop-blur-sm ring-4 ring-purple-400/20 ring-offset-4 ring-offset-black shadow-purple-500/20 hover:shadow-purple-500/40 transition-all duration-300">
+              <div className="flex items-start space-x-4">
+                <div className="flex-shrink-0">
+                  <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-green-500 to-blue-600 rounded-full flex items-center justify-center ring-4 ring-green-400/60 shadow-lg shadow-green-500/50">
+                    <CheckCircle className="w-6 h-8 md:w-8 md:h-10 text-white" />
+                  </div>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center mb-2">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 md:w-5 md:h-5 text-yellow-400 fill-current drop-shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
+                    ))}
+                  </div>
+                  <blockquote className="text-base md:text-lg text-gray-300 italic mb-4">
+                    "The templates and scripts are gold. I've doubled my conversion rate and cut my work time in half. Wish I had this years ago."
+                  </blockquote>
+                  <p className="text-sm md:text-base font-semibold text-white">- Maria Santos, Online Trainer</p>
+                </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+
+        {/* High-Value Results Section */}
+        <div className="mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center text-white drop-shadow-[0_0_15px_rgba(168,85,247,0.6)]">
+            High-Value Results You Can Expect
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="text-center group hover:scale-105 transition-transform duration-500">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-purple-400/60 shadow-lg shadow-purple-500/50">
+                <TrendingUp className="w-8 h-10 md:w-10 md:h-12 text-white" />
+              </div>
+              <h3 className="text-xl md:text-2xl font-bold text-purple-400 mb-2">3-5x</h3>
+              <p className="text-base md:text-lg font-semibold text-white mb-2">More Clients</p>
+              <p className="text-sm md:text-base text-gray-300">Book more clients consistently with automated follow-ups</p>
+            </div>
+            
+            <div className="text-center group hover:scale-105 transition-transform duration-500">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-blue-400/60 shadow-lg shadow-blue-500/50">
+                <Clock className="w-8 h-10 md:w-10 md:h-12 text-white" />
+              </div>
+              <h3 className="text-xl md:text-2xl font-bold text-blue-400 mb-2">15-20hrs</h3>
+              <p className="text-base md:text-lg font-semibold text-white mb-2">Time Saved</p>
+              <p className="text-sm md:text-base text-gray-300">Weekly time savings on client communication</p>
+            </div>
+            
+            <div className="text-center group hover:scale-105 transition-transform duration-500">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-green-400/60 shadow-lg shadow-green-500/50">
+                <DollarSign className="w-8 h-10 md:w-10 md:h-12 text-white" />
+              </div>
+              <h3 className="text-xl md:text-2xl font-bold text-green-400 mb-2">40-60%</h3>
+              <p className="text-base md:text-lg font-semibold text-white mb-2">Revenue Increase</p>
+              <p className="text-sm md:text-base text-gray-300">Higher conversion rates and client retention</p>
+            </div>
+            
+            <div className="text-center group hover:scale-105 transition-transform duration-500">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-orange-400/60 shadow-lg shadow-orange-500/50">
+                <UserCheck className="w-5 h-5 text-orange-400" />
+              </div>
+              <h3 className="text-xl md:text-2xl font-bold text-orange-400 mb-2">80%</h3>
+              <p className="text-base md:text-lg font-semibold text-white mb-2">Client Retention</p>
+              <p className="text-sm md:text-base text-gray-300">Better client relationships and long-term success</p>
             </div>
           </div>
+        </div>
 
-          {/* Final CTA */}
-          <div className="text-center">
-            <p className="text-lg md:text-xl text-gray-600 mb-3 md:mb-4">
-              Ready to start booking more clients on autopilot?
-            </p>
-            <p className="text-sm md:text-base text-gray-500">
-              Complete the form above to get your free sales funnel playbook and start transforming your business today.
-            </p>
+        {/* Case Studies Section */}
+        <div className="mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center text-white drop-shadow-[0_0_15px_rgba(168,85,247,0.6)]">
+            Real Client Wins & Case Studies
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card className="p-6 md:p-8 shadow-2xl bg-gray-900/80 border-2 border-purple-500/30 backdrop-blur-sm ring-4 ring-purple-400/20 ring-offset-4 ring-offset-black shadow-purple-500/20 hover:shadow-purple-500/40 transition-all duration-300">
+              <div className="text-center">
+                <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-purple-400/60 shadow-lg shadow-purple-500/50">
+                  <TrendingUp className="w-8 h-10 md:w-10 md:h-12 text-white" />
+                </div>
+                <h3 className="text-lg md:text-xl font-bold text-white mb-2">Sarah Martinez</h3>
+                <p className="text-sm md:text-base text-gray-300 mb-3">Personal Trainer</p>
+                <p className="text-sm md:text-base text-gray-300 leading-relaxed">
+                  "Went from 3 clients to 18 clients in 3 months. The funnel handles all my follow-ups automatically."
+                </p>
+              </div>
+            </Card>
+            
+            <Card className="p-6 md:p-8 shadow-2xl bg-gray-900/80 border-2 border-purple-500/30 backdrop-blur-sm ring-4 ring-purple-400/20 ring-offset-4 ring-offset-black shadow-purple-500/20 hover:shadow-purple-500/40 transition-all duration-300">
+              <div className="text-center">
+                <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-green-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-green-400/60 shadow-lg shadow-green-500/50">
+                  <DollarSign className="w-8 h-10 md:w-10 md:h-12 text-white" />
+                </div>
+                <h3 className="text-lg md:text-xl font-bold text-white mb-2">Mike Rodriguez</h3>
+                <p className="text-sm md:text-base text-gray-300 mb-3">Online Coach</p>
+                <p className="text-sm md:text-base text-gray-300 leading-relaxed">
+                  "Revenue increased from $2k to $8k/month. The system books calls while I sleep."
+                </p>
+              </div>
+            </Card>
+            
+            <Card className="p-6 md:p-8 shadow-2xl bg-gray-900/80 border-2 border-purple-500/30 backdrop-blur-sm ring-4 ring-purple-400/20 ring-offset-4 ring-offset-black shadow-purple-500/20 hover:shadow-purple-500/40 transition-all duration-300">
+              <div className="text-center">
+                <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-purple-400/60 shadow-lg shadow-purple-500/50">
+                  <UserCheck className="w-8 h-10 md:w-10 md:h-12 text-white" />
+                </div>
+                <h3 className="text-lg md:text-xl font-bold text-white mb-2">Jennifer Chen</h3>
+                <p className="text-sm md:text-base text-gray-300 mb-3">Yoga Instructor</p>
+                <p className="text-sm md:text-base text-gray-300 leading-relaxed">
+                  "Client retention went from 60% to 85%. The automated nurturing keeps them engaged."
+                </p>
+              </div>
+            </Card>
           </div>
+        </div>
+
+
+
+        {/* Final CTA Section */}
+        <div className="text-center mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white drop-shadow-[0_0_15px_rgba(168,85,247,0.6)]">
+            Start Booking More Clients Today
+          </h2>
+          <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
+            Get your free playbook and AI ROI calculator to start building your automated client booking system in the next 24 hours.
+          </p>
+          <Button 
+            onClick={() => document.getElementById('name')?.focus()}
+            size="lg" 
+            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-4 md:py-5 px-8 md:px-12 text-xl md:text-2xl rounded-xl shadow-2xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-purple-400/80 ring-4 ring-purple-400/50 ring-offset-4 ring-offset-black shadow-purple-500/60 shadow-blue-500/40"
+          >
+            Get the Free Playbook
+          </Button>
         </div>
       </div>
       <Analytics />

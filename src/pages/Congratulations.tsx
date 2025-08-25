@@ -121,7 +121,7 @@ export default function Congratulations() {
             🎉 Congratulations!
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-2">
-            You've successfully unlocked access to the complete fitness sales funnel system.
+            You've successfully unlocked access to the sales system bonus features.
           </p>
         </div>
 
@@ -130,7 +130,7 @@ export default function Congratulations() {
           <Card className="p-4 sm:p-6 md:p-8 shadow-xl bg-white border-2 border-blue-200">
             <div className="text-center">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">
-                🔐 Unlocking Your Complete System...
+                🔐 Unlocking Your Secret Offer...
               </h2>
               
               {/* Unlock Progress - Mobile Optimized */}
@@ -180,7 +180,7 @@ export default function Congratulations() {
                   ) : (
                     <div className="flex items-center space-x-2">
                       <Unlock className="w-4 h-4 sm:w-5 sm:h-5" />
-                      <span>Unlock Complete System</span>
+                      <span>Unlock Bonus Features</span>
                     </div>
                   )}
                 </Button>
@@ -195,10 +195,10 @@ export default function Congratulations() {
             <Card className="p-4 sm:p-6 md:p-8 shadow-xl bg-white border-2 border-blue-200">
               <div className="text-center">
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">
-                  🎬 Watch Your Exclusive VSL
+                  🎬 Watch Your Exclusive Bonus Video
                 </h2>
                 <p className="text-base sm:text-lg md:text-lg text-gray-600 mb-6 sm:mb-8 px-2">
-                  Discover the complete system that will transform your fitness business
+                  Discover the complete system that will transform your fitness business.
                 </p>
                 
                 {/* Video Container */}
@@ -257,7 +257,7 @@ export default function Congratulations() {
                     🎁 Special Invitation Unlocked!
                   </h2>
                   <p className="text-base sm:text-lg md:text-xl text-gray-700 mb-4 sm:mb-6 px-2">
-                    You've been selected for an exclusive opportunity...
+                    You've unlocked a limited time opportunity...
                   </p>
                 </div>
 

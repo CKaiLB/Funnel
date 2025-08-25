@@ -1,12 +1,14 @@
-import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { useNavigate, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { Label } from "@/components/ui/label";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { CheckCircle, Star, TrendingUp, DollarSign, UserCheck, Clock, BookOpen, Calculator, ArrowRight, Shield, Award, Zap } from "lucide-react";
 import { addEmailToCollection } from "@/lib/firebase";
-import { CheckCircle, Brain, Zap, TrendingUp, Clock, Target, Star, Lock } from "lucide-react";
+import { sendWelcomeEmail } from "@/lib/email";
+import { useToast } from "@/hooks/use-toast";
 import { Analytics } from "@vercel/analytics/react";
 
 // Meta Pixel TypeScript declarations
@@ -16,19 +18,16 @@ declare global {
   }
 }
 
-const WEBHOOK_URL = import.meta.env.VITE_FUNNEL_EMAIL_WEBHOOK_URL;
+interface FormData {
+  name: string;
+  email: string;
+  phone: string;
+}
 
 export default function CompleteSystem() {
-  const form = useForm({
-    defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-    },
-  });
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Scroll to top when page loads
   useEffect(() => {
@@ -76,218 +75,254 @@ export default function CompleteSystem() {
     };
   }, []);
 
-  async function onSubmit(values) {
-    setIsLoading(true);
-    setError("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormData>({
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+    },
+  });
+
+  const onSubmit = async (data: FormData) => {
+    setIsSubmitting(true);
     try {
-      // First, submit to webhook
-      const response = await fetch(WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...values,
-          funnel_type: "Complete_System",
-          source: "funnel",
-          timestamp: new Date().toISOString(),
-        }),
+      await addEmailToCollection(data.email, data.name, data.phone, "Complete_System");
+      await sendWelcomeEmail(data.email, data.name, data.phone, "Complete_System");
+      
+      toast({
+        title: "Success!",
+        description: "Your complete system access is on its way. Check your email!",
       });
-      if (!response.ok) throw new Error("Failed to submit. Please try again.");
       
-      // Then, store email in Firebase
-      await addEmailToCollection(values.email, values.name, values.phone, "Complete_System");
-      
-      setIsLoading(false);
+      reset();
       navigate("/congratulations");
-    } catch (err) {
-      setError(err.message || "There was an error. Please try again.");
-      setIsLoading(false);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <header className="container mx-auto px-4 py-4 md:py-6">
-        <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center space-x-2 md:space-x-3">
-            <img src="/lovable-uploads/2e025803-adcb-4eb0-8995-15991e0213a4.png" alt="Sweep Logo" className="h-12 w-auto md:h-20" />
-          </Link>
-        </div>
-      </header>
+    <div className="min-h-screen bg-black overflow-x-hidden">
+      {/* Centered Sweep Logo */}
+      <div className="flex justify-center pt-8 pb-6">
+        <img 
+          src="/lovable-uploads/2e025803-adcb-4eb0-8995-15991e0213a4.png" 
+          alt="Sweep Logo" 
+          className="h-20 w-auto"
+        />
+      </div>
 
-      <div className="container mx-auto px-4 py-6 md:py-16">
-        <div className="max-w-4xl mx-auto">
-          {/* Hero Section */}
-          <div className="text-center mb-12 md:mb-20">
-            <div className="inline-flex items-center justify-center w-16 h-16 md:w-24 md:h-24 bg-gradient-to-br from-green-500 to-blue-600 rounded-full mb-4 md:mb-8 shadow-lg">
-              <CheckCircle className="w-8 h-10 md:w-12 md:h-14 text-white" />
-            </div>
-            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 md:mb-8 bg-gradient-to-r from-green-600 via-blue-600 to-green-800 bg-clip-text text-transparent leading-tight px-2">
-              Payment Complete! 🎉
-            </h1>
-            <p className="text-lg md:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto px-2 md:px-4 mb-6 md:mb-8 leading-relaxed">
-              Thank you for your purchase! Now let's get you set up with your complete AI implementation system.
-            </p>
+      <div className="px-4 py-6 max-w-4xl mx-auto">
+        {/* Success Message */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-500 to-blue-600 rounded-full mb-6 shadow-2xl shadow-green-500/80 ring-4 ring-green-400/60 ring-offset-4 ring-offset-black">
+            <Award className="w-10 h-10 text-white" />
           </div>
-
-          {/* Success Message */}
-          <Card className="p-6 md:p-8 lg:p-12 shadow-2xl bg-white border-2 border-green-200 mb-12 md:mb-16">
-            <div className="text-center mb-6 md:mb-8">
-              <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-green-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 md:mb-6">
-                <CheckCircle className="w-6 h-8 md:w-8 md:h-10 text-white" />
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-green-400 via-blue-400 to-green-400 bg-clip-text text-transparent leading-tight drop-shadow-[0_0_20px_rgba(74,222,128,0.8)]">
+            🎉 Payment Successful!
+          </h1>
+          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed">
+            Thank you for your purchase! You now have access to the complete AI implementation roadmap for fitness businesses.
+          </p>
+          
+          {/* Success Card */}
+          <div className="mb-8">
+            <Card className="p-6 shadow-2xl bg-gray-900/80 border-2 border-green-400/80 backdrop-blur-sm max-w-md mx-auto ring-4 ring-green-400/50 ring-offset-4 ring-offset-black shadow-green-500/50 shadow-blue-500/30">
+              <div className="text-center">
+                <div className="flex justify-center mb-6">
+                  <img 
+                    src="/lovable-uploads/AIRoadmap.png" 
+                    alt="AI Implementation Roadmap" 
+                    className="w-32 h-32 object-contain rounded-lg ring-4 ring-green-400/60 shadow-lg shadow-green-500/50"
+                  />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">AI Implementation Roadmap</h3>
+                <p className="text-sm text-gray-300 mb-4">Complete guide to automate your entire sales process with AI</p>
+                
+                {/* Access Status */}
+                <div className="flex items-center justify-center space-x-3 mb-4">
+                  <span className="text-lg font-bold text-green-400 drop-shadow-[0_0_10px_rgba(74,222,128,0.8)]">✓ ACCESS GRANTED</span>
+                </div>
               </div>
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-3 md:mb-4">
-                Your AI Roadmap is Ready!
+            </Card>
+          </div>
+        </div>
+
+        {/* Access Granted Card */}
+        <div className="mb-12">
+          <Card className="p-6 md:p-8 shadow-2xl bg-gray-900/80 border-2 border-purple-500/30 backdrop-blur-sm ring-4 ring-purple-400/20 ring-offset-4 ring-offset-black shadow-purple-500/20">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 drop-shadow-[0_0_15px_rgba(168,85,247,0.6)]">
+                Get Instant Access
               </h2>
-              <p className="text-base md:text-lg lg:text-xl text-gray-600 mb-4 md:mb-6">
-                We've received your payment and are preparing your complete AI implementation system. 
-                Just one more step to get everything delivered to your inbox.
+              <p className="text-lg text-gray-300">
+                Fill out your information and we'll send the playbook directly to your inbox.
               </p>
             </div>
-
-            {/* What You'll Get */}
-            <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-4 md:p-6 lg:p-8 mb-6 md:mb-8 border-2 border-green-200">
-              <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 mb-4 md:mb-6 text-center">
-                What You're About to Receive:
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                <div className="flex items-start space-x-3 md:space-x-4">
-                  <CheckCircle className="w-5 h-6 md:w-6 md:h-8 text-green-500 flex-shrink-0 mt-1" />
-                  <div>
-                    <h4 className="text-base md:text-lg font-bold text-gray-800 mb-1 md:mb-2">AI Roadmap PDF</h4>
-                    <p className="text-sm md:text-base text-gray-600">Complete implementation guide with step-by-step instructions</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3 md:space-x-4">
-                  <CheckCircle className="w-5 h-6 md:w-6 md:h-8 text-green-500 flex-shrink-0 mt-1" />
-                  <div>
-                    <h4 className="text-base md:text-lg font-bold text-gray-800 mb-1 md:mb-2">Implementation Checklists</h4>
-                    <p className="text-sm md:text-base text-gray-600">Ready-to-use checklists for each phase</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3 md:space-x-4">
-                  <CheckCircle className="w-5 h-6 md:w-6 md:h-8 text-green-500 flex-shrink-0 mt-1" />
-                  <div>
-                    <h4 className="text-base md:text-lg font-bold text-gray-800 mb-1 md:mb-2">ROI Calculator</h4>
-                    <p className="text-sm md:text-base text-gray-600">Project your expected returns and time savings</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3 md:space-x-4">
-                  <CheckCircle className="w-5 h-6 md:w-6 md:h-8 text-green-500 flex-shrink-0 mt-1" />
-                  <div>
-                    <h4 className="text-base md:text-lg font-bold text-gray-800 mb-1 md:mb-2">Priority Support</h4>
-                    <p className="text-sm md:text-base text-gray-600">Direct access to our implementation team</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Email Form */}
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    rules={{ required: "Name is required" }}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-base md:text-lg font-semibold">Full Name</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Enter your full name" 
-                            className="h-12 md:h-14 text-base md:text-lg"
-                            {...field} 
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+            
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <Label htmlFor="name" className="text-white">Name</Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    {...register("name", { required: "Name is required" })}
+                    className="mt-1 bg-gray-800/50 border-2 border-purple-500/30 text-white ring-4 ring-purple-400/20 ring-offset-2 ring-offset-black"
+                    placeholder="Your full name"
                   />
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    rules={{ 
+                  {errors.name && (
+                    <p className="text-red-400 text-sm mt-1">{errors.name.message}</p>
+                  )}
+                </div>
+                
+                <div>
+                  <Label htmlFor="email" className="text-white">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    {...register("email", { 
                       required: "Email is required",
                       pattern: {
                         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                         message: "Invalid email address"
                       }
-                    }}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-base md:text-lg font-semibold">Email Address</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="email" 
-                            placeholder="Enter your email address" 
-                            className="h-12 md:h-14 text-base md:text-lg"
-                            {...field} 
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    })}
+                    className="mt-1 bg-gray-800/50 border-2 border-purple-500/30 text-white ring-4 ring-purple-400/20 ring-offset-2 ring-offset-black"
+                    placeholder="your@email.com"
                   />
-                  <FormField
-                    control={form.control}
-                    name="phone"
-                    rules={{ required: "Phone number is required" }}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-base md:text-lg font-semibold">Phone Number</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="tel" 
-                            placeholder="Enter your phone number" 
-                            className="h-12 md:h-14 text-base md:text-lg"
-                            {...field} 
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                  {errors.email && (
+                    <p className="text-red-400 text-sm mt-1">{errors.email.message}</p>
+                  )}
+                </div>
+                
+                <div>
+                  <Label htmlFor="phone" className="text-white">Phone</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    {...register("phone")}
+                    className="mt-1 bg-gray-800/50 border-2 border-purple-500/30 text-white ring-4 ring-purple-400/20 ring-offset-2 ring-offset-black"
+                    placeholder="(555) 123-4567"
                   />
                 </div>
-
-                {error && (
-                  <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-                    {error}
-                  </div>
-                )}
-
-                <div className="text-center">
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="w-full md:w-auto bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold py-4 md:py-5 px-8 md:px-12 text-lg md:text-xl rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isLoading ? (
-                      <div className="flex items-center justify-center space-x-2">
-                        <LoadingSpinner className="w-5 h-5" />
-                        <span>Setting up your system...</span>
-                      </div>
-                    ) : (
-                      "Get My AI Roadmap Now"
-                    )}
-                  </button>
-                </div>
-              </form>
-            </Form>
-
-            <div className="text-center text-sm md:text-base text-gray-500 mt-4 md:mt-6">
-              Your AI roadmap will be delivered instantly after form submission
-            </div>
+              </div>
+              
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                size="lg"
+                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-4 px-8 text-xl rounded-xl shadow-2xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-purple-400/80 ring-4 ring-purple-400/50 ring-offset-4 ring-offset-black shadow-purple-500/60 shadow-blue-500/40"
+              >
+                {isSubmitting ? "Sending..." : "Send Message"}
+              </Button>
+              
+              <p className="text-sm text-gray-400 text-center">
+                You'll receive access to all three resources within the next few minutes
+              </p>
+            </form>
           </Card>
+        </div>
 
-          {/* Final CTA */}
-          <div className="text-center">
-            <p className="text-base md:text-lg text-gray-600 mb-3 md:mb-4">
-              Ready to transform your fitness business with AI automation?
-            </p>
-            <p className="text-sm md:text-base text-gray-500">
-              Complete the form above to receive your complete AI implementation system.
-            </p>
+
+        {/* What You Now Have Access To */}
+        <div className="mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center text-white drop-shadow-[0_0_15px_rgba(168,85,247,0.6)]">
+            What You Now Have Access To
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card className="p-6 bg-gray-900/80 border-2 border-purple-400/60 backdrop-blur-sm ring-4 ring-purple-400/40 ring-offset-4 ring-offset-black shadow-2xl shadow-purple-500/40 shadow-blue-500/20 hover:shadow-purple-500/60 transition-all duration-300">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-purple-400/60 shadow-lg shadow-purple-500/50">
+                  <BookOpen className="w-8 h-8 text-purple-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">Sales Funnel Playbook</h3>
+                <p className="text-sm text-gray-300">Complete system to automate your client booking process</p>
+              </div>
+            </Card>
+            
+            <Card className="p-6 bg-gray-900/80 border-2 border-purple-400/60 backdrop-blur-sm ring-4 ring-purple-400/40 ring-offset-4 ring-offset-black shadow-2xl shadow-purple-500/40 shadow-blue-500/20 hover:shadow-purple-500/60 transition-all duration-300">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-blue-400/60 shadow-lg shadow-blue-500/50">
+                  <Calculator className="w-8 h-8 text-blue-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">AI ROI Calculator</h3>
+                <p className="text-sm text-gray-300">Predict your revenue growth and calculate exact ROI</p>
+              </div>
+            </Card>
+            
+            <Card className="p-6 bg-gray-900/80 border-2 border-purple-400/60 backdrop-blur-sm ring-4 ring-purple-400/40 ring-offset-4 ring-offset-black shadow-2xl shadow-purple-500/40 shadow-blue-500/20 hover:shadow-purple-500/60 transition-all duration-300">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-green-400/60 shadow-lg shadow-green-500/50">
+                  <Zap className="w-8 h-8 text-green-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">AI Implementation Roadmap</h3>
+                <p className="text-sm text-gray-300">Step-by-step guide to automate your sales process</p>
+              </div>
+            </Card>
           </div>
+        </div>
+
+        {/* Next Steps */}
+        <div className="mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center text-white drop-shadow-[0_0_15px_rgba(168,85,247,0.6)]">
+            Your Next Steps to Success
+          </h2>
+          <div className="space-y-4">
+            <div className="flex items-start space-x-4 p-4 bg-gray-900/50 rounded-lg border-2 border-purple-400/60 ring-4 ring-purple-400/40 ring-offset-4 ring-offset-black shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300">
+              <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-1 drop-shadow-[0_0_8px_rgba(74,222,128,0.8)]" />
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-1">Check Your Email</h3>
+                <p className="text-gray-300">You'll receive access to all three resources within the next few minutes</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start space-x-4 p-4 bg-gray-900/50 rounded-lg border-2 border-purple-400/60 ring-4 ring-purple-400/40 ring-offset-4 ring-offset-black shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300">
+              <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-1 drop-shadow-[0_0_8px_rgba(74,222,128,0.8)]" />
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-1">Start with the Playbook</h3>
+                <p className="text-gray-300">Begin implementing your sales funnel system using the step-by-step guide</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start space-x-4 p-4 bg-gray-900/50 rounded-lg border-2 border-purple-400/60 ring-4 ring-purple-400/40 ring-offset-4 ring-offset-black shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300">
+              <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-1 drop-shadow-[0_0_8px_rgba(74,222,128,0.8)]" />
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-1">Follow the AI Roadmap</h3>
+                <p className="text-gray-300">Use the AI implementation guide to automate your entire sales process</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      
+        {/* Final CTA Section */}
+        <div className="text-center mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-white drop-shadow-[0_0_15px_rgba(168,85,247,0.6)]">
+            Ready to Transform Your Fitness Business?
+          </h2>
+          <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
+            You now have everything you need to automate your sales process and scale your business to new heights.
+          </p>
+          <Button 
+            onClick={() => document.getElementById('name')?.focus()}
+            size="lg" 
+            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-4 md:py-5 px-8 md:px-12 text-xl md:text-2xl rounded-xl shadow-2xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-purple-400/80 ring-4 ring-purple-400/50 ring-offset-4 ring-offset-black shadow-purple-500/60 shadow-blue-500/40"
+          >
+            Get Started Today
+          </Button>
         </div>
       </div>
       <Analytics />
