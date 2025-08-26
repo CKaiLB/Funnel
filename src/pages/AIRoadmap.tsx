@@ -22,6 +22,7 @@ declare global {
 
 export default function AIRoadmap() {
   const navigate = useNavigate();
+  const [isCheckoutLoading, setIsCheckoutLoading] = useState(false);
 
   // Scroll to top when page loads
   useEffect(() => {
@@ -73,13 +74,36 @@ export default function AIRoadmap() {
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.data && event.data.type === 'stripe-buy-button:success') {
-        // Redirect to complete system page after successful payment
+        // Payment successful - show success message and redirect to complete system
+        console.log('Payment successful!');
+        setIsCheckoutLoading(false);
         navigate('/complete-system');
       }
     };
 
+    // Listen for Stripe checkout completion
     window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
+    
+    // Also listen for Stripe checkout close events
+    const handleCheckoutClose = () => {
+      console.log('Stripe checkout closed');
+      setIsCheckoutLoading(false);
+    };
+
+    // Listen for checkout initiation
+    const handleCheckoutStart = () => {
+      console.log('Stripe checkout starting');
+      setIsCheckoutLoading(true);
+    };
+
+    window.addEventListener('stripe-buy-button:close', handleCheckoutClose);
+    window.addEventListener('stripe-buy-button:load', handleCheckoutStart);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+      window.removeEventListener('stripe-buy-button:close', handleCheckoutClose);
+      window.removeEventListener('stripe-buy-button:load', handleCheckoutStart);
+    };
   }, [navigate]);
 
   // Load Stripe script
@@ -166,11 +190,18 @@ export default function AIRoadmap() {
                   </div>
                   {/* Stripe Buy Button */}
             <div className="text-center mb-4">
+              {isCheckoutLoading && (
+                <div className="mb-4 p-3 bg-blue-900/50 border border-blue-400/60 rounded-lg">
+                  <p className="text-blue-300 text-sm">Loading checkout in this tab...</p>
+                </div>
+              )}
               <stripe-buy-button
                 buy-button-id="buy_btn_1RxxcAJQvPIbNIWNKFppQnl4"
-                publishable-key="pk_live_51RBNOCJQvPIbNIWNTirqPqobDrS2vACpNiMRrlCGY0j7Q1JBn6HvUSyOAAjb53FfsSuytcJSfGO0NWEuBqX9YdhP00mdfLfS2M"
+                publishable-key="pk_live_51RBNOCJQvPIbNIWNTirqPqobDrS2vACpNIWNKFppQnl4"
+                client-reference-id="ai_roadmap_purchase"
               >
               </stripe-buy-button>
+              <p className="text-xs text-gray-400 mt-2">Checkout opens in this tab • Secure payment processing</p>
             </div>
                 </div>
               </Card>

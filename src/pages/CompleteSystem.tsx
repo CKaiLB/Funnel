@@ -143,7 +143,7 @@ export default function CompleteSystem() {
               <div className="text-center">
                 <div className="flex justify-center mb-6">
                   <img 
-                    src="/lovable-uploads/AIRoadmap.png" 
+                    src="/lovable-uploads/ChatGPT Image Aug 7, 2025, 09_01_35 AM.png" 
                     alt="AI Implementation Roadmap" 
                     className="w-32 h-32 object-contain rounded-lg ring-4 ring-green-400/60 shadow-lg shadow-green-500/50"
                   />
