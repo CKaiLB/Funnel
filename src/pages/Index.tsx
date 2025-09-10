@@ -84,7 +84,7 @@ export default function Index() {
   };
 
   return (
-    <div className="min-h-screen bg-black overflow-x-hidden">
+    <div className="min-h-screen bg-gray-900 overflow-x-hidden">
       {/* Centered Sweep Logo */}
       <div className="flex justify-center pt-8 pb-6">
         <img 
@@ -97,19 +97,19 @@ export default function Index() {
       <div className="px-4 py-6 max-w-4xl mx-auto">
         {/* Hero Section */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full mb-6 shadow-2xl shadow-purple-500/80 ring-4 ring-purple-400/60 ring-offset-4 ring-offset-black">
+          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full mb-6 shadow-2xl shadow-purple-500/80 ring-4 ring-purple-400/60 ring-offset-4 ring-offset-gray-900">
             <BookOpen className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400 bg-clip-text text-transparent leading-tight drop-shadow-[0_0_20px_rgba(168,85,247,0.8)]">
-            The #1 AI Sales System Every Fitness Coach Needs
+          The 7-Figure AI Funnel Blueprint
           </h1>
           <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed">
-            Get your complete sales funnel playbook + AI ROI Calculator to turn conversations into paying clients on autopilot.
+            Get the complete sales funnel playbook + AI Calculator to turn conversations into paying clients.
           </p>
           
           {/* Product Card - Sales Funnel Playbook + AI ROI Calculator */}
           <div className="mb-8">
-            <Card className="p-6 shadow-2xl bg-gray-900/80 border-2 border-purple-400/80 backdrop-blur-sm max-w-md mx-auto ring-4 ring-purple-400/50 ring-offset-4 ring-offset-black shadow-purple-500/50 shadow-blue-500/30">
+            <Card className="p-6 shadow-2xl bg-gray-900/80 border-2 border-purple-400/80 backdrop-blur-sm max-w-md mx-auto shadow-purple-500/50 shadow-blue-500/30">
               <div className="text-center">
                 <div className="flex justify-center mb-6">
                   <img 
@@ -119,7 +119,6 @@ export default function Index() {
                   />
                 </div>
                 <h3 className="text-lg md:text-xl font-bold text-white mb-3">Fitness Sales Funnel Playbook</h3>
-                <p className="text-sm md:text-base text-gray-300 mb-4">Complete system to automate your client booking process</p>
                 
                 {/* FREE Pricing Display */}
                 <div className="flex items-center justify-center space-x-3 mb-4">
@@ -141,7 +140,7 @@ export default function Index() {
           </div>
 
           {/* Social Proof Bar */}
-          <div className="bg-gray-900/80 rounded-xl p-4 shadow-2xl border-2 border-purple-400/60 backdrop-blur-sm ring-4 ring-purple-400/40 ring-offset-4 ring-offset-black shadow-purple-500/40 shadow-blue-500/20">
+          <div className="bg-gray-900/80 rounded-xl p-4 shadow-2xl border-2 border-purple-400/60 backdrop-blur-sm  shadow-purple-500/40 shadow-blue-500/20">
             <p className="text-sm text-gray-300 font-medium">
               🎯 Trusted by coaches growing to $5k–$20k/month
             </p>
@@ -154,7 +153,7 @@ export default function Index() {
             Real Results from Real Coaches
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card className="p-6 bg-gray-900/80 border-2 border-purple-400/60 backdrop-blur-sm ring-4 ring-purple-400/40 ring-offset-4 ring-offset-black shadow-2xl shadow-purple-500/40 shadow-blue-500/20 hover:shadow-purple-500/60 transition-all duration-300">
+            <Card className="p-6 bg-gray-900/80 border-2 border-purple-400/60 backdrop-blur-sm  shadow-2xl shadow-purple-500/40 shadow-blue-500/20 hover:shadow-purple-500/60 transition-all duration-300">
               <div className="text-center">
                 <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-purple-400/60 shadow-lg shadow-purple-500/50">
                   <TrendingUp className="w-8 h-8 text-white" />
@@ -168,14 +167,14 @@ export default function Index() {
                   "Went from 3 clients to 18 clients in 3 months. The funnel handles all my follow-ups automatically. I'm booking calls while I sleep!"
                 </blockquote>
                 <div className="text-center">
-                  <p className="font-semibold text-white">Sarah Martinez</p>
+                  <p className="font-semibold text-white">Sarah</p>
                   <p className="text-sm text-purple-400 drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]">Personal Trainer</p>
                   <p className="text-xs text-gray-400">Revenue: $2k → $12k/month</p>
                 </div>
               </div>
             </Card>
 
-            <Card className="p-6 bg-gray-900/80 border-2 border-purple-400/60 backdrop-blur-sm ring-4 ring-purple-400/40 ring-offset-4 ring-offset-black shadow-2xl shadow-purple-500/40 shadow-green-500/20 hover:shadow-purple-500/60 transition-all duration-300">
+            <Card className="p-6 bg-gray-900/80 border-2 border-purple-400/60 backdrop-blur-sm shadow-2xl shadow-purple-500/40 shadow-green-500/20 hover:shadow-purple-500/60 transition-all duration-300">
               <div className="text-center">
                 <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-green-400/60 shadow-lg shadow-green-500/50">
                   <DollarSign className="w-8 h-8 text-white" />
@@ -189,14 +188,14 @@ export default function Index() {
                   "Revenue increased from $2k to $8k/month. The system books calls while I sleep. Best investment I've ever made in my business."
                 </blockquote>
                 <div className="text-center">
-                  <p className="font-semibold text-white">Mike Rodriguez</p>
+                  <p className="font-semibold text-white">Mike</p>
                   <p className="text-sm text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.6)]">Online Coach</p>
                   <p className="text-xs text-gray-400">Revenue: $2k → $8k/month</p>
                 </div>
               </div>
             </Card>
 
-            <Card className="p-6 bg-gray-900/80 border-2 border-purple-400/60 backdrop-blur-sm ring-4 ring-purple-400/40 ring-offset-4 ring-offset-black shadow-2xl shadow-purple-500/40 shadow-blue-500/20 hover:shadow-purple-500/60 transition-all duration-300">
+            <Card className="p-6 bg-gray-900/80 border-2 border-purple-400/60 backdrop-blur-sm  shadow-2xl shadow-purple-500/40 shadow-blue-500/20 hover:shadow-purple-500/60 transition-all duration-300">
               <div className="text-center">
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-blue-400/60 shadow-lg shadow-blue-500/50">
                   <UserCheck className="w-8 h-8 text-white" />
@@ -210,14 +209,14 @@ export default function Index() {
                   "Client retention went from 60% to 85%. The automated nurturing keeps them engaged and coming back for more programs."
                 </blockquote>
                 <div className="text-center">
-                  <p className="font-semibold text-white">Jennifer Chen</p>
+                  <p className="font-semibold text-white">Jennifer</p>
                   <p className="text-sm text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]">Yoga Instructor</p>
                   <p className="text-xs text-gray-400">Retention: 60% → 85%</p>
                 </div>
               </div>
             </Card>
 
-            <Card className="p-6 bg-gray-900/80 border-2 border-purple-400/60 backdrop-blur-sm ring-4 ring-purple-400/40 ring-offset-4 ring-offset-black shadow-2xl shadow-purple-500/40 shadow-orange-500/20 hover:shadow-purple-500/60 transition-all duration-300">
+            <Card className="p-6 bg-gray-900/80 border-2 border-purple-400/60 backdrop-blur-sm  shadow-2xl shadow-purple-500/40 shadow-orange-500/20 hover:shadow-purple-500/60 transition-all duration-300">
               <div className="text-center">
                 <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-orange-400/60 shadow-lg shadow-orange-500/50">
                   <Clock className="w-8 h-8 text-white" />
@@ -231,7 +230,7 @@ export default function Index() {
                   "I was spending 20+ hours weekly on client communication. Now it's all automated and I'm booking more clients than ever."
                 </blockquote>
                 <div className="text-center">
-                  <p className="font-semibold text-white">Alex Thompson</p>
+                  <p className="font-semibold text-white">Alex</p>
                   <p className="text-sm text-orange-400 drop-shadow-[0_0_8px_rgba(251,146,60,0.6)]">Fitness Coach</p>
                   <p className="text-xs text-gray-400">Time Saved: 20hrs/week</p>
                 </div>
@@ -246,7 +245,7 @@ export default function Index() {
             Why Most Coaches Struggle to Book Clients Consistently
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="p-6 bg-gray-900/80 border-2 border-purple-400/60 backdrop-blur-sm ring-4 ring-purple-400/40 ring-offset-4 ring-offset-black shadow-2xl shadow-purple-500/40 shadow-red-500/20 hover:shadow-purple-500/60 transition-all duration-300">
+            <Card className="p-6 bg-gray-900/80 border-2 border-purple-400/60 backdrop-blur-sm  shadow-2xl shadow-purple-500/40 shadow-red-500/20 hover:shadow-purple-500/60 transition-all duration-300">
               <div className="text-center">
                 <div className="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-red-400/60 shadow-lg shadow-red-500/50">
                   <X className="w-6 h-6 text-red-400" />
@@ -256,7 +255,7 @@ export default function Index() {
               </div>
             </Card>
             
-            <Card className="p-6 bg-gray-900/80 border-2 border-purple-400/60 backdrop-blur-sm ring-4 ring-purple-400/40 ring-offset-4 ring-offset-black shadow-2xl shadow-purple-500/40 shadow-orange-500/20 hover:shadow-purple-500/60 transition-all duration-300">
+            <Card className="p-6 bg-gray-900/80 border-2 border-purple-400/60 backdrop-blur-sm  shadow-2xl shadow-purple-500/40 shadow-orange-500/20 hover:shadow-purple-500/60 transition-all duration-300">
               <div className="text-center">
                 <div className="w-12 h-12 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-orange-400/60 shadow-lg shadow-orange-500/50">
                   <Target className="w-6 h-6 text-orange-400" />
@@ -266,7 +265,7 @@ export default function Index() {
               </div>
             </Card>
             
-            <Card className="p-6 bg-gray-900/80 border-2 border-purple-400/60 backdrop-blur-sm ring-4 ring-purple-400/40 ring-offset-4 ring-offset-black shadow-2xl shadow-purple-500/40 shadow-blue-500/20 hover:shadow-purple-500/60 transition-all duration-300">
+            <Card className="p-6 bg-gray-900/80 border-2 border-purple-400/60 backdrop-blur-sm  shadow-2xl shadow-purple-500/40 shadow-blue-500/20 hover:shadow-purple-500/60 transition-all duration-300">
               <div className="text-center">
                 <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-blue-400/60 shadow-lg shadow-blue-500/50">
                   <Clock className="w-6 h-6 text-blue-400" />
@@ -284,7 +283,7 @@ export default function Index() {
             Here's What You'll Get
           </h2>
           <div className="space-y-4">
-            <div className="flex items-start space-x-4 p-4 bg-gray-900/50 rounded-lg border-2 border-purple-400/60 ring-4 ring-purple-400/40 ring-offset-4 ring-offset-black shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300">
+            <div className="flex items-start space-x-4 p-4 bg-gray-900/50 rounded-lg border-2 border-purple-400/60  shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300">
               <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-1 drop-shadow-[0_0_8px_rgba(74,222,128,0.8)]" />
               <div>
                 <h3 className="text-lg font-semibold text-white mb-1">Complete Sales Funnel System</h3>
@@ -292,7 +291,7 @@ export default function Index() {
               </div>
             </div>
             
-            <div className="flex items-start space-x-4 p-4 bg-gray-900/50 rounded-lg border-2 border-purple-400/60 ring-4 ring-purple-400/40 ring-offset-4 ring-offset-black shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300">
+            <div className="flex items-start space-x-4 p-4 bg-gray-900/50 rounded-lg border-2 border-purple-400/60  shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300">
               <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-1 drop-shadow-[0_0_8px_rgba(74,222,128,0.8)]" />
               <div>
                 <h3 className="text-lg font-semibold text-white mb-1">AI ROI Calculator</h3>
@@ -300,7 +299,7 @@ export default function Index() {
               </div>
             </div>
             
-            <div className="flex items-start space-x-4 p-4 bg-gray-900/50 rounded-lg border-2 border-purple-400/60 ring-4 ring-purple-400/40 ring-offset-4 ring-offset-black shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300">
+            <div className="flex items-start space-x-4 p-4 bg-gray-900/50 rounded-lg border-2 border-purple-400/60  shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300">
               <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0 mt-1 drop-shadow-[0_0_8px_rgba(74,222,128,0.8)]" />
               <div>
                 <h3 className="text-lg font-semibold text-white mb-1">Proven Conversion Scripts</h3>
@@ -322,7 +321,7 @@ export default function Index() {
           <Button 
             onClick={handleFreeDownload}
             size="lg" 
-            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-4 px-8 text-xl rounded-xl shadow-2xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-purple-400/80 ring-4 ring-purple-400/50 ring-offset-4 ring-offset-black shadow-purple-500/60 shadow-blue-500/40"
+            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-4 px-8 text-xl rounded-xl shadow-2xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-purple-400/80 shadow-purple-500/60 shadow-blue-500/40"
           >
             Get Your Free Playbook
           </Button>
@@ -332,7 +331,7 @@ export default function Index() {
       {/* Upsell Modal */}
       {showUpsellModal && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-900 rounded-2xl p-6 md:p-8 lg:p-12 max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto border-2 border-purple-400/80 ring-4 ring-purple-400/50 ring-offset-4 ring-offset-black shadow-2xl shadow-purple-500/60 shadow-blue-500/40">
+          <div className="bg-gray-900 rounded-2xl p-6 md:p-8 lg:p-12 max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto border-2 border-purple-400/80 shadow-2xl shadow-purple-500/60 shadow-blue-500/40">
             <div className="text-center">
               <div className="flex justify-end mb-4">
                 <button
@@ -344,11 +343,11 @@ export default function Index() {
               </div>
               
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 drop-shadow-[0_0_20px_rgba(168,85,247,0.6)]">
-                Want to Scale Even Faster?
+                Want a Closer Look at AI?
               </h2>
               
               <p className="text-base md:text-lg lg:text-xl text-gray-300 mb-6 md:mb-8 leading-relaxed">
-                For only <strong className="text-purple-400 drop-shadow-[0_0_10px_rgba(168,85,247,0.8)]">$5</strong> also get the AI implementation roadmap for fitness businesses - a complete guide that shows you exactly how to automate your entire sales process.
+                For only <strong className="text-purple-400 drop-shadow-[0_0_10px_rgba(168,85,247,0.8)]">$5</strong> also get the AI adoption roadmap for online coaches - a complete guide to building AI automations into your workflows.
               </p>
               
               {/* Layered Book Images */}
@@ -376,8 +375,7 @@ export default function Index() {
               
               {/* Pricing and Discount */}
               <div className="text-center mb-6 md:mb-8">
-                <div className="text-4xl md:text-5xl lg:text-6xl font-bold text-purple-400 mb-2 drop-shadow-[0_0_20px_rgba(168,85,247,0.8)]">$5</div>
-                <div className="text-lg md:text-xl lg:text-2xl font-semibold text-white mb-2 md:mb-3">AI Roadmap for Fitness Businesses</div>
+                <div className="text-lg md:text-xl lg:text-2xl font-semibold text-white mb-2 md:mb-3">AI Adoption Roadmap for Coaches</div>
                 <div className="text-base md:text-lg text-gray-300 mb-2">Limited Time Offer</div>
                 <div className="text-sm text-gray-400 line-through">Regular Price: $25</div>
                 <div className="text-sm text-green-400 font-semibold drop-shadow-[0_0_10px_rgba(74,222,128,0.8)]">Save $20 Today!</div>
@@ -388,7 +386,7 @@ export default function Index() {
                 <Button 
                   onClick={handleUpsellInterest}
                   size="lg" 
-                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 font-bold py-3 md:py-4 px-6 md:px-8 text-lg md:text-xl shadow-2xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-purple-400/80 ring-4 ring-purple-400/50 ring-offset-4 ring-offset-black shadow-purple-500/60 shadow-blue-500/40"
+                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 font-bold py-3 md:py-4 px-6 md:px-8 text-lg md:text-xl shadow-2xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-purple-400/80 shadow-purple-500/60 shadow-blue-500/40"
                 >
                   I'm Interested - $5
                 </Button>
@@ -396,7 +394,7 @@ export default function Index() {
                   onClick={handleUpsellDecline}
                   variant="outline" 
                   size="lg" 
-                  className="border-2 border-gray-600 text-gray-300 hover:bg-gray-800 font-semibold py-3 md:py-4 px-6 md:px-8 text-lg md:text-xl ring-4 ring-gray-500/30 ring-offset-4 ring-offset-black shadow-lg shadow-gray-500/20"
+                  className="border-2 border-gray-600 text-gray-300 hover:bg-gray-800 font-semibold py-3 md:py-4 px-6 md:px-8 text-lg md:text-xl shadow-lg shadow-gray-500/20"
                 >
                   No Thanks
                 </Button>

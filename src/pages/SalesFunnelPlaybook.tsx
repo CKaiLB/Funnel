@@ -137,33 +137,6 @@ export default function SalesFunnelPlaybook() {
           <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed">
             Complete system to automate your client booking process + AI ROI Calculator to predict your revenue growth.
           </p>
-          
-          {/* Product Card - AI ROI Calculator + Playbook */}
-          <div className="mb-8">
-            <Card className="p-6 shadow-2xl bg-gray-900/80 border-2 border-purple-400/80 backdrop-blur-sm max-w-md mx-auto ring-4 ring-purple-400/50 ring-offset-4 ring-offset-black shadow-purple-500/50 shadow-blue-500/30">
-              <div className="text-center">
-                <div className="flex justify-center space-x-6 mb-6">
-                  <img 
-                    src="/lovable-uploads/SalesFunnel.png" 
-                    alt="Sales Funnel Playbook" 
-                    className="w-24 h-24 object-contain rounded-lg ring-4 ring-purple-400/60 shadow-lg shadow-purple-500/50"
-                  />
-                  <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-blue-600 rounded-lg flex items-center justify-center ring-4 ring-blue-400/60 shadow-lg shadow-blue-500/50">
-                    <Calculator className="w-10 h-10 text-white" />
-                  </div>
-                </div>
-                <h3 className="text-xl font-bold text-white mb-3">Complete System + AI ROI Calculator</h3>
-                <p className="text-sm text-gray-300 mb-4">Sales funnel playbook + AI-powered ROI calculator to predict your revenue growth</p>
-                
-                {/* FREE Pricing Display */}
-                <div className="flex items-center justify-center space-x-3 mb-4">
-                  <span className="text-2xl font-bold text-green-400 drop-shadow-[0_0_10px_rgba(74,222,128,0.8)]">FREE</span>
-                  <span className="text-sm text-gray-400 line-through">$197</span>
-                  <span className="bg-green-900/50 text-green-400 px-2 py-1 rounded-full text-xs font-semibold border border-green-500/50 ring-1 ring-green-400/30">Limited Time</span>
-                </div>
-              </div>
-            </Card>
-          </div>
         </div>
 
         {/* Opt-In Form Section */}
@@ -171,7 +144,9 @@ export default function SalesFunnelPlaybook() {
           <Card className="p-6 md:p-8 shadow-2xl bg-gray-900/80 border-2 border-purple-500/30 backdrop-blur-sm ring-4 ring-purple-400/20 ring-offset-4 ring-offset-black shadow-purple-500/20">
             <div className="text-center mb-6">
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 drop-shadow-[0_0_15px_rgba(168,85,247,0.6)]">
-                Get Instant Access
+                Get {" "}
+                <span className="text-4xl font-bold text-green-400 drop-shadow-[0_0_10px_rgba(74,222,128,0.8)]">FREE</span>
+                {" "}Instant Access
               </h2>
               <p className="text-lg text-gray-300">
                 Enter your details below to receive your free playbook and AI ROI calculator instantly.
@@ -264,7 +239,7 @@ export default function SalesFunnelPlaybook() {
                   <blockquote className="text-base md:text-lg text-gray-300 italic mb-4">
                     "I was spending 20+ hours weekly on client communication. Now it's all automated and I'm booking more clients than ever. This system pays for itself."
                   </blockquote>
-                  <p className="text-sm md:text-base font-semibold text-white">- Alex Thompson, Fitness Coach</p>
+                  <p className="text-sm md:text-base font-semibold text-white">- Alex, Fitness Coach</p>
                 </div>
               </div>
             </Card>
@@ -285,7 +260,7 @@ export default function SalesFunnelPlaybook() {
                   <blockquote className="text-base md:text-lg text-gray-300 italic mb-4">
                     "The templates and scripts are gold. I've doubled my conversion rate and cut my work time in half. Wish I had this years ago."
                   </blockquote>
-                  <p className="text-sm md:text-base font-semibold text-white">- Maria Santos, Online Trainer</p>
+                  <p className="text-sm md:text-base font-semibold text-white">- Maria, Online Trainer</p>
                 </div>
               </div>
             </Card>
@@ -347,7 +322,7 @@ export default function SalesFunnelPlaybook() {
                 <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-purple-400/60 shadow-lg shadow-purple-500/50">
                   <TrendingUp className="w-8 h-10 md:w-10 md:h-12 text-white" />
                 </div>
-                <h3 className="text-lg md:text-xl font-bold text-white mb-2">Sarah Martinez</h3>
+                <h3 className="text-lg md:text-xl font-bold text-white mb-2">Sarah</h3>
                 <p className="text-sm md:text-base text-gray-300 mb-3">Personal Trainer</p>
                 <p className="text-sm md:text-base text-gray-300 leading-relaxed">
                   "Went from 3 clients to 18 clients in 3 months. The funnel handles all my follow-ups automatically."
@@ -360,7 +335,7 @@ export default function SalesFunnelPlaybook() {
                 <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-green-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-green-400/60 shadow-lg shadow-green-500/50">
                   <DollarSign className="w-8 h-10 md:w-10 md:h-12 text-white" />
                 </div>
-                <h3 className="text-lg md:text-xl font-bold text-white mb-2">Mike Rodriguez</h3>
+                <h3 className="text-lg md:text-xl font-bold text-white mb-2">Mike</h3>
                 <p className="text-sm md:text-base text-gray-300 mb-3">Online Coach</p>
                 <p className="text-sm md:text-base text-gray-300 leading-relaxed">
                   "Revenue increased from $2k to $8k/month. The system books calls while I sleep."
@@ -373,7 +348,7 @@ export default function SalesFunnelPlaybook() {
                 <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-purple-400/60 shadow-lg shadow-purple-500/50">
                   <UserCheck className="w-8 h-10 md:w-10 md:h-12 text-white" />
                 </div>
-                <h3 className="text-lg md:text-xl font-bold text-white mb-2">Jennifer Chen</h3>
+                <h3 className="text-lg md:text-xl font-bold text-white mb-2">Jennifer</h3>
                 <p className="text-sm md:text-base text-gray-300 mb-3">Yoga Instructor</p>
                 <p className="text-sm md:text-base text-gray-300 leading-relaxed">
                   "Client retention went from 60% to 85%. The automated nurturing keeps them engaged."
