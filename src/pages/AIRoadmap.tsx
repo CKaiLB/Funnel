@@ -197,8 +197,7 @@ export default function AIRoadmap() {
               )}
               <stripe-buy-button
                 buy-button-id="buy_btn_1RxxcAJQvPIbNIWNKFppQnl4"
-                publishable-key="pk_live_51RBNOCJQvPIbNIWNTirqPqobDrS2vACpNIWNKFppQnl4"
-                client-reference-id="ai_roadmap_purchase"
+                publishable-key="pk_live_51RBNOCJQvPIbNIWNTirqPqobDrS2vACpNiMRrlCGY0j7Q1JBn6HvUSyOAAjb53FfsSuytcJSfGO0NWEuBqX9YdhP00mdfLfS2M"
               >
               </stripe-buy-button>
               <p className="text-xs text-gray-400 mt-2">Checkout opens in this tab • Secure payment processing</p>
