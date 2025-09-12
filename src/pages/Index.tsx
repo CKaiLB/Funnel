@@ -101,16 +101,45 @@ export default function Index() {
             <BookOpen className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400 bg-clip-text text-transparent leading-tight drop-shadow-[0_0_20px_rgba(168,85,247,0.8)]">
-          The 7-Figure AI Funnel Blueprint
+          The Complete 7-Figure AI Funnel Blueprint
           </h1>
-          <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed">
-            Get the complete sales funnel playbook + AI Calculator to turn conversations into paying clients.
-          </p>
+          
+          {/* Scroll Down Animation - 3 Arrows */}
+          <div className="flex justify-center items-center space-x-2 mb-8">
+            <div className="animate-bounce" style={{ animationDelay: '0ms' }}>
+              <svg 
+                className="w-16 h-16 text-purple-400 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]" 
+                fill="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 16l-6-6h12l-6 6z"/>
+              </svg>
+            </div>
+            <div className="animate-bounce" style={{ animationDelay: '150ms' }}>
+              <svg 
+                className="w-16 h-16 text-purple-400 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]" 
+                fill="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 16l-6-6h12l-6 6z"/>
+              </svg>
+            </div>
+            <div className="animate-bounce" style={{ animationDelay: '300ms' }}>
+              <svg 
+                className="w-16 h-16 text-purple-400 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]" 
+                fill="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 16l-6-6h12l-6 6z"/>
+              </svg>
+            </div>
+          </div>
           
           {/* Product Card - Sales Funnel Playbook + AI ROI Calculator */}
           <div className="mb-8">
             <Card className="p-6 shadow-2xl bg-gray-900/80 border-2 border-purple-400/80 backdrop-blur-sm max-w-md mx-auto shadow-purple-500/50 shadow-blue-500/30">
               <div className="text-center">
+              <h3 className="text-lg md:text-4xl font-bold text-white mb-3">Fitness Sales Funnel Playbook</h3>
                 <div className="flex justify-center mb-6">
                   <img 
                     src="/lovable-uploads/SalesFunnel.png" 
@@ -118,7 +147,6 @@ export default function Index() {
                     className="w-40 h-40 object-contain rounded-lg ring-4 ring-purple-400/60 shadow-lg shadow-purple-500/50"
                   />
                 </div>
-                <h3 className="text-lg md:text-xl font-bold text-white mb-3">Fitness Sales Funnel Playbook</h3>
                 
                 {/* FREE Pricing Display */}
                 <div className="flex items-center justify-center space-x-3 mb-4">
