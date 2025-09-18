@@ -189,61 +189,6 @@ export default function Congratulations() {
           </Card>
         </div>
 
-        {/* VSL Video - Revealed After Unlock */}
-        {showVideo && (
-          <div className="mb-8 sm:mb-10 md:mb-12 lg:mb-16 animate-fade-in-up">
-            <Card className="p-4 sm:p-6 md:p-8 shadow-xl bg-white border-2 border-blue-200">
-              <div className="text-center">
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">
-                  🎬 Watch Your Exclusive Bonus Video
-                </h2>
-                <p className="text-base sm:text-lg md:text-lg text-gray-600 mb-6 sm:mb-8 px-2">
-                  Discover the complete system that will transform your fitness business.
-                </p>
-                
-                {/* Video Container */}
-                <div className="relative max-w-2xl mx-auto">
-                  <video
-                    ref={videoRef}
-                    className="w-full rounded-xl shadow-lg"
-                    onLoadedData={handleVideoLoad}
-                    playsInline
-                    preload="metadata"
-                  >
-                    <source src="/VSL.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                  
-                  {/* Video Controls Overlay */}
-                  <div className="absolute bottom-4 left-4 right-4 flex items-center justify-center space-x-4">
-                    <Button
-                      onClick={togglePlayPause}
-                      size="sm"
-                      variant="secondary"
-                      className="bg-black/70 hover:bg-black/80 text-white border-0 backdrop-blur-sm"
-                    >
-                      {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                    </Button>
-                    
-                    <Button
-                      onClick={toggleMute}
-                      size="sm"
-                      variant="secondary"
-                      className="bg-black/70 hover:bg-black/80 text-white border-0 backdrop-blur-sm"
-                    >
-                      {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-                    </Button>
-                  </div>
-                </div>
-                
-                <p className="text-xs sm:text-sm text-gray-500 mt-4">
-                  💡 <strong>Pro Tip:</strong> Watch the entire video to see what the call's all about
-                </p>
-              </div>
-            </Card>
-          </div>
-        )}
-
         {/* Hidden Invitation - Revealed After Video */}
         {showVideo && (
           <div className="animate-fade-in-up">
@@ -267,7 +212,7 @@ export default function Congratulations() {
                     🚀 Work Directly with the Sweep Team
                   </h3>
                   <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-4 sm:mb-6">
-                    Get a <span className="font-bold text-green-600">FREE Sales Systems Consultation</span> worth $497
+                    Get a <span className="font-bold text-green-600">FREE Sales Systems Consultation</span>
                   </p>
                   
                   {/* Benefits - Mobile Optimized Grid */}
@@ -328,6 +273,61 @@ export default function Congratulations() {
                     <span>Instant Booking</span>
                   </div>
                 </div>
+              </div>
+            </Card>
+          </div>
+        )}
+
+               {/* VSL Video - Revealed After Unlock */}
+               {showVideo && (
+          <div className="mb-8 sm:mb-10 md:mb-12 lg:mb-16 animate-fade-in-up">
+            <Card className="p-4 sm:p-6 md:p-8 shadow-xl bg-white border-2 border-blue-200">
+              <div className="text-center">
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">
+                  🎬 Watch Your Exclusive Bonus Video
+                </h2>
+                <p className="text-base sm:text-lg md:text-lg text-gray-600 mb-6 sm:mb-8 px-2">
+                  Discover the complete system that will transform your fitness business.
+                </p>
+                
+                {/* Video Container */}
+                <div className="relative max-w-2xl mx-auto">
+                  <video
+                    ref={videoRef}
+                    className="w-full rounded-xl shadow-lg"
+                    onLoadedData={handleVideoLoad}
+                    playsInline
+                    preload="metadata"
+                  >
+                    <source src="/VSL.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                  
+                  {/* Video Controls Overlay */}
+                  <div className="absolute bottom-4 left-4 right-4 flex items-center justify-center space-x-4">
+                    <Button
+                      onClick={togglePlayPause}
+                      size="sm"
+                      variant="secondary"
+                      className="bg-black/70 hover:bg-black/80 text-white border-0 backdrop-blur-sm"
+                    >
+                      {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                    </Button>
+                    
+                    <Button
+                      onClick={toggleMute}
+                      size="sm"
+                      variant="secondary"
+                      className="bg-black/70 hover:bg-black/80 text-white border-0 backdrop-blur-sm"
+                    >
+                      {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                    </Button>
+                  </div>
+                </div>
+                
+                <p className="text-xs sm:text-sm text-gray-500 mt-4">
+                  💡 <strong>Pro Tip:</strong> Watch the entire video to see what the call's all about
+                </p>
               </div>
             </Card>
           </div>

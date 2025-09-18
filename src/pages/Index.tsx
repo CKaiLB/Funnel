@@ -71,8 +71,9 @@ export default function Index() {
   };
 
   const handleFreeDownload = () => {
-    setShowUpsellModal(true);
-    // Scroll to top when modal opens
+    // Navigate directly to sales funnel playbook page
+    navigate("/sales-funnel-playbook");
+    // Scroll to top when navigating
     window.scrollTo(0, 0);
   };
 
