@@ -4,9 +4,10 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
-import { BookOpen, CheckCircle, DollarSign, Clock, UserCheck, X, Brain, Star, TrendingUp, Zap, Target, ArrowRight, Calculator, BarChart3, TrendingUp as TrendingUpIcon, Users as UsersIcon, Zap as ZapIcon, CheckCircle as CheckCircleIcon, ArrowRight as ArrowRightIcon, Download as DownloadIcon, BookOpen as BookOpenIcon, Target as TargetIcon, BarChart3 as BarChart3Icon, Calendar as CalendarIcon, Clock as ClockIcon, Award as AwardIcon, Shield as ShieldIcon, Globe as GlobeIcon, Smartphone as SmartphoneIcon, Monitor as MonitorIcon, Cloud as CloudIcon, Database as DatabaseIcon, Cpu as CpuIcon, BarChart as BarChartIcon, PieChart as PieChartIcon, LineChart as LineChartIcon, AreaChart as AreaChartIcon, Activity as ActivityIcon, Quote } from "lucide-react";
+import { BookOpen, CheckCircle, DollarSign, Clock, UserCheck, X, Brain, Star, TrendingUp, Zap, Target, ArrowRight, Calculator, BarChart3, TrendingUp as TrendingUpIcon, Users as UsersIcon, Zap as ZapIcon, CheckCircle as CheckCircleIcon, ArrowRight as ArrowRightIcon, Download as DownloadIcon, BookOpen as BookOpenIcon, Target as TargetIcon, BarChart3 as BarChart3Icon, Calendar as CalendarIcon, Clock as ClockIcon, Award as AwardIcon, Shield as ShieldIcon, Globe as GlobeIcon, Smartphone as SmartphoneIcon, Monitor as MonitorIcon, Cloud as CloudIcon, Database as DatabaseIcon, Cpu as CpuIcon, BarChart as BarChartIcon, PieChart as PieChartIcon, LineChart as LineChartIcon, AreaChart as AreaChartIcon, Activity as ActivityIcon, Quote, ChevronDown, ChevronUp } from "lucide-react";
 import { Analytics } from "@vercel/analytics/react";
 import { addEmailToCollection } from "@/lib/firebase";
 import { sendWelcomeEmail } from "@/lib/email";
@@ -240,111 +241,127 @@ export default function Index() {
       </div>
 
       <div className="px-4 py-6 max-w-4xl mx-auto">
-        {/* Hero Section */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full mb-6 shadow-2xl shadow-purple-500/80 ring-4 ring-purple-400/60 ring-offset-4 ring-offset-gray-900">
-            <BookOpen className="w-10 h-10 text-white" />
-          </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400 bg-clip-text text-transparent leading-tight drop-shadow-[0_0_20px_rgba(168,85,247,0.8)]">
-          The Complete 7-Figure AI Funnel Blueprint
+        {/* Hero Section - Product Layout */}
+        <div className="mb-12">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 text-center bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400 bg-clip-text text-transparent leading-tight drop-shadow-[0_0_20px_rgba(168,85,247,0.8)]">
+            The Complete 7-Figure AI Funnel Blueprint
           </h1>
           
-          {/* Scroll Down Animation - 3 Arrows */}
-          <div className="flex justify-center items-center space-x-2 mb-4">
-            <div className="animate-bounce" style={{ animationDelay: '0ms' }}>
-              <svg 
-                className="w-16 h-16 text-purple-400 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]" 
-                fill="currentColor" 
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 16l-6-6h12l-6 6z"/>
-              </svg>
+          {/* Main Product Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-12">
+            {/* Product Image - First on Mobile, Left Side on Desktop */}
+            <div className="flex justify-center lg:justify-end order-1 lg:order-1">
+              <div className="relative">
+                <img 
+                  src="/playbook.png" 
+                  alt="AI Funnel Playbook" 
+                  className="w-80 h-80 md:w-96 md:h-96 lg:w-100 lg:h-100 object-contain rounded-2xl ring-4 ring-purple-400/60 shadow-2xl shadow-purple-500/50"
+                />
+                {/* Decorative elements like in the image */}
+                <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-full blur-xl"></div>
+                <div className="absolute -top-4 -left-4 w-16 h-16 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-lg"></div>
+              </div>
             </div>
-            <div className="animate-bounce" style={{ animationDelay: '150ms' }}>
-              <svg 
-                className="w-16 h-16 text-purple-400 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]" 
-                fill="currentColor" 
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 16l-6-6h12l-6 6z"/>
-              </svg>
-            </div>
-            <div className="animate-bounce" style={{ animationDelay: '300ms' }}>
-              <svg 
-                className="w-16 h-16 text-purple-400 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]" 
-                fill="currentColor" 
-                viewBox="0 0 24 24"
-              >
-                <path d="M12 16l-6-6h12l-6 6z"/>
-              </svg>
-            </div>
-          </div>
-          
-          {/* Product Card - Sales Funnel Playbook + AI ROI Calculator */}
-          <div className="mb-8">
-            <Card className="p-6 shadow-2xl bg-gray-900/80 border-2 border-purple-400/80 backdrop-blur-sm max-w-md mx-auto shadow-purple-500/50 shadow-blue-500/30">
-              <div className="text-center">
-              <h3 className="text-lg md:text-4xl font-bold text-white mb-3 pb-6">AI Funnel Playbook</h3>
-          {/* Countdown Timer */}
-          <div className="text-center mb-8">
-            <p className="text-sm text-gray-400 mt-2 pb-4">
-              {showStripeButton ? "Time's up! Complete your purchase now." : "Free access expires in:"}
-            </p>
-            <div className="inline-flex items-center justify-center space-x-2 bg-red-900/50 border-2 border-red-400/60 rounded-lg px-4 py-2 shadow-lg shadow-red-500/30">
-              <Clock className="w-5 h-5 text-red-400" />
-              <span className="text-red-400 font-bold text-lg">
-                Limited Time: {formatTime(timeLeft)}
-              </span>
-            </div>
-          </div>
-                <div className="flex justify-center mb-6">
-                  <img 
-                    src="/lovable-uploads/SalesFunnel.png" 
-                    alt="Sales Funnel Playbook" 
-                    className="w-40 h-40 object-contain rounded-lg ring-4 ring-purple-400/60 shadow-lg shadow-purple-500/50"
-                  />
+
+            {/* Product Details - Second on Mobile, Right Side on Desktop */}
+            <div className="text-center lg:text-left order-2 lg:order-2">
+              <div className="inline-block bg-gradient-to-r from-purple-500/20 to-blue-500/20 text-purple-400 px-4 py-2 rounded-full text-sm font-semibold mb-4 border border-purple-400/30 shadow-lg shadow-purple-500/20">
+                Online Playbook
+              </div>
+              
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-2 drop-shadow-[0_0_15px_rgba(168,85,247,0.6)]">
+                AI FUNNEL PLAYBOOK
+              </h2>
+              <p className="text-xl md:text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent mb-2 drop-shadow-[0_0_10px_rgba(168,85,247,0.8)]">
+                CLOSE CLIENTS ON AUTOPILOT
+              </p>
+              <p className="text-gray-300 mb-6">By Sweep AI</p>
+              
+              {/* Pricing */}
+              <div className="flex items-center justify-center lg:justify-start space-x-4 mb-6">
+                <span className="text-lg text-gray-400 line-through">$97</span>
+                <span className="text-5xl md:text-6xl font-black bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(74,222,128,0.8)] animate-pulse">FREE</span>
+                <span className="bg-gradient-to-r from-green-400 to-blue-400 text-white px-4 py-2 rounded-full text-sm font-bold border-2 border-green-400/50 shadow-2xl shadow-green-500/30">
+                  Limited Time
+                </span>
+              </div>
+
+              {/* Countdown Timer */}
+              <div className="mb-6">
+                <p className="text-sm text-gray-400 mb-2">
+                  {showStripeButton ? "Time's up! Complete your purchase now." : "Free access expires in:"}
+                </p>
+                <div className="inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border-2 border-purple-400/60 rounded-lg px-4 py-2 shadow-lg shadow-purple-500/30">
+                  <Clock className="w-5 h-5 text-purple-400" />
+                  <span className="text-purple-400 font-bold text-lg drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]">
+                    {formatTime(timeLeft)}
+                  </span>
                 </div>
-                
-                {/* FREE Pricing Display */}
-                <div className="flex items-center justify-center space-x-3 mb-4">
-                  <span className="text-2xl md:text-3xl font-bold text-green-400 drop-shadow-[0_0_10px_rgba(74,222,128,0.8)]">FREE</span>
-                  {/* <span className="text-sm md:text-base text-gray-400 line-through">$97</span> */}
-                  <span className="bg-green-900/50 text-green-400 px-2 py-1 rounded-full text-xs md:text-sm font-semibold border border-green-400/50 ring-1 ring-green-400/30">Limited Time</span>
+              </div>
+
+              {/* CTA Button */}
+              {showStripeButton ? (
+                <div className="text-center lg:text-left">
+                  {isCheckoutLoading && (
+                    <div className="mb-4 p-3 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-400/60 rounded-lg">
+                      <p className="text-purple-300 text-sm">Loading checkout...</p>
+                    </div>
+                  )}
+                  <stripe-buy-button
+                    buy-button-id="buy_btn_1RxxcAJQvPIbNIWNKFppQnl4"
+                    publishable-key="pk_live_51RBNOCJQvPIbNIWNTirqPqobDrS2vACpNiMRrlCGY0j7Q1JBn6HvUSyOAAjb53FfsSuytcJSfGO0NWEuBqX9YdhP00mdfLfS2M"
+                  >
+                  </stripe-buy-button>
+                  <p className="text-xs text-gray-400 mt-2">Secure payment processing</p>
                 </div>
-                
-                {showStripeButton ? (
-                  <div className="text-center">
-                    {isCheckoutLoading && (
-                      <div className="mb-4 p-3 bg-blue-900/50 border border-blue-400/60 rounded-lg">
-                        <p className="text-blue-300 text-sm">Loading checkout...</p>
-                      </div>
-                    )}
-                    <stripe-buy-button
-                      buy-button-id="buy_btn_1RxxcAJQvPIbNIWNKFppQnl4"
-                      publishable-key="pk_live_51RBNOCJQvPIbNIWNTirqPqobDrS2vACpNiMRrlCGY0j7Q1JBn6HvUSyOAAjb53FfsSuytcJSfGO0NWEuBqX9YdhP00mdfLfS2M"
-                    >
-                    </stripe-buy-button>
-                    <p className="text-xs text-gray-400 mt-2">Secure payment processing</p>
-                  </div>
-                ) : (
+              ) : (
+                <div className="text-center lg:text-left">
                   <Button 
                     onClick={handleFreeDownload}
                     size="lg" 
-                    className="w-full md:w-auto bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-bold py-3 md:py-4 px-6 md:px-8 text-lg md:text-2xl rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-black py-4 px-6 md:py-6 md:px-12 text-2xl md:text-2xl lg:text-3xl rounded-2xl shadow-2xl hover:shadow-2xl transform hover:scale-110 transition-all duration-300 w-full lg:w-auto border-4 border-purple-400/80 shadow-purple-500/60"
                   >
-                    Get Access
+                    <ArrowRight className="w-6 h-6 md:w-8 md:h-8 lg:w-10 lg:h-10 mr-2 md:mr-3" />
+                    <span className="hidden sm:inline">GET ACCESS NOW</span>
+                    <span className="sm:hidden">GET ACCESS</span>
                   </Button>
-                )}
-                <p className="text-xs md:text-sm text-gray-400 mt-3">No credit card required • Instant access</p>
-              </div>
-            </Card>
+                  <p className="text-xs md:text-sm text-gray-400 mt-3 font-semibold">No credit card required • Instant access</p>
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Social Proof Bar */}
-          <div className="bg-gray-900/80 rounded-xl p-4 shadow-2xl border-2 border-purple-400/60 backdrop-blur-sm  shadow-purple-500/40 shadow-blue-500/20">
-            <p className="text-sm text-gray-300 font-medium">
-              🎯 Trusted by coaches growing to $5k–$20k/month
-            </p>
+          {/* What You'll Learn Section */}
+          <div className="max-w-4xl mx-auto">
+            <h3 className="text-xl md:text-2xl font-bold text-white mb-6 text-center border-b border-purple-400/30 pb-2 drop-shadow-[0_0_10px_rgba(168,85,247,0.6)]">
+              What You'll Learn Inside the Playbook
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+              <div className="flex items-start space-x-3 p-4 bg-gray-900/50 rounded-lg border border-purple-400/20 hover:border-purple-400/40 transition-all duration-300">
+                <CheckCircle className="w-5 h-5 text-purple-400 flex-shrink-0 mt-1 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
+                <p className="text-gray-300">How to install systems that close leads 24/7 and keep those that convert</p>
+              </div>
+              <div className="flex items-start space-x-3 p-4 bg-gray-900/50 rounded-lg border border-purple-400/20 hover:border-purple-400/40 transition-all duration-300">
+                <CheckCircle className="w-5 h-5 text-purple-400 flex-shrink-0 mt-1 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
+                <p className="text-gray-300">The 3 trust-building strategies that instantly make clients see your value</p>
+              </div>
+              <div className="flex items-start space-x-3 p-4 bg-gray-900/50 rounded-lg border border-purple-400/20 hover:border-purple-400/40 transition-all duration-300">
+                <CheckCircle className="w-5 h-5 text-purple-400 flex-shrink-0 mt-1 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
+                <p className="text-gray-300">Ways to position your services as the best choice without lowering your prices</p>
+              </div>
+              <div className="flex items-start space-x-3 p-4 bg-gray-900/50 rounded-lg border border-purple-400/20 hover:border-purple-400/40 transition-all duration-300">
+                <CheckCircle className="w-5 h-5 text-purple-400 flex-shrink-0 mt-1 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
+                <p className="text-gray-300">Step-by-step guidance to convert interest into long-term commitment</p>
+              </div>
+              <div className="flex items-start space-x-3 p-4 bg-gray-900/50 rounded-lg border border-purple-400/20 hover:border-purple-400/40 transition-all duration-300">
+                <CheckCircle className="w-5 h-5 text-purple-400 flex-shrink-0 mt-1 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
+                <p className="text-gray-300">Mistakes to avoid that push clients away without you realizing</p>
+              </div>
+              <div className="flex items-start space-x-3 p-4 bg-gray-900/50 rounded-lg border border-purple-400/20 hover:border-purple-400/40 transition-all duration-300">
+                <CheckCircle className="w-5 h-5 text-purple-400 flex-shrink-0 mt-1 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
+                <p className="text-gray-300">AI automation strategies to scale your business to 7-figures</p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -354,7 +371,7 @@ export default function Index() {
             Real Results from Real Coaches
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card className="p-6 bg-gray-900/80 border-2 border-purple-400/60 backdrop-blur-sm  shadow-2xl shadow-purple-500/40 shadow-blue-500/20 hover:shadow-purple-500/60 transition-all duration-300">
+            <Card className="p-6 bg-gray-900/80 border-2 border-purple-400/60 backdrop-blur-sm shadow-2xl shadow-purple-500/40 hover:shadow-purple-500/60 transition-all duration-300">
               <div className="text-center">
                 <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 ring-4 ring-purple-400/60 shadow-lg shadow-purple-500/50">
                   <TrendingUp className="w-8 h-8 text-white" />
@@ -510,6 +527,109 @@ export default function Index() {
           </div>
         </div>
 
+        {/* FAQ Section */}
+        <div className="mb-12">
+          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-6 md:mb-8 text-center text-white drop-shadow-[0_0_15px_rgba(168,85,247,0.6)]">
+            Frequently Asked Questions
+          </h2>
+          <div className="max-w-4xl mx-auto space-y-3 md:space-y-4">
+            <Collapsible className="bg-gray-900/50 rounded-lg border border-purple-400/20 hover:border-purple-400/40 transition-all duration-300">
+              <CollapsibleTrigger className="flex w-full items-center justify-between p-4 md:p-6 text-left hover:bg-gray-800/30 transition-colors">
+                <span className="text-base md:text-lg font-semibold text-white pr-2">How quickly will I see results after implementing this system?</span>
+                <ChevronDown className="h-5 w-5 text-purple-400 transition-transform duration-200 group-data-[state=open]:rotate-180 flex-shrink-0" />
+              </CollapsibleTrigger>
+              <CollapsibleContent className="px-4 md:px-6 pb-4 md:pb-6">
+                <p className="text-sm md:text-base text-gray-300 leading-relaxed">
+                  Most coaches see their first automated bookings within 24-48 hours of implementation. The system is designed to work immediately - you'll start receiving qualified leads and automated follow-ups as soon as you activate the funnel. Within the first week, you should see a 3-5x increase in client inquiries and bookings.
+                </p>
+              </CollapsibleContent>
+            </Collapsible>
+
+            <Collapsible className="bg-gray-900/50 rounded-lg border border-purple-400/20 hover:border-purple-400/40 transition-all duration-300">
+              <CollapsibleTrigger className="flex w-full items-center justify-between p-4 md:p-6 text-left hover:bg-gray-800/30 transition-colors">
+                <span className="text-base md:text-lg font-semibold text-white pr-2">Do I need technical skills to set this up?</span>
+                <ChevronDown className="h-5 w-5 text-purple-400 transition-transform duration-200 group-data-[state=open]:rotate-180 flex-shrink-0" />
+              </CollapsibleTrigger>
+              <CollapsibleContent className="px-4 md:px-6 pb-4 md:pb-6">
+                <p className="text-gray-300 leading-relaxed">
+                  Not at all! The playbook includes step-by-step video tutorials and copy-paste templates. Even if you've never used automation software before, you'll have everything set up in under 2 hours. We've made it so simple that over 90% of our users complete the setup without any technical support.
+                </p>
+              </CollapsibleContent>
+            </Collapsible>
+
+            <Collapsible className="bg-gray-900/50 rounded-lg border border-purple-400/20 hover:border-purple-400/40 transition-all duration-300">
+              <CollapsibleTrigger className="flex w-full items-center justify-between p-6 text-left hover:bg-gray-800/30 transition-colors">
+                <span className="text-lg font-semibold text-white">What if this doesn't work for my specific fitness niche?</span>
+                <ChevronDown className="h-5 w-5 text-purple-400 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+              </CollapsibleTrigger>
+              <CollapsibleContent className="px-6 pb-6">
+                <p className="text-gray-300 leading-relaxed">
+                  This system has been tested and proven across all fitness niches - from personal training and nutrition coaching to yoga instruction and group fitness. The core principles of client psychology and conversion remain the same regardless of your specialty. We include niche-specific templates and examples for 15+ different fitness coaching types.
+                </p>
+              </CollapsibleContent>
+            </Collapsible>
+
+            <Collapsible className="bg-gray-900/50 rounded-lg border border-purple-400/20 hover:border-purple-400/40 transition-all duration-300">
+              <CollapsibleTrigger className="flex w-full items-center justify-between p-6 text-left hover:bg-gray-800/30 transition-colors">
+                <span className="text-lg font-semibold text-white">How much does the software cost to run each month?</span>
+                <ChevronDown className="h-5 w-5 text-purple-400 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+              </CollapsibleTrigger>
+              <CollapsibleContent className="px-6 pb-6">
+                <p className="text-gray-300 leading-relaxed">
+                  The total monthly cost for all recommended tools is typically $47-97, depending on your list size. However, most coaches recover this cost with just 1-2 additional clients per month. The ROI calculator in the playbook will show you exactly how much additional revenue you need to break even (spoiler: it's usually just 1 client).
+                </p>
+              </CollapsibleContent>
+            </Collapsible>
+
+            <Collapsible className="bg-gray-900/50 rounded-lg border border-purple-400/20 hover:border-purple-400/40 transition-all duration-300">
+              <CollapsibleTrigger className="flex w-full items-center justify-between p-6 text-left hover:bg-gray-800/30 transition-colors">
+                <span className="text-lg font-semibold text-white">Will this work if I'm just starting my online coaching business?</span>
+                <ChevronDown className="h-5 w-5 text-purple-400 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+              </CollapsibleTrigger>
+              <CollapsibleContent className="px-6 pb-6">
+                <p className="text-gray-300 leading-relaxed">
+                  Absolutely! In fact, this system is perfect for new coaches because it gives you a professional, automated presence from day one. You'll appear more established and trustworthy than coaches who've been in business for years but don't have proper systems. Many of our most successful users started with zero clients and built to 6-figures using this exact system.
+                </p>
+              </CollapsibleContent>
+            </Collapsible>
+
+            <Collapsible className="bg-gray-900/50 rounded-lg border border-purple-400/20 hover:border-purple-400/40 transition-all duration-300">
+              <CollapsibleTrigger className="flex w-full items-center justify-between p-6 text-left hover:bg-gray-800/30 transition-colors">
+                <span className="text-lg font-semibold text-white">What if I'm already booked out with clients?</span>
+                <ChevronDown className="h-5 w-5 text-purple-400 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+              </CollapsibleTrigger>
+              <CollapsibleContent className="px-6 pb-6">
+                <p className="text-gray-300 leading-relaxed">
+                  This system is actually perfect for booked-out coaches! It helps you raise your prices, create a waitlist, and build passive income streams. Instead of taking on more 1-on-1 clients, you can create group programs, online courses, and automated coaching sequences that generate revenue while you sleep. Many coaches use this to transition from trading time for money to building scalable systems.
+                </p>
+              </CollapsibleContent>
+            </Collapsible>
+
+            <Collapsible className="bg-gray-900/50 rounded-lg border border-purple-400/20 hover:border-purple-400/40 transition-all duration-300">
+              <CollapsibleTrigger className="flex w-full items-center justify-between p-6 text-left hover:bg-gray-800/30 transition-colors">
+                <span className="text-lg font-semibold text-white">Is there ongoing support or just the playbook?</span>
+                <ChevronDown className="h-5 w-5 text-purple-400 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+              </CollapsibleTrigger>
+              <CollapsibleContent className="px-6 pb-6">
+                <p className="text-gray-300 leading-relaxed">
+                  You get the complete playbook plus access to our private Facebook community where you can ask questions, get feedback on your funnels, and connect with other successful coaches. We also provide monthly Q&A calls and regular updates as new strategies and tools emerge. You're never alone in this journey.
+                </p>
+              </CollapsibleContent>
+            </Collapsible>
+
+            <Collapsible className="bg-gray-900/50 rounded-lg border border-purple-400/20 hover:border-purple-400/40 transition-all duration-300">
+              <CollapsibleTrigger className="flex w-full items-center justify-between p-6 text-left hover:bg-gray-800/30 transition-colors">
+                <span className="text-lg font-semibold text-white">What's the difference between this and other funnel courses?</span>
+                <ChevronDown className="h-5 w-5 text-purple-400 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+              </CollapsibleTrigger>
+              <CollapsibleContent className="px-6 pb-6">
+                <p className="text-gray-300 leading-relaxed">
+                  This isn't just another funnel course - it's a complete business automation system specifically designed for fitness coaches. We include the exact scripts, email sequences, and automation workflows that have generated over $2M in revenue for our clients. Plus, you get the AI ROI calculator to predict your exact revenue growth, which no other course provides.
+                </p>
+              </CollapsibleContent>
+            </Collapsible>
+          </div>
+        </div>
 
         {/* Final CTA Section */}
         <div className="text-center mb-12">
@@ -522,8 +642,8 @@ export default function Index() {
           {showStripeButton ? (
             <div className="text-center">
               {isCheckoutLoading && (
-                <div className="mb-4 p-3 bg-blue-900/50 border border-blue-400/60 rounded-lg max-w-md mx-auto">
-                  <p className="text-blue-300 text-sm">Loading checkout...</p>
+                <div className="mb-4 p-3 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-400/60 rounded-lg max-w-md mx-auto">
+                  <p className="text-purple-300 text-sm">Loading checkout...</p>
                 </div>
               )}
               <stripe-buy-button
@@ -537,9 +657,9 @@ export default function Index() {
             <Button 
               onClick={handleFreeDownload}
               size="lg" 
-              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-4 px-8 text-xl rounded-xl shadow-2xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-purple-400/80 shadow-purple-500/60 shadow-blue-500/40"
+              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-black py-6 px-12 text-2xl md:text-3xl rounded-2xl shadow-2xl hover:shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-purple-400/80 shadow-purple-500/60"
             >
-              Get Your Free Playbook
+              GET YOUR FREE PLAYBOOK
             </Button>
           )}
         </div>
@@ -640,10 +760,6 @@ export default function Index() {
                 </button>
               </div>
               
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full mb-6 shadow-2xl shadow-purple-500/80 ring-4 ring-purple-400/60">
-                <BookOpen className="w-8 h-8 text-white" />
-              </div>
-              
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 drop-shadow-[0_0_20px_rgba(168,85,247,0.6)]">
                 Get Your Key to <span className="text-green-400 drop-shadow-[0_0_15px_rgba(74,222,128,0.8)]">7-Figure</span> Scaling
               </h2>
@@ -661,7 +777,7 @@ export default function Index() {
                       type="text"
                       {...register("name", { required: "Name is required" })}
                       className="mt-1 bg-gray-800/50 border-2 border-purple-500/30 text-white ring-4 ring-purple-400/20"
-                      placeholder="Your full name"
+                      placeholder="Your name"
                     />
                     {errors.name && (
                       <p className="text-red-400 text-sm mt-1">{errors.name.message}</p>
