@@ -255,7 +255,7 @@ export default function Index() {
                 <img 
                   src="/playbook.png" 
                   alt="AI Funnel Playbook" 
-                  className="w-80 h-80 md:w-96 md:h-96 lg:w-100 lg:h-100 object-contain rounded-2xl ring-4 ring-purple-400/60 shadow-2xl shadow-purple-500/50"
+                  className="w-100 h-100 md:w-96 md:h-96 lg:w-100 lg:h-100 object-contain rounded-2xl ring-4 ring-purple-400/60 shadow-2xl shadow-purple-500/50"
                 />
                 {/* Decorative elements like in the image */}
                 <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-full blur-xl"></div>
@@ -457,6 +457,40 @@ export default function Index() {
           </div>
         </div>
 
+        {/* CTA Section After Testimonials */}
+        <div className="text-center mb-12">
+          <h2 className="text-xl md:text-2xl font-bold mb-4 text-white drop-shadow-[0_0_15px_rgba(168,85,247,0.6)]">
+            Ready to Join These Successful Coaches?
+          </h2>
+          <p className="text-base md:text-lg text-gray-300 mb-6 max-w-2xl mx-auto">
+            Get your free playbook and start building your automated client booking system today.
+          </p>
+          {showStripeButton ? (
+            <div className="text-center">
+              {isCheckoutLoading && (
+                <div className="mb-4 p-3 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-400/60 rounded-lg max-w-md mx-auto">
+                  <p className="text-purple-300 text-sm">Loading checkout...</p>
+                </div>
+              )}
+              <stripe-buy-button
+                buy-button-id="buy_btn_1RxxcAJQvPIbNIWNKFppQnl4"
+                publishable-key="pk_live_51RBNOCJQvPIbNIWNTirqPqobDrS2vACpNiMRrlCGY0j7Q1JBn6HvUSyOAAjb53FfsSuytcJSfGO0NWEuBqX9YdhP00mdfLfS2M"
+              >
+              </stripe-buy-button>
+              <p className="text-xs text-gray-400 mt-2">Secure payment processing</p>
+            </div>
+          ) : (
+            <Button 
+              onClick={handleFreeDownload}
+              size="lg" 
+              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-black py-4 px-8 text-xl md:text-2xl rounded-2xl shadow-2xl hover:shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-purple-400/80 shadow-purple-500/60"
+            >
+              <ArrowRight className="w-6 h-6 md:w-8 md:h-8 mr-2 md:mr-3" />
+              DOWNLOAD YOUR FREE PLAYBOOK
+            </Button>
+          )}
+        </div>
+
         {/* Pain Points Section */}
         <div className="mb-12">
           <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center text-white drop-shadow-[0_0_15px_rgba(168,85,247,0.6)]">
@@ -540,7 +574,7 @@ export default function Index() {
               </CollapsibleTrigger>
               <CollapsibleContent className="px-4 md:px-6 pb-4 md:pb-6">
                 <p className="text-sm md:text-base text-gray-300 leading-relaxed">
-                  Most coaches see their first automated bookings within 24-48 hours of implementation. The system is designed to work immediately - you'll start receiving qualified leads and automated follow-ups as soon as you activate the funnel. Within the first week, you should see a 3-5x increase in client inquiries and bookings.
+                  Most coaches see their first automated bookings within week of implementation. The system is designed to work immediately - you'll start receiving qualified leads and automated follow-ups as soon as you activate the funnel. Within the first week, you should see a 3-4x increase in lead conversions.
                 </p>
               </CollapsibleContent>
             </Collapsible>
@@ -552,7 +586,7 @@ export default function Index() {
               </CollapsibleTrigger>
               <CollapsibleContent className="px-4 md:px-6 pb-4 md:pb-6">
                 <p className="text-gray-300 leading-relaxed">
-                  Not at all! The playbook includes step-by-step video tutorials and copy-paste templates. Even if you've never used automation software before, you'll have everything set up in under 2 hours. We've made it so simple that over 90% of our users complete the setup without any technical support.
+                  Not at all! The playbook includes step-by-step video tutorials and copy-paste templates. Even if you've never used automation software before, you'll have everything set up in a few hours. We've made it so simple that over 90% of our users complete the setup without any technical support.
                 </p>
               </CollapsibleContent>
             </Collapsible>
@@ -564,19 +598,7 @@ export default function Index() {
               </CollapsibleTrigger>
               <CollapsibleContent className="px-6 pb-6">
                 <p className="text-gray-300 leading-relaxed">
-                  This system has been tested and proven across all fitness niches - from personal training and nutrition coaching to yoga instruction and group fitness. The core principles of client psychology and conversion remain the same regardless of your specialty. We include niche-specific templates and examples for 15+ different fitness coaching types.
-                </p>
-              </CollapsibleContent>
-            </Collapsible>
-
-            <Collapsible className="bg-gray-900/50 rounded-lg border border-purple-400/20 hover:border-purple-400/40 transition-all duration-300">
-              <CollapsibleTrigger className="flex w-full items-center justify-between p-6 text-left hover:bg-gray-800/30 transition-colors">
-                <span className="text-lg font-semibold text-white">How much does the software cost to run each month?</span>
-                <ChevronDown className="h-5 w-5 text-purple-400 transition-transform duration-200 group-data-[state=open]:rotate-180" />
-              </CollapsibleTrigger>
-              <CollapsibleContent className="px-6 pb-6">
-                <p className="text-gray-300 leading-relaxed">
-                  The total monthly cost for all recommended tools is typically $47-97, depending on your list size. However, most coaches recover this cost with just 1-2 additional clients per month. The ROI calculator in the playbook will show you exactly how much additional revenue you need to break even (spoiler: it's usually just 1 client).
+                  This system has been tested and proven across all coaching niches - from bodybuilding and nutrition to yoga instruction and calisthenics. The core principles of client psychology and conversion remain the same regardless of your specialty. We include niche-specific templates and examples for 15+ different coaching types.
                 </p>
               </CollapsibleContent>
             </Collapsible>
@@ -601,18 +623,6 @@ export default function Index() {
               <CollapsibleContent className="px-6 pb-6">
                 <p className="text-gray-300 leading-relaxed">
                   This system is actually perfect for booked-out coaches! It helps you raise your prices, create a waitlist, and build passive income streams. Instead of taking on more 1-on-1 clients, you can create group programs, online courses, and automated coaching sequences that generate revenue while you sleep. Many coaches use this to transition from trading time for money to building scalable systems.
-                </p>
-              </CollapsibleContent>
-            </Collapsible>
-
-            <Collapsible className="bg-gray-900/50 rounded-lg border border-purple-400/20 hover:border-purple-400/40 transition-all duration-300">
-              <CollapsibleTrigger className="flex w-full items-center justify-between p-6 text-left hover:bg-gray-800/30 transition-colors">
-                <span className="text-lg font-semibold text-white">Is there ongoing support or just the playbook?</span>
-                <ChevronDown className="h-5 w-5 text-purple-400 transition-transform duration-200 group-data-[state=open]:rotate-180" />
-              </CollapsibleTrigger>
-              <CollapsibleContent className="px-6 pb-6">
-                <p className="text-gray-300 leading-relaxed">
-                  You get the complete playbook plus access to our private Facebook community where you can ask questions, get feedback on your funnels, and connect with other successful coaches. We also provide monthly Q&A calls and regular updates as new strategies and tools emerge. You're never alone in this journey.
                 </p>
               </CollapsibleContent>
             </Collapsible>
@@ -659,7 +669,7 @@ export default function Index() {
               size="lg" 
               className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-black py-6 px-12 text-2xl md:text-3xl rounded-2xl shadow-2xl hover:shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-purple-400/80 shadow-purple-500/60"
             >
-              GET YOUR FREE PLAYBOOK
+              GET IT FOR FREE
             </Button>
           )}
         </div>
