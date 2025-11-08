@@ -255,7 +255,7 @@ export default function Index() {
                 <img 
                   src="/playbook.png" 
                   alt="AI Funnel Playbook" 
-                  className="w-100 h-100 md:w-96 md:h-96 lg:w-100 lg:h-100 object-contain rounded-2xl ring-4 ring-purple-400/60 shadow-2xl shadow-purple-500/50"
+                  className="w-100 h-100 md:w-95 md:h-96 lg:w-100 lg:h-100 object-contain rounded-2xl ring-4 ring-purple-400/60 shadow-2xl shadow-purple-500/50"
                 />
                 {/* Decorative elements like in the image */}
                 <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-full blur-xl"></div>
@@ -382,12 +382,12 @@ export default function Index() {
                   ))}
                 </div>
                 <blockquote className="text-gray-300 italic mb-4 text-sm leading-relaxed">
-                  "Went from 3 clients to 18 clients in 3 months. The funnel handles all my follow-ups automatically. I'm booking calls while I sleep!"
+                  "Sweep is built specifically for coaches. Other solutions felt overly complicated or too generic, but Sweep’s setup was intuitive and directly addressed the areas where I needed structure."
                 </blockquote>
                 <div className="text-center">
-                  <p className="font-semibold text-white">Sarah</p>
+                  <p className="font-semibold text-white">Dan</p>
                   <p className="text-sm text-purple-400 drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]">Personal Trainer</p>
-                  <p className="text-xs text-gray-400">Revenue: $2k → $12k/month</p>
+                  <p className="text-xs text-gray-400">Revenue: $250 → $2,000/month</p>
                 </div>
               </div>
             </Card>
@@ -403,12 +403,12 @@ export default function Index() {
                   ))}
                 </div>
                 <blockquote className="text-gray-300 italic mb-4 text-sm leading-relaxed">
-                  "Revenue increased from $2k to $8k/month. The system books calls while I sleep. Best investment I've ever made in my business."
+                  "Sweep was very customer facing, fast response time, and everything works seemlessly. There’s nobody really doing what they’re doing yet. It’s very hard to find a level of professionalism and communication like this."
                 </blockquote>
                 <div className="text-center">
-                  <p className="font-semibold text-white">Mike</p>
-                  <p className="text-sm text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.6)]">Online Coach</p>
-                  <p className="text-xs text-gray-400">Revenue: $2k → $8k/month</p>
+                  <p className="font-semibold text-white">Zach</p>
+                  <p className="text-sm text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.6)]">Fitness Coach</p>
+                  <p className="text-xs text-gray-400">Leads: 100 → 450/month</p>
                 </div>
               </div>
             </Card>
@@ -424,12 +424,12 @@ export default function Index() {
                   ))}
                 </div>
                 <blockquote className="text-gray-300 italic mb-4 text-sm leading-relaxed">
-                  "Client retention went from 60% to 85%. The automated nurturing keeps them engaged and coming back for more programs."
+                  "It feels great because I now have a clear vision and it’s just a matter of time and effort before I start to see success. "
                 </blockquote>
                 <div className="text-center">
-                  <p className="font-semibold text-white">Jennifer</p>
-                  <p className="text-sm text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]">Yoga Instructor</p>
-                  <p className="text-xs text-gray-400">Retention: 60% → 85%</p>
+                  <p className="font-semibold text-white">Boon</p>
+                  <p className="text-sm text-blue-400 drop-shadow-[0_0_8px_rgba(59,130,246,0.6)]">Online Coach</p>
+                  <p className="text-xs text-gray-400">4x Client Base in 30 days</p>
                 </div>
               </div>
             </Card>
@@ -445,11 +445,11 @@ export default function Index() {
                   ))}
                 </div>
                 <blockquote className="text-gray-300 italic mb-4 text-sm leading-relaxed">
-                  "I was spending 20+ hours weekly on client communication. Now it's all automated and I'm booking more clients than ever."
+                  "It was super easy & I know very little about setting up technology. If I could get sweep integrated into my site using their services, then anyone else could too."
                 </blockquote>
                 <div className="text-center">
-                  <p className="font-semibold text-white">Alex</p>
-                  <p className="text-sm text-orange-400 drop-shadow-[0_0_8px_rgba(251,146,60,0.6)]">Fitness Coach</p>
+                  <p className="font-semibold text-white">Brandon</p>
+                  <p className="text-sm text-orange-400 drop-shadow-[0_0_8px_rgba(251,146,60,0.6)]">Gym Owner</p>
                   <p className="text-xs text-gray-400">Time Saved: 20hrs/week</p>
                 </div>
               </div>
@@ -483,7 +483,7 @@ export default function Index() {
             <Button 
               onClick={handleFreeDownload}
               size="lg" 
-              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-black py-4 px-8 text-xl md:text-2xl rounded-2xl shadow-2xl hover:shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-purple-400/80 shadow-purple-500/60"
+              className="position-center bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-black py-4 px-8 text-xl md:text-2xl rounded-2xl shadow-2xl hover:shadow-2xl transform hover:scale-110 transition-all duration-300 border-4 border-purple-400/80 shadow-purple-500/60"
             >
               <ArrowRight className="w-6 h-6 md:w-8 md:h-8 mr-2 md:mr-3" />
               DOWNLOAD YOUR FREE PLAYBOOK
