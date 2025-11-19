@@ -6,7 +6,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Newsletter from "./pages/Newsletter";
 import Training from "./pages/Training";
-import Congratulations from "./pages/Congratulations";
 import NotFound from "./pages/NotFound";
 import AIRoadmap from "./pages/AIRoadmap";
 import SalesFunnelPlaybook from "./pages/SalesFunnelPlaybook";
@@ -28,7 +27,6 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/newsletter" element={<Newsletter />} />
           <Route path="/training" element={<Training />} />
-          <Route path="/congratulations" element={<Congratulations />} />
           <Route path="/ai-roadmap" element={<AIRoadmap />} />
           <Route path="/sales-funnel-playbook" element={<SalesFunnelPlaybook />} />
           <Route path="/complete-system" element={<CompleteSystem />} />

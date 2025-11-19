@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { UnlockAnimation } from "@/components/ui/unlock-animation";
 import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import { BookOpen, CheckCircle, DollarSign, Clock, UserCheck, X, Brain, Star, TrendingUp, Zap, Target, ArrowRight, Calculator, BarChart3, TrendingUp as TrendingUpIcon, Users as UsersIcon, Zap as ZapIcon, CheckCircle as CheckCircleIcon, ArrowRight as ArrowRightIcon, Download as DownloadIcon, BookOpen as BookOpenIcon, Target as TargetIcon, BarChart3 as BarChart3Icon, Calendar as CalendarIcon, Clock as ClockIcon, Award as AwardIcon, Shield as ShieldIcon, Globe as GlobeIcon, Smartphone as SmartphoneIcon, Monitor as MonitorIcon, Cloud as CloudIcon, Database as DatabaseIcon, Cpu as CpuIcon, BarChart as BarChartIcon, PieChart as PieChartIcon, LineChart as LineChartIcon, AreaChart as AreaChartIcon, Activity as ActivityIcon, Quote, ChevronDown, ChevronUp } from "lucide-react";
@@ -44,6 +45,9 @@ export default function Index() {
   const { toast } = useToast();
   const [showUpsellModal, setShowUpsellModal] = useState(false);
   const [showPlaybookModal, setShowPlaybookModal] = useState(false);
+  const [isPlaybookModalVisible, setIsPlaybookModalVisible] = useState(false);
+  const [showUnlockAnimation, setShowUnlockAnimation] = useState(false);
+  const [wantsConsultation, setWantsConsultation] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [timeLeft, setTimeLeft] = useState(300); // 5 minutes in seconds
   const [showStripeButton, setShowStripeButton] = useState(false);
@@ -68,6 +72,26 @@ export default function Index() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // Auto-show playbook modal after 1.5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPlaybookModal(true);
+      // Trigger fade-in animation after modal is shown
+      setTimeout(() => {
+        setIsPlaybookModalVisible(true);
+      }, 10);
+    }, 3000); // 1.5 seconds delay
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Reset animation state when modal closes
+  useEffect(() => {
+    if (!showPlaybookModal) {
+      setIsPlaybookModalVisible(false);
+    }
+  }, [showPlaybookModal]);
 
   // Countdown timer effect
   useEffect(() => {
@@ -189,9 +213,31 @@ export default function Index() {
     window.scrollTo(0, 0);
   };
 
+  const handleUnlockComplete = useCallback(() => {
+    // Redirect based on whether they checked the consultation checkbox
+    const redirectUrl = wantsConsultation 
+      ? "https://www.sweepai.site/calculator"
+      : "https://www.sweepai.site/interest-form";
+    
+    console.log("Unlock animation complete, redirecting to:", redirectUrl);
+    console.log("Wants consultation:", wantsConsultation);
+    
+    // Use replace instead of href to ensure redirect happens
+    try {
+      window.location.replace(redirectUrl);
+    } catch (error) {
+      console.error("Redirect error:", error);
+      // Fallback to href if replace fails
+      window.location.href = redirectUrl;
+    }
+  }, [wantsConsultation]);
+
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     try {
+      // Store whether they want consultation before showing animation
+      setWantsConsultation(data.consultation || false);
+      
       await addEmailToCollection(data.email, data.name, data.phone, "Fitness_Funnel_Playbook");
       await sendWelcomeEmail(data.email, data.name, data.phone, "Fitness_Funnel_Playbook");
       
@@ -202,7 +248,7 @@ export default function Index() {
       
       reset();
       setShowPlaybookModal(false);
-      navigate("/congratulations");
+      setShowUnlockAnimation(true);
     } catch (error) {
       console.error("Error submitting form:", error);
       toast({
@@ -231,31 +277,35 @@ export default function Index() {
 
   return (
     <div className="min-h-screen bg-gray-900 overflow-x-hidden">
+      {/* Unlock Animation */}
+      {showUnlockAnimation && (
+        <UnlockAnimation onAnimationComplete={handleUnlockComplete} />
+      )}
       {/* Centered Sweep Logo */}
-      <div className="flex justify-center pt-8 pb-6">
+      <div className="flex justify-center pt-4 pb-3 md:pt-8 md:pb-6">
         <img 
           src="/lovable-uploads/2e025803-adcb-4eb0-8995-15991e0213a4.png" 
           alt="Sweep Logo" 
-          className="h-20 w-auto"
+          className="h-12 w-auto md:h-20"
         />
       </div>
 
-      <div className="px-4 py-6 max-w-4xl mx-auto">
+      <div className="px-4 py-3 md:py-6 max-w-4xl mx-auto">
         {/* Hero Section - Product Layout */}
-        <div className="mb-12">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 text-center bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400 bg-clip-text text-transparent leading-tight drop-shadow-[0_0_20px_rgba(168,85,247,0.8)]">
+        <div className="mb-6 md:mb-12">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-8 text-center bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400 bg-clip-text text-transparent leading-tight drop-shadow-[0_0_20px_rgba(168,85,247,0.8)]">
             The Complete 7-Figure AI Funnel Blueprint
           </h1>
           
           {/* Main Product Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8 items-center mb-6 md:mb-12">
             {/* Product Image - First on Mobile, Left Side on Desktop */}
             <div className="flex justify-center lg:justify-end order-1 lg:order-1">
               <div className="relative">
                 <img 
                   src="/playbook.png" 
                   alt="AI Funnel Playbook" 
-                  className="w-100 h-100 md:w-95 md:h-96 lg:w-100 lg:h-100 object-contain rounded-2xl ring-4 ring-purple-400/60 shadow-2xl shadow-purple-500/50"
+                  className="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 object-contain rounded-2xl ring-4 ring-purple-400/60 shadow-2xl shadow-purple-500/50"
                 />
                 {/* Decorative elements like in the image */}
                 <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-full blur-xl"></div>
@@ -758,8 +808,8 @@ export default function Index() {
 
       {/* Playbook Modal */}
       {showPlaybookModal && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-          <div className="bg-gray-900 rounded-2xl p-6 md:p-8 lg:p-12 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto border-2 border-purple-400/80 shadow-2xl shadow-purple-500/60 shadow-blue-500/40">
+        <div className={`fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 transition-opacity duration-500 ${isPlaybookModalVisible ? 'opacity-100' : 'opacity-0'}`}>
+          <div className={`bg-gray-900 rounded-2xl p-6 md:p-8 lg:p-12 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto border-2 border-purple-400/80 shadow-2xl shadow-purple-500/60 shadow-blue-500/40 transition-all duration-500 ${isPlaybookModalVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
             <div className="text-center">
               <div className="flex justify-end mb-4">
                 <button
@@ -771,7 +821,7 @@ export default function Index() {
               </div>
               
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 drop-shadow-[0_0_20px_rgba(168,85,247,0.6)]">
-                Get Your Key to <span className="text-green-400 drop-shadow-[0_0_15px_rgba(74,222,128,0.8)]">7-Figure</span> Scaling
+                Get Your Blueprint to <span className="text-green-400 drop-shadow-[0_0_15px_rgba(74,222,128,0.8)]">7-Figure</span> Scaling
               </h2>
               
               <p className="text-base md:text-lg text-gray-300 mb-6 leading-relaxed">

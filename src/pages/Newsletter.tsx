@@ -77,7 +77,7 @@ const Newsletter = () => {
         await new Promise(resolve => setTimeout(resolve, 1000));
         
         setIsLoading(false);
-        navigate("/congratulations");
+        window.location.href = "https://www.sweepai.site";
       } catch (error) {
         console.error('Error submitting form:', error);
         setError("There was an error processing your request. Please try again.");

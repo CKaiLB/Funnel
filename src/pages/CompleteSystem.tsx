@@ -100,7 +100,7 @@ export default function CompleteSystem() {
       });
       
       reset();
-      navigate("/congratulations");
+      window.location.href = "https://www.sweepai.site";
     } catch (error) {
       console.error("Error submitting form:", error);
       toast({

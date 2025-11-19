@@ -10,6 +10,12 @@ interface UnlockAnimationProps {
 const UnlockAnimation = React.forwardRef<HTMLDivElement, UnlockAnimationProps>(
   ({ onAnimationComplete, className, ...props }, ref) => {
     const [animationPhase, setAnimationPhase] = React.useState<'lock' | 'unlocking' | 'unlocked' | 'fade-out'>('lock')
+    const callbackRef = React.useRef(onAnimationComplete)
+
+    // Update ref when callback changes
+    React.useEffect(() => {
+      callbackRef.current = onAnimationComplete
+    }, [onAnimationComplete])
 
     React.useEffect(() => {
       // Start with lock visible
@@ -29,7 +35,12 @@ const UnlockAnimation = React.forwardRef<HTMLDivElement, UnlockAnimationProps>(
 
       // Complete animation and call callback
       const timer4 = setTimeout(() => {
-        onAnimationComplete()
+        console.log("UnlockAnimation: Calling onAnimationComplete callback");
+        try {
+          callbackRef.current();
+        } catch (error) {
+          console.error("UnlockAnimation: Error calling onAnimationComplete:", error);
+        }
       }, 3200)
 
       return () => {
@@ -38,7 +49,7 @@ const UnlockAnimation = React.forwardRef<HTMLDivElement, UnlockAnimationProps>(
         clearTimeout(timer3)
         clearTimeout(timer4)
       }
-    }, [onAnimationComplete])
+    }, []) // Empty dependency array - only run once on mount
 
     return (
       <div
@@ -74,17 +85,17 @@ const UnlockAnimation = React.forwardRef<HTMLDivElement, UnlockAnimationProps>(
             animationPhase === 'unlocked' && "opacity-60",
             animationPhase === 'fade-out' && "opacity-0"
           )}>
-            <h2 className="text-3xl font-bold text-white mb-2">
-              {animationPhase === 'lock' && "Unlocking Your Access..."}
-              {animationPhase === 'unlocking' && "Almost There..."}
-              {animationPhase === 'unlocked' && "Access Granted!"}
-              {animationPhase === 'fade-out' && "Welcome!"}
+            <h2 className="text-3xl font-bold text-white mb-2 drop-shadow-lg">
+              {animationPhase === 'lock' && "🔓 Unlocking Hidden Feature..."}
+              {animationPhase === 'unlocking' && "✨ Discovering Secret Bonus..."}
+              {animationPhase === 'unlocked' && "🎉 Hidden Feature Unlocked!"}
+              {animationPhase === 'fade-out' && "🚀 You've Unlocked Something Special!"}
             </h2>
-            <p className="text-blue-100 text-lg">
-              {animationPhase === 'lock' && "Preparing your exclusive consultation..."}
-              {animationPhase === 'unlocking' && "Setting up your personalized strategy..."}
-              {animationPhase === 'unlocked' && "Your free consultation is ready!"}
-              {animationPhase === 'fade-out' && "Let's get started!"}
+            <p className="text-blue-100 text-lg drop-shadow-md">
+              {animationPhase === 'lock' && "Scanning for exclusive offers..."}
+              {animationPhase === 'unlocking' && "Accessing your hidden bonus..."}
+              {animationPhase === 'unlocked' && "🎁 FREE AI Consultation with Sweep Team!"}
+              {animationPhase === 'fade-out' && "Get personalized AI strategy - 100% Free"}
             </p>
           </div>
 
@@ -97,15 +108,19 @@ const UnlockAnimation = React.forwardRef<HTMLDivElement, UnlockAnimationProps>(
             </div>
           )}
 
-          {/* Success checkmark */}
+          {/* Success checkmark and bonus reveal */}
           {animationPhase === 'unlocked' && (
-            <div className="mt-6">
+            <div className="mt-6 space-y-4">
               <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto animate-pulse">
                 <div className="w-8 h-8 text-white">
                   <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg px-6 py-4 border-2 border-white/30 animate-pulse">
+                <p className="text-white font-semibold text-xl mb-1">🎯 Hidden Bonus Revealed!</p>
+                <p className="text-blue-100 text-base">Free AI Consultation with Sweep Team</p>
               </div>
             </div>
           )}
