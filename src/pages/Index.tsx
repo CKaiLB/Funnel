@@ -209,6 +209,11 @@ export default function Index() {
 
   const handleFreeDownload = () => {
     setShowPlaybookModal(true);
+    // Reset and trigger fade-in animation
+    setIsPlaybookModalVisible(false);
+    setTimeout(() => {
+      setIsPlaybookModalVisible(true);
+    }, 10);
     // Scroll to top when modal opens
     window.scrollTo(0, 0);
   };
