@@ -192,12 +192,12 @@ export default function Index() {
         <div className="text-center mb-4 sm:mb-6 md:mb-8 lg:mb-12">
           {/* Headline - slides in from left */}
           <motion.h1 
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-2 sm:mb-3 md:mb-4 lg:mb-6 text-white leading-tight px-2"
+            className="text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-2 sm:mb-3 md:mb-4 lg:mb-6 text-white leading-tight px-2"
             initial={{ opacity: 0, x: -100 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            Build Your Free AI Revenue Report for Online Fitness Coaches
+            Calculate Your Free AI Revenue Report for Online Fitness Coaches
           </motion.h1>
           
           {/* Subheadline - fades in */}
@@ -210,7 +210,7 @@ export default function Index() {
             See exactly how much revenue you're leaving on the table and how top coaches are scaling to 7-figures on autopilot...
           </motion.p>
 
-          {/* AI Revenue Report Graphic - floats upward, smaller on mobile */}
+          {/* AI Revenue Report Graphic - floats upward, larger on mobile */}
           <motion.div
             className="flex justify-center mb-4 sm:mb-5 md:mb-6 lg:mb-8"
             animate={calculatorControls}
@@ -219,7 +219,7 @@ export default function Index() {
               <img 
                 src="/AIRevenueReport.png" 
                 alt="AI Revenue Report" 
-                className="w-48 h-auto sm:w-64 md:w-80 lg:w-96 xl:w-[28rem] rounded-xl sm:rounded-2xl shadow-2xl"
+                className="w-72 h-auto sm:w-64 md:w-80 lg:w-96 xl:w-[28rem] rounded-xl sm:rounded-2xl shadow-2xl"
               />
               <div className="absolute -bottom-2 -right-2 sm:-bottom-4 sm:-right-4 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-full blur-xl"></div>
               <div className="absolute -top-2 -left-2 sm:-top-4 sm:-left-4 w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-lg"></div>
