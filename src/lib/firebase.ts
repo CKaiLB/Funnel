@@ -16,6 +16,29 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
+// Function to add email and name to Firestore only (no webhook)
+export const addEmailToFirestore = async (email: string, name: string, phone: string, funnelType: 'PDF' | 'Training' | 'Roadmap' | 'Fitness_Funnel_Playbook' | 'AI_Roadmap' | 'Complete_System' = 'PDF') => {
+  try {
+    const docRef = await addDoc(collection(db, 'Emails'), {
+      email: email.toLowerCase().trim(),
+      name: name.trim(),
+      phone: phone.trim(),
+      timestamp: new Date(),
+      source: 'funnel',
+      funnel_type: funnelType,
+      createdAt: new Date().toISOString(),
+    });
+    if (import.meta.env.DEV) {
+      console.log('✅ Email added to Firestore successfully');
+    }
+    return { success: true, docId: docRef.id };
+  } catch (error) {
+    // Always log errors
+    console.error('❌ Error adding email to Firestore:', error);
+    throw error;
+  }
+};
+
 // Function to add email and name to Firestore and send welcome email
 export const addEmailToCollection = async (email: string, name: string, phone: string, funnelType: 'PDF' | 'Training' | 'Roadmap' | 'Fitness_Funnel_Playbook' | 'AI_Roadmap' | 'Complete_System' = 'PDF') => {
   try {
@@ -32,13 +55,17 @@ export const addEmailToCollection = async (email: string, name: string, phone: s
     // Then, send welcome email with roadmap PDF
     const emailSent = await sendWelcomeEmail(email, name, phone, funnelType);
     if (emailSent) {
-      console.log('✅ Email added to collection and welcome email sent successfully');
+      if (import.meta.env.DEV) {
+        console.log('✅ Email added to collection and welcome email sent successfully');
+      }
       return { success: true, docId: docRef.id };
     } else {
-      console.log('⚠️ Email added to collection but welcome email failed to send');
+      // Always log warnings
+      console.warn('⚠️ Email added to collection but welcome email failed to send');
       return { success: true, docId: docRef.id, emailWarning: true };
     }
   } catch (error) {
+    // Always log errors
     console.error('❌ Error adding email to collection:', error);
     throw error;
   }

@@ -1,13 +1,9 @@
 // Custom API webhook URL from environment variables
 const WEBHOOK_URL = import.meta.env.VITE_FUNNEL_EMAIL_WEBHOOK_URL;
 
-// Debug: Log the webhook URL being used
-console.log('🔗 Webhook URL loaded:', WEBHOOK_URL);
-console.log('🔗 Environment variable check:', import.meta.env.VITE_FUNNEL_EMAIL_WEBHOOK_URL);
-
-// Show alert for immediate debugging
-if (typeof window !== 'undefined') {
-  console.log('🔗 BROWSER DEBUG - Webhook URL:', WEBHOOK_URL);
+// Only log in development mode
+if (import.meta.env.DEV && typeof window !== 'undefined') {
+  console.log('🔗 Webhook URL loaded:', WEBHOOK_URL ? '✅ Configured' : '❌ Not configured');
 }
 
 // PDF file path
@@ -48,13 +44,17 @@ export const sendWelcomeEmail = async (email: string, name: string, phone: strin
     });
 
     if (response.ok) {
-      console.log('✅ Welcome email sent successfully via webhook');
+      if (import.meta.env.DEV) {
+        console.log('✅ Welcome email sent successfully via webhook');
+      }
       return true;
     } else {
+      // Always log errors, even in production
       console.error('❌ Failed to send welcome email:', response.status, response.statusText);
       return false;
     }
   } catch (error) {
+    // Always log errors, even in production
     console.error('❌ Error sending welcome email:', error);
     return false;
   }

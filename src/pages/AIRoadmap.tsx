@@ -74,10 +74,12 @@ export default function AIRoadmap() {
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.data && event.data.type === 'stripe-buy-button:success') {
-        // Payment successful - show success message and redirect to complete system
-        console.log('Payment successful!');
+        // Payment successful - show success message and redirect to sales funnel playbook
+        if (import.meta.env.DEV) {
+          console.log('Payment successful!');
+        }
         setIsCheckoutLoading(false);
-        navigate('/complete-system');
+        navigate('/sales-funnel-playbook');
       }
     };
 
@@ -86,13 +88,17 @@ export default function AIRoadmap() {
     
     // Also listen for Stripe checkout close events
     const handleCheckoutClose = () => {
-      console.log('Stripe checkout closed');
+      if (import.meta.env.DEV) {
+        console.log('Stripe checkout closed');
+      }
       setIsCheckoutLoading(false);
     };
 
     // Listen for checkout initiation
     const handleCheckoutStart = () => {
-      console.log('Stripe checkout starting');
+      if (import.meta.env.DEV) {
+        console.log('Stripe checkout starting');
+      }
       setIsCheckoutLoading(true);
     };
 

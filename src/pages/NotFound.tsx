@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Analytics } from "@vercel/analytics/react";
 
@@ -11,12 +11,15 @@ declare global {
 
 const NotFound = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
+    if (import.meta.env.DEV) {
+      console.warn(
+        "404 Error: User attempted to access non-existent route:",
+        location.pathname
+      );
+    }
   }, [location.pathname]);
 
   // Meta Pixel tracking
@@ -65,9 +68,12 @@ const NotFound = () => {
       <div className="text-center">
         <h1 className="text-4xl font-bold mb-4">404</h1>
         <p className="text-xl text-gray-600 mb-4">Oops! Page not found</p>
-        <a href="/" className="text-blue-500 hover:text-blue-700 underline">
+        <button 
+          onClick={() => navigate("/")} 
+          className="text-blue-500 hover:text-blue-700 underline cursor-pointer bg-transparent border-none"
+        >
           Return to Home
-        </a>
+        </button>
       </div>
       <Analytics />
     </div>

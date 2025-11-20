@@ -5,15 +5,22 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Newsletter from "./pages/Newsletter";
-import Training from "./pages/Training";
 import NotFound from "./pages/NotFound";
 import AIRoadmap from "./pages/AIRoadmap";
 import SalesFunnelPlaybook from "./pages/SalesFunnelPlaybook";
-import CompleteSystem from "./pages/CompleteSystem"; // New import
+import Results from "./pages/Results";
 
-// Debug: Show webhook URL at app level
-const WEBHOOK_URL = import.meta.env.VITE_FUNNEL_EMAIL_WEBHOOK_URL;
-console.log('🔗 APP LEVEL - Webhook URL:', WEBHOOK_URL);
+// Validate environment variables in development
+if (import.meta.env.DEV) {
+  const WEBHOOK_URL = import.meta.env.VITE_FUNNEL_EMAIL_WEBHOOK_URL;
+  const BREVO_API_KEY = import.meta.env.VITE_BREVO_API_KEY;
+  if (!WEBHOOK_URL) {
+    console.warn('⚠️ VITE_FUNNEL_EMAIL_WEBHOOK_URL not configured');
+  }
+  if (!BREVO_API_KEY) {
+    console.warn('⚠️ VITE_BREVO_API_KEY not configured');
+  }
+}
 
 const queryClient = new QueryClient();
 
@@ -26,10 +33,9 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/newsletter" element={<Newsletter />} />
-          <Route path="/training" element={<Training />} />
           <Route path="/ai-roadmap" element={<AIRoadmap />} />
           <Route path="/sales-funnel-playbook" element={<SalesFunnelPlaybook />} />
-          <Route path="/complete-system" element={<CompleteSystem />} />
+          <Route path="/results" element={<Results />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
