@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { motion, useAnimation } from "framer-motion";
-import { Calculator, ArrowRight, Clock, Target, DollarSign } from "lucide-react";
+import { ArrowRight, Clock, Target, DollarSign } from "lucide-react";
 import { computeRoi } from "@/lib/roi";
 import { Analytics } from "@vercel/analytics/react";
 import { QuizModal } from "@/components/QuizModal";
@@ -207,18 +207,20 @@ export default function Index() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            See exactly how much revenue you're leaving on the table<br></br>How top coaches are scaling to 7-figures on autopilot...
+            See exactly how much revenue you're leaving on the table and how top coaches are scaling to 7-figures on autopilot...
           </motion.p>
 
-          {/* Calculator Graphic - floats upward, smaller on mobile */}
+          {/* AI Revenue Report Graphic - floats upward, smaller on mobile */}
           <motion.div
             className="flex justify-center mb-4 sm:mb-5 md:mb-6 lg:mb-8"
             animate={calculatorControls}
           >
             <div className="relative">
-              <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48 lg:w-64 lg:h-64 bg-gradient-to-br from-blue-600/20 to-purple-600/20 rounded-xl sm:rounded-2xl flex items-center justify-center border-2 border-blue-500/40 shadow-2xl">
-                <Calculator className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 text-blue-400" />
-              </div>
+              <img 
+                src="/AIRevenueReport.png" 
+                alt="AI Revenue Report" 
+                className="w-48 h-auto sm:w-64 md:w-80 lg:w-96 xl:w-[28rem] rounded-xl sm:rounded-2xl shadow-2xl"
+              />
               <div className="absolute -bottom-2 -right-2 sm:-bottom-4 sm:-right-4 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-full blur-xl"></div>
               <div className="absolute -top-2 -left-2 sm:-top-4 sm:-left-4 w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-full blur-lg"></div>
             </div>
@@ -245,7 +247,7 @@ export default function Index() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <span className="text-yellow-400 font-semibold">347+ online fitness coaches</span> have scaled using this system
+            <span className="text-yellow-400 font-semibold">Fitness Coaches Nationwide</span> have scaled using this system
           </motion.p>
 
           {/* Footer Microcopy */}
