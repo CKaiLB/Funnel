@@ -88,9 +88,13 @@ export default function Results() {
 
   // Calculate AI impact on new KPIs (using ROI calculation values)
   // Handle zero values gracefully
+  // Close rate: Already calculated as percentage increase in ROI (multiplied, not added)
   const improvedCloseRate = Math.min(100, Math.max(0, roi.improvedCloseRatePct));
-  const improvedShowUpRate = Math.min(100, Math.max(0, answers.showUpRate + 15)); // +15% from automated reminders
-  const improvedChurnRate = Math.max(0, answers.churnRate * 0.6); // 40% reduction from better engagement
+  // Show-up rate: 15% improvement from baseline (multiply, not add)
+  const showUpRateImprovement = 1.15; // 15% increase from baseline
+  const improvedShowUpRate = Math.min(100, Math.max(0, answers.showUpRate * showUpRateImprovement));
+  // Churn rate: 40% reduction (multiply by 0.6)
+  const improvedChurnRate = Math.max(0, answers.churnRate * 0.6);
   const additionalConversions = Math.max(0, Math.round((answers.monthlyLeads * (improvedCloseRate - answers.closeRate)) / 100));
   const additionalRevenueFromConversions = additionalConversions * Math.max(calculated.customerValue, 0);
   const revenueSavedFromChurn = Math.max(0, (answers.monthlyClients * (answers.churnRate - improvedChurnRate) / 100) * Math.max(calculated.customerValue, 0));

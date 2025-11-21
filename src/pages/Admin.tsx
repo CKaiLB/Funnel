@@ -82,7 +82,10 @@ export default function Admin() {
   );
   const yearlyGrowthPotential = roi.totalAnnualImpactUsd;
   const improvedCloseRate = Math.min(100, Math.max(0, roi.improvedCloseRatePct));
-  const improvedShowUpRate = Math.min(100, Math.max(0, answers.showUpRate + 15));
+  // Show-up rate: 15% improvement from baseline (multiply, not add)
+  const showUpRateImprovement = 1.15; // 15% increase from baseline
+  const improvedShowUpRate = Math.min(100, Math.max(0, answers.showUpRate * showUpRateImprovement));
+  // Churn rate: 40% reduction (multiply by 0.6)
   const improvedChurnRate = Math.max(0, answers.churnRate * 0.6);
 
   // Growth curve calculation
