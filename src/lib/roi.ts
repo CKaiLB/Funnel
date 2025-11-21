@@ -81,14 +81,16 @@ export function computeRoi(inputs: RoiInputs): RoiOutputs {
 
   // Conversions and revenue (with AI capacity increase)
   // AI enables handling 30% more leads without proportional cost
-  const effectiveMonthlyLeads = monthlyLeads * (1 + ASSUMPTIONS.clientCapacityIncrease)
+  // Handle zero leads gracefully
+  const effectiveMonthlyLeads = Math.max(0, monthlyLeads * (1 + ASSUMPTIONS.clientCapacityIncrease))
   const additionalConversionsPerMonth = Math.max(
     0,
     Math.round((effectiveMonthlyLeads * (improvedCloseRatePct - currentCloseRatePct)) / 100)
   )
   
   // Base additional revenue from improved conversion
-  const baseAdditionalMonthlyRevenue = additionalConversionsPerMonth * averageCustomerValueUsd
+  // Handle zero customer value gracefully
+  const baseAdditionalMonthlyRevenue = additionalConversionsPerMonth * Math.max(averageCustomerValueUsd, 0)
   
   // Compounding effect: improved retention increases lifetime value
   // 20% retention improvement = ~25% increase in customer lifetime value

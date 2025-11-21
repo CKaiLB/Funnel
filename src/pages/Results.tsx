@@ -87,18 +87,20 @@ export default function Results() {
   const yearlyGrowthPotential = roi.totalAnnualImpactUsd;
 
   // Calculate AI impact on new KPIs (using ROI calculation values)
-  const improvedCloseRate = Math.min(100, roi.improvedCloseRatePct);
-  const improvedShowUpRate = Math.min(100, answers.showUpRate + 15); // +15% from automated reminders
+  // Handle zero values gracefully
+  const improvedCloseRate = Math.min(100, Math.max(0, roi.improvedCloseRatePct));
+  const improvedShowUpRate = Math.min(100, Math.max(0, answers.showUpRate + 15)); // +15% from automated reminders
   const improvedChurnRate = Math.max(0, answers.churnRate * 0.6); // 40% reduction from better engagement
-  const additionalConversions = Math.round((answers.monthlyLeads * (improvedCloseRate - answers.closeRate)) / 100);
-  const additionalRevenueFromConversions = additionalConversions * calculated.customerValue;
-  const revenueSavedFromChurn = (answers.monthlyClients * (answers.churnRate - improvedChurnRate) / 100) * calculated.customerValue;
+  const additionalConversions = Math.max(0, Math.round((answers.monthlyLeads * (improvedCloseRate - answers.closeRate)) / 100));
+  const additionalRevenueFromConversions = additionalConversions * Math.max(calculated.customerValue, 0);
+  const revenueSavedFromChurn = Math.max(0, (answers.monthlyClients * (answers.churnRate - improvedChurnRate) / 100) * Math.max(calculated.customerValue, 0));
 
   // Calculate AI revenue improvements per month
   // Base monthly revenue increase from AI improvements (close rate, churn, show-up rate)
   // Compounding growth calculation based on data-backed ROI
-  const monthlyRevenueIncrease = monthlyRevenuePotential; // From close rate, churn reduction, etc.
-  const aiMonthlyRevenue = answers.monthlyRevenue + monthlyRevenueIncrease;
+  // Handle zero revenue gracefully
+  const monthlyRevenueIncrease = Math.max(0, monthlyRevenuePotential); // From close rate, churn reduction, etc.
+  const aiMonthlyRevenue = Math.max(0, answers.monthlyRevenue) + monthlyRevenueIncrease;
   const naturalGrowthRate = 0.01; // 1% natural monthly growth (conservative baseline)
   
   // Compounding growth rate from ROI calculation (reinvested time savings compound)
@@ -114,9 +116,11 @@ export default function Results() {
     const month = i + 1;
     
     // Baseline: Current revenue with minimal natural growth, cumulative
+    // Handle zero revenue - start from a minimum baseline if needed
+    const baseRevenue = Math.max(0, answers.monthlyRevenue);
     let cumulativeBaseline = 0;
     for (let m = 1; m <= month; m++) {
-      const monthlyBaseline = answers.monthlyRevenue * Math.pow(1 + naturalGrowthRate, m - 1);
+      const monthlyBaseline = baseRevenue * Math.pow(1 + naturalGrowthRate, m - 1);
       cumulativeBaseline += monthlyBaseline;
     }
     
@@ -125,7 +129,7 @@ export default function Results() {
     // Month 2+: Previous month's revenue + compounding growth from reinvested time savings
     // Each month, saved time compounds into more capacity = more revenue = more time saved
     let cumulativeAI = 0;
-    let currentAIMonthlyRevenue = aiMonthlyRevenue;
+    let currentAIMonthlyRevenue = Math.max(0, aiMonthlyRevenue);
     
     for (let m = 1; m <= month; m++) {
       // Compounding effect: each month builds on the previous
@@ -174,15 +178,22 @@ export default function Results() {
   const generateInsights = () => {
     const insights = [];
 
-    // Close rate insights
-    if (answers.closeRate < 20) {
+    // Close rate insights - handle zero values
+    if (answers.closeRate === 0 && answers.monthlyLeads > 0) {
+      insights.push({
+        icon: <TrendingUp className="w-6 h-6 text-green-400" />,
+        title: "Starting from Zero - Massive Opportunity",
+        content: `You're currently at 0% close rate with ${answers.monthlyLeads} leads/month. With AI-powered follow-up sequences, you could achieve ${improvedCloseRate.toFixed(1)}% close rate, converting ${additionalConversions} more leads per month. That's an additional $${additionalRevenueFromConversions.toLocaleString()}/month in revenue.`,
+        color: "green",
+      });
+    } else if (answers.closeRate < 20 && answers.closeRate > 0) {
       insights.push({
         icon: <TrendingDown className="w-6 h-6 text-red-400" />,
         title: "Low Close Rate Opportunity",
         content: `Your current close rate of ${answers.closeRate}% is below industry average. With AI-powered follow-up sequences, you could increase this to ${improvedCloseRate.toFixed(1)}%, converting ${additionalConversions} more leads per month. That's an additional $${additionalRevenueFromConversions.toLocaleString()}/month in revenue.`,
         color: "red",
       });
-    } else {
+    } else if (answers.closeRate >= 20) {
       insights.push({
         icon: <TrendingUp className="w-6 h-6 text-green-400" />,
         title: "Strong Close Rate with Growth Potential",
@@ -191,8 +202,15 @@ export default function Results() {
       });
     }
 
-    // Show-up rate insights
-    if (answers.showUpRate < 70) {
+    // Show-up rate insights - handle zero values
+    if (answers.showUpRate === 0 && answers.monthlyLeads > 0) {
+      insights.push({
+        icon: <Clock className="w-6 h-6 text-orange-400" />,
+        title: "Show-Up Rate Opportunity",
+        content: `Starting with 0% show-up rate? AI-powered automated reminders and calendar sync can dramatically improve this to ${improvedShowUpRate.toFixed(1)}%, ensuring you maximize every lead opportunity.`,
+        color: "orange",
+      });
+    } else if (answers.showUpRate > 0 && answers.showUpRate < 70) {
       insights.push({
         icon: <Clock className="w-6 h-6 text-orange-400" />,
         title: "Show-Up Rate Leak",
@@ -201,32 +219,53 @@ export default function Results() {
       });
     }
 
-    // Churn rate insights
-    if (answers.churnRate > 5) {
+    // Churn rate insights - handle zero values
+    if (answers.churnRate > 5 && answers.monthlyClients > 0) {
       insights.push({
         icon: <Users className="w-6 h-6 text-purple-400" />,
         title: "High Churn Impact",
         content: `Your ${answers.churnRate}% monthly churn rate means you're losing ${Math.round(answers.monthlyClients * answers.churnRate / 100)} clients per month, costing $${revenueSavedFromChurn.toLocaleString()}/month. AI-driven engagement sequences and automated check-ins can reduce churn to ${improvedChurnRate.toFixed(1)}%, saving $${revenueSavedFromChurn.toLocaleString()}/month in retained revenue.`,
         color: "purple",
       });
+    } else if (answers.churnRate === 0 && answers.monthlyClients > 0) {
+      insights.push({
+        icon: <Users className="w-6 h-6 text-green-400" />,
+        title: "Maintain Zero Churn",
+        content: `Great job maintaining 0% churn! AI-driven engagement sequences and automated check-ins can help you maintain this perfect retention rate as you scale, ensuring long-term client relationships.`,
+        color: "green",
+      });
     }
 
-    // Admin hours insights
+    // Admin hours insights - handle zero values
     if (answers.weeklyAdminHours > 10) {
       insights.push({
         icon: <Zap className="w-6 h-6 text-blue-400" />,
         title: "Massive Time Bottleneck",
-        content: `You're spending ${answers.weeklyAdminHours} hours/week on repetitive tasks—that's ${Math.round(answers.weeklyAdminHours * 52 / 40)} weeks of full-time work per year. AI can automate 70-90% of this, freeing up ${hoursSavedWeekly} hours/week. If reinvested into ${answers.reinvestmentFocus.toLowerCase()}, this could scale your business from ${answers.monthlyClients} to ${Math.round(answers.monthlyClients * 1.8)} clients within 90 days.`,
+        content: `You're spending ${answers.weeklyAdminHours} hours/week on repetitive tasks—that's ${Math.round(answers.weeklyAdminHours * 52 / 40)} weeks of full-time work per year. AI can automate 70-90% of this, freeing up ${hoursSavedWeekly} hours/week. If reinvested into ${answers.reinvestmentFocus.toLowerCase()}, this could scale your business from ${answers.monthlyClients} to ${Math.round(Math.max(answers.monthlyClients, 1) * 1.8)} clients within 90 days.`,
+        color: "blue",
+      });
+    } else if (answers.weeklyAdminHours === 0) {
+      insights.push({
+        icon: <Zap className="w-6 h-6 text-blue-400" />,
+        title: "Prevent Future Time Waste",
+        content: `As your business grows, admin tasks will multiply. AI automation can prevent you from spending 10-20+ hours/week on repetitive work, allowing you to scale efficiently from day one.`,
         color: "blue",
       });
     }
 
-    // Lead volume insights
-    if (answers.monthlyLeads < answers.monthlyClients * 2) {
+    // Lead volume insights - handle zero values
+    if (answers.monthlyLeads === 0) {
       insights.push({
         icon: <Target className="w-6 h-6 text-cyan-400" />,
         title: "Lead Generation Opportunity",
-        content: `You're currently converting ${answers.monthlyClients} clients from ${answers.monthlyLeads} leads monthly. With AI automating your outreach and follow-up, you could handle ${Math.round(answers.monthlyLeads * 1.5)} leads/month without additional time investment, potentially growing to ${Math.round(answers.monthlyClients * 1.5)} clients.`,
+        content: `Starting with 0 leads? AI can help you generate and nurture leads from day one. With automated outreach and follow-up systems, you can scale your lead generation without proportional time investment.`,
+        color: "cyan",
+      });
+    } else if (answers.monthlyLeads > 0 && answers.monthlyLeads < Math.max(answers.monthlyClients, 1) * 2) {
+      insights.push({
+        icon: <Target className="w-6 h-6 text-cyan-400" />,
+        title: "Lead Generation Opportunity",
+        content: `You're currently converting ${answers.monthlyClients} clients from ${answers.monthlyLeads} leads monthly. With AI automating your outreach and follow-up, you could handle ${Math.round(answers.monthlyLeads * 1.5)} leads/month without additional time investment, potentially growing to ${Math.round(Math.max(answers.monthlyClients, 1) * 1.5)} clients.`,
         color: "cyan",
       });
     }

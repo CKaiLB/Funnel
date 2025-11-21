@@ -163,7 +163,10 @@ export function QuizModal({ isOpen, onClose }: QuizModalProps) {
     await new Promise(resolve => setTimeout(resolve, 500));
 
     // Calculate derived values for ROI
-    const customerValue = answers.monthlyRevenue / Math.max(answers.monthlyClients, 1);
+    // Handle zero values gracefully - use defaults if needed
+    const customerValue = answers.monthlyClients > 0 
+      ? answers.monthlyRevenue / answers.monthlyClients 
+      : (answers.monthlyRevenue > 0 ? answers.monthlyRevenue : 500); // Default $500 if no clients/revenue
     // Use actual business expenses instead of estimate
     // Total monthly operational costs = hiring + training + operational expenses
     const monthlyStaffPayment = answers.monthlyHiringCosts + 
@@ -195,11 +198,11 @@ export function QuizModal({ isOpen, onClose }: QuizModalProps) {
   const canProceed = () => {
     switch (currentStep) {
       case 1:
-        return answers.monthlyClients > 0 && answers.monthlyLeads > 0;
+        return answers.monthlyClients >= 0 && answers.monthlyLeads >= 0;
       case 2:
-        return answers.monthlyRevenue > 0 && answers.closeRate > 0 && answers.closeRate <= 100;
+        return answers.monthlyRevenue >= 0 && answers.closeRate >= 0 && answers.closeRate <= 100;
       case 3:
-        return answers.weeklyAdminHours > 0 && answers.showUpRate > 0 && answers.showUpRate <= 100;
+        return answers.weeklyAdminHours >= 0 && answers.showUpRate >= 0 && answers.showUpRate <= 100;
       case 4:
         return answers.churnRate >= 0 && answers.churnRate <= 100 && answers.reinvestmentFocus.length > 0;
       case 5:
@@ -374,10 +377,18 @@ export function QuizModal({ isOpen, onClose }: QuizModalProps) {
                   </Label>
                   <Input
                     id="monthlyClients"
-                    type="number"
-                    min="1"
-                    value={answers.monthlyClients || ""}
-                    onChange={(e) => updateAnswer("monthlyClients", parseInt(e.target.value) || 0)}
+                    type="text"
+                    inputMode="numeric"
+                    value={answers.monthlyClients === 0 ? "0" : answers.monthlyClients || ""}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (val === "") {
+                        updateAnswer("monthlyClients", 0);
+                      } else if (/^\d+$/.test(val)) {
+                        const num = parseInt(val, 10);
+                        updateAnswer("monthlyClients", num);
+                      }
+                    }}
                     className="bg-gray-800/50 border-2 border-blue-500/30 text-white text-lg py-6"
                     placeholder="Enter number of clients"
                     autoFocus
@@ -389,10 +400,18 @@ export function QuizModal({ isOpen, onClose }: QuizModalProps) {
                   </Label>
                   <Input
                     id="monthlyLeads"
-                    type="number"
-                    min="1"
-                    value={answers.monthlyLeads || ""}
-                    onChange={(e) => updateAnswer("monthlyLeads", parseInt(e.target.value) || 0)}
+                    type="text"
+                    inputMode="numeric"
+                    value={answers.monthlyLeads === 0 ? "0" : answers.monthlyLeads || ""}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (val === "") {
+                        updateAnswer("monthlyLeads", 0);
+                      } else if (/^\d+$/.test(val)) {
+                        const num = parseInt(val, 10);
+                        updateAnswer("monthlyLeads", num);
+                      }
+                    }}
                     className="bg-gray-800/50 border-2 border-blue-500/30 text-white text-lg py-6"
                     placeholder="Enter number of leads"
                   />
@@ -415,10 +434,18 @@ export function QuizModal({ isOpen, onClose }: QuizModalProps) {
                   </Label>
                   <Input
                     id="monthlyRevenue"
-                    type="number"
-                    min="0"
-                    value={answers.monthlyRevenue || ""}
-                    onChange={(e) => updateAnswer("monthlyRevenue", parseInt(e.target.value) || 0)}
+                    type="text"
+                    inputMode="numeric"
+                    value={answers.monthlyRevenue === 0 ? "0" : answers.monthlyRevenue || ""}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/[^\d]/g, "");
+                      if (val === "") {
+                        updateAnswer("monthlyRevenue", 0);
+                      } else {
+                        const num = parseInt(val, 10);
+                        updateAnswer("monthlyRevenue", num);
+                      }
+                    }}
                     className="bg-gray-800/50 border-2 border-blue-500/30 text-white text-lg py-6"
                     placeholder="Enter monthly revenue ($)"
                     autoFocus
@@ -430,12 +457,22 @@ export function QuizModal({ isOpen, onClose }: QuizModalProps) {
                   </Label>
                   <Input
                     id="closeRate"
-                    type="number"
-                    min="0"
-                    max="100"
-                    step="0.1"
-                    value={answers.closeRate || ""}
-                    onChange={(e) => updateAnswer("closeRate", parseFloat(e.target.value) || 0)}
+                    type="text"
+                    inputMode="decimal"
+                    value={answers.closeRate === 0 ? "0" : answers.closeRate || ""}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/[^\d.]/g, "").replace(/\./g, (match, offset, string) => {
+                        return string.indexOf(".") === offset ? match : "";
+                      });
+                      if (val === "" || val === ".") {
+                        updateAnswer("closeRate", 0);
+                      } else {
+                        const num = parseFloat(val);
+                        if (!isNaN(num) && num >= 0 && num <= 100) {
+                          updateAnswer("closeRate", num);
+                        }
+                      }
+                    }}
                     className="bg-gray-800/50 border-2 border-blue-500/30 text-white text-lg py-6"
                     placeholder="Enter close rate (e.g., 15)"
                   />
@@ -461,11 +498,22 @@ export function QuizModal({ isOpen, onClose }: QuizModalProps) {
                   </Label>
                   <Input
                     id="weeklyAdminHours"
-                    type="number"
-                    min="0"
-                    step="0.5"
-                    value={answers.weeklyAdminHours || ""}
-                    onChange={(e) => updateAnswer("weeklyAdminHours", parseFloat(e.target.value) || 0)}
+                    type="text"
+                    inputMode="decimal"
+                    value={answers.weeklyAdminHours === 0 ? "0" : answers.weeklyAdminHours || ""}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/[^\d.]/g, "").replace(/\./g, (match, offset, string) => {
+                        return string.indexOf(".") === offset ? match : "";
+                      });
+                      if (val === "" || val === ".") {
+                        updateAnswer("weeklyAdminHours", 0);
+                      } else {
+                        const num = parseFloat(val);
+                        if (!isNaN(num) && num >= 0) {
+                          updateAnswer("weeklyAdminHours", num);
+                        }
+                      }
+                    }}
                     className="bg-gray-800/50 border-2 border-blue-500/30 text-white text-lg py-6"
                     placeholder="Enter hours per week"
                     autoFocus
@@ -480,12 +528,22 @@ export function QuizModal({ isOpen, onClose }: QuizModalProps) {
                   </Label>
                   <Input
                     id="showUpRate"
-                    type="number"
-                    min="0"
-                    max="100"
-                    step="0.1"
-                    value={answers.showUpRate || ""}
-                    onChange={(e) => updateAnswer("showUpRate", parseFloat(e.target.value) || 0)}
+                    type="text"
+                    inputMode="decimal"
+                    value={answers.showUpRate === 0 ? "0" : answers.showUpRate || ""}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/[^\d.]/g, "").replace(/\./g, (match, offset, string) => {
+                        return string.indexOf(".") === offset ? match : "";
+                      });
+                      if (val === "" || val === ".") {
+                        updateAnswer("showUpRate", 0);
+                      } else {
+                        const num = parseFloat(val);
+                        if (!isNaN(num) && num >= 0 && num <= 100) {
+                          updateAnswer("showUpRate", num);
+                        }
+                      }
+                    }}
                     className="bg-gray-800/50 border-2 border-blue-500/30 text-white text-lg py-6"
                     placeholder="Enter show-up rate (e.g., 70)"
                   />
@@ -511,12 +569,22 @@ export function QuizModal({ isOpen, onClose }: QuizModalProps) {
                   </Label>
                   <Input
                     id="churnRate"
-                    type="number"
-                    min="0"
-                    max="100"
-                    step="0.1"
-                    value={answers.churnRate || ""}
-                    onChange={(e) => updateAnswer("churnRate", parseFloat(e.target.value) || 0)}
+                    type="text"
+                    inputMode="decimal"
+                    value={answers.churnRate === 0 ? "0" : answers.churnRate || ""}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/[^\d.]/g, "").replace(/\./g, (match, offset, string) => {
+                        return string.indexOf(".") === offset ? match : "";
+                      });
+                      if (val === "" || val === ".") {
+                        updateAnswer("churnRate", 0);
+                      } else {
+                        const num = parseFloat(val);
+                        if (!isNaN(num) && num >= 0 && num <= 100) {
+                          updateAnswer("churnRate", num);
+                        }
+                      }
+                    }}
                     className="bg-gray-800/50 border-2 border-blue-500/30 text-white text-lg py-6"
                     placeholder="Enter churn rate (e.g., 5)"
                     autoFocus
@@ -569,11 +637,18 @@ export function QuizModal({ isOpen, onClose }: QuizModalProps) {
                   </Label>
                   <Input
                     id="monthlyHiringCosts"
-                    type="number"
-                    min="0"
-                    step="100"
-                    value={answers.monthlyHiringCosts || ""}
-                    onChange={(e) => updateAnswer("monthlyHiringCosts", parseFloat(e.target.value) || 0)}
+                    type="text"
+                    inputMode="numeric"
+                    value={answers.monthlyHiringCosts === 0 ? "0" : answers.monthlyHiringCosts || ""}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/[^\d]/g, "");
+                      if (val === "") {
+                        updateAnswer("monthlyHiringCosts", 0);
+                      } else {
+                        const num = parseInt(val, 10);
+                        updateAnswer("monthlyHiringCosts", num);
+                      }
+                    }}
                     className="bg-gray-800/50 border-2 border-blue-500/30 text-white text-lg py-6"
                     placeholder="Enter monthly hiring costs (e.g., 2000)"
                     autoFocus
@@ -588,11 +663,18 @@ export function QuizModal({ isOpen, onClose }: QuizModalProps) {
                   </Label>
                   <Input
                     id="monthlyTrainingCosts"
-                    type="number"
-                    min="0"
-                    step="100"
-                    value={answers.monthlyTrainingCosts || ""}
-                    onChange={(e) => updateAnswer("monthlyTrainingCosts", parseFloat(e.target.value) || 0)}
+                    type="text"
+                    inputMode="numeric"
+                    value={answers.monthlyTrainingCosts === 0 ? "0" : answers.monthlyTrainingCosts || ""}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/[^\d]/g, "");
+                      if (val === "") {
+                        updateAnswer("monthlyTrainingCosts", 0);
+                      } else {
+                        const num = parseInt(val, 10);
+                        updateAnswer("monthlyTrainingCosts", num);
+                      }
+                    }}
                     className="bg-gray-800/50 border-2 border-blue-500/30 text-white text-lg py-6"
                     placeholder="Enter monthly training costs (e.g., 1500)"
                   />
@@ -606,11 +688,18 @@ export function QuizModal({ isOpen, onClose }: QuizModalProps) {
                   </Label>
                   <Input
                     id="monthlyOperationalExpenses"
-                    type="number"
-                    min="0"
-                    step="100"
-                    value={answers.monthlyOperationalExpenses || ""}
-                    onChange={(e) => updateAnswer("monthlyOperationalExpenses", parseFloat(e.target.value) || 0)}
+                    type="text"
+                    inputMode="numeric"
+                    value={answers.monthlyOperationalExpenses === 0 ? "0" : answers.monthlyOperationalExpenses || ""}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/[^\d]/g, "");
+                      if (val === "") {
+                        updateAnswer("monthlyOperationalExpenses", 0);
+                      } else {
+                        const num = parseInt(val, 10);
+                        updateAnswer("monthlyOperationalExpenses", num);
+                      }
+                    }}
                     className="bg-gray-800/50 border-2 border-blue-500/30 text-white text-lg py-6"
                     placeholder="Enter monthly operational expenses (e.g., 5000)"
                   />
