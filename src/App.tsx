@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import AIRoadmap from "./pages/AIRoadmap";
 import SalesFunnelPlaybook from "./pages/SalesFunnelPlaybook";
 import Results from "./pages/Results";
+import Admin from "./pages/Admin";
 
 // Validate environment variables in development
 if (import.meta.env.DEV) {
@@ -36,6 +37,7 @@ const App = () => (
           <Route path="/ai-roadmap" element={<AIRoadmap />} />
           <Route path="/sales-funnel-playbook" element={<SalesFunnelPlaybook />} />
           <Route path="/results" element={<Results />} />
+          <Route path="/admin" element={<Admin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
