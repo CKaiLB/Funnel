@@ -88,16 +88,28 @@ export default function Results() {
 
   // Calculate AI impact on new KPIs (using ROI calculation values)
   // Handle zero values gracefully
-  // Close rate: Already calculated as percentage increase in ROI (multiplied, not added)
-  const improvedCloseRate = Math.min(100, Math.max(0, roi.improvedCloseRatePct));
-  // Show-up rate: 15% improvement from baseline (multiply, not add)
-  const showUpRateImprovement = 1.15; // 15% increase from baseline
-  const improvedShowUpRate = Math.min(100, Math.max(0, answers.showUpRate * showUpRateImprovement));
-  // Churn rate: 40% reduction (multiply by 0.6)
-  const improvedChurnRate = Math.max(0, answers.churnRate * 0.6);
+  // Close rate: Already calculated asymptotically in ROI (moves closer to 100%, never reaches it)
+  const improvedCloseRate = Math.min(99.99, Math.max(0, roi.improvedCloseRatePct));
+  // Show-up rate: 15% improvement - asymptotically approaches 100%
+  // Move 15% closer to 100% (not multiply by 1.15)
+  const showUpRateImprovement = 0.15; // 15% of remaining gap
+  const gapTo100ShowUp = 100 - answers.showUpRate;
+  const improvedShowUpRate = Math.min(99.99, Math.max(0, answers.showUpRate + (gapTo100ShowUp * showUpRateImprovement)));
+  // Churn rate: 40% reduction (multiply by 0.6) - approaches 0% asymptotically
+  const improvedChurnRate = Math.max(0.01, answers.churnRate * 0.6); // Never reach exactly 0%
   const additionalConversions = Math.max(0, Math.round((answers.monthlyLeads * (improvedCloseRate - answers.closeRate)) / 100));
   const additionalRevenueFromConversions = additionalConversions * Math.max(calculated.customerValue, 0);
   const revenueSavedFromChurn = Math.max(0, (answers.monthlyClients * (answers.churnRate - improvedChurnRate) / 100) * Math.max(calculated.customerValue, 0));
+  
+  // Calculate potential increase in clients
+  // Based on: improved close rate + capacity increase + reduced churn
+  // Industry data: AI enables 30% capacity increase without proportional cost (Financial Model Excel)
+  // Research: AI automation allows handling 30% more clients without proportional cost increase
+  const capacityIncreaseFactor = 1 + (roi.capacityIncreasePct / 100); // e.g., 1.30 for 30% increase
+  const potentialMonthlyClients = Math.round(
+    answers.monthlyClients * capacityIncreaseFactor + additionalConversions
+  );
+  const potentialClientIncrease = potentialMonthlyClients - answers.monthlyClients;
 
   // Calculate AI revenue improvements per month
   // Base monthly revenue increase from AI improvements (close rate, churn, show-up rate)
@@ -269,7 +281,17 @@ export default function Results() {
       insights.push({
         icon: <Target className="w-6 h-6 text-cyan-400" />,
         title: "Lead Generation Opportunity",
-        content: `You're currently converting ${answers.monthlyClients} clients from ${answers.monthlyLeads} leads monthly. With AI automating your outreach and follow-up, you could handle ${Math.round(answers.monthlyLeads * 1.5)} leads/month without additional time investment, potentially growing to ${Math.round(Math.max(answers.monthlyClients, 1) * 1.5)} clients.`,
+        content: `You're currently converting ${answers.monthlyClients} clients from ${answers.monthlyLeads} leads monthly. With AI automating your outreach and follow-up, you could handle ${Math.round(answers.monthlyLeads * capacityIncreaseFactor)} leads/month without additional time investment, potentially growing to ${potentialMonthlyClients} clients (${potentialClientIncrease > 0 ? `+${potentialClientIncrease}` : 'no change'} increase).`,
+        color: "cyan",
+      });
+    }
+
+    // Client capacity increase insight
+    if (potentialClientIncrease > 0) {
+      insights.push({
+        icon: <Users className="w-6 h-6 text-cyan-400" />,
+        title: "Client Capacity Expansion",
+        content: `With AI automation handling ${roi.capacityIncreasePct.toFixed(0)}% more capacity without proportional cost (industry standard: 30% from Financial Model Excel), you could scale from ${answers.monthlyClients} to ${potentialMonthlyClients} monthly clients. This includes ${additionalConversions} additional conversions from improved close rates plus capacity expansion from automated systems.`,
         color: "cyan",
       });
     }
@@ -655,7 +677,7 @@ export default function Results() {
           </div>
 
           {/* Key Metrics Grid - Compact on mobile */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3 md:gap-4">
             <Card className="p-3 sm:p-4 bg-gray-900/80 border border-blue-500/30">
               <div className="text-xs sm:text-sm text-gray-400 mb-1">Current Close Rate</div>
               <div className="text-xl sm:text-2xl font-bold text-blue-400">{answers.closeRate}%</div>
@@ -674,7 +696,12 @@ export default function Results() {
             <Card className="p-3 sm:p-4 bg-gray-900/80 border border-green-500/30">
               <div className="text-xs sm:text-sm text-gray-400 mb-1">Monthly Leads</div>
               <div className="text-xl sm:text-2xl font-bold text-green-400">{answers.monthlyLeads}</div>
-              <div className="text-xs text-green-400 mt-1">Potential: {Math.round(answers.monthlyLeads * 1.5)}</div>
+              <div className="text-xs text-green-400 mt-1">Potential: {Math.round(answers.monthlyLeads * capacityIncreaseFactor)}</div>
+            </Card>
+            <Card className="p-3 sm:p-4 bg-gray-900/80 border border-cyan-500/30">
+              <div className="text-xs sm:text-sm text-gray-400 mb-1">Potential Clients</div>
+              <div className="text-xl sm:text-2xl font-bold text-cyan-400">{answers.monthlyClients}</div>
+              <div className="text-xs text-green-400 mt-1">→ {potentialMonthlyClients} (+{potentialClientIncrease})</div>
             </Card>
           </div>
         </motion.section>

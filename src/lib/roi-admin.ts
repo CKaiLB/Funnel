@@ -97,12 +97,21 @@ export function computeRoiWithCalibration(
     calibration.compoundingGrowthRate * 1.6 // 4% liberal
   );
 
-  // Close rate improvement
+  // Close rate improvement - asymptotically approaches 100% but never reaches it
+  // Formula: newRate = currentRate + (improvementFactor * (100 - currentRate))
+  // This means a 25% improvement moves 25% closer to 100%, not multiplies by 1.25
   const responseTimeUpliftFactor = computeResponseTimeUplift(avgInitialResponseTimeMinutes)
+  // Combined improvement factor (e.g., 1.27 = 27% improvement)
+  const totalImprovementFactor = responseTimeUpliftFactor * followUpUpliftFactor
+  // Convert to improvement percentage (e.g., 1.27 -> 0.27 = 27%)
+  const improvementPercentage = totalImprovementFactor - 1
+  // Apply asymptotic improvement: move improvementPercentage% closer to 100%
+  const gapTo100 = 100 - currentCloseRatePct
+  const improvementAmount = gapTo100 * improvementPercentage
   const improvedCloseRatePct = clamp(
-    currentCloseRatePct * responseTimeUpliftFactor * followUpUpliftFactor,
+    currentCloseRatePct + improvementAmount,
     0,
-    100
+    99.99 // Never reach exactly 100%
   )
 
   // Conversions and revenue (with AI capacity increase)

@@ -81,12 +81,25 @@ export default function Admin() {
     (roi.additionalAnnualRevenueUsd / 12) + (roi.annualStaffSavingsUsd / 12)
   );
   const yearlyGrowthPotential = roi.totalAnnualImpactUsd;
-  const improvedCloseRate = Math.min(100, Math.max(0, roi.improvedCloseRatePct));
-  // Show-up rate: 15% improvement from baseline (multiply, not add)
-  const showUpRateImprovement = 1.15; // 15% increase from baseline
-  const improvedShowUpRate = Math.min(100, Math.max(0, answers.showUpRate * showUpRateImprovement));
-  // Churn rate: 40% reduction (multiply by 0.6)
-  const improvedChurnRate = Math.max(0, answers.churnRate * 0.6);
+  // Close rate: Already calculated asymptotically in ROI (moves closer to 100%, never reaches it)
+  const improvedCloseRate = Math.min(99.99, Math.max(0, roi.improvedCloseRatePct));
+  // Show-up rate: 15% improvement - asymptotically approaches 100%
+  // Move 15% closer to 100% (not multiply by 1.15)
+  const showUpRateImprovement = 0.15; // 15% of remaining gap
+  const gapTo100ShowUp = 100 - answers.showUpRate;
+  const improvedShowUpRate = Math.min(99.99, Math.max(0, answers.showUpRate + (gapTo100ShowUp * showUpRateImprovement)));
+  // Churn rate: 40% reduction (multiply by 0.6) - approaches 0% asymptotically
+  const improvedChurnRate = Math.max(0.01, answers.churnRate * 0.6); // Never reach exactly 0%
+  
+  // Calculate potential increase in clients
+  // Based on: improved close rate + capacity increase + reduced churn
+  // Industry data: AI enables 30% capacity increase without proportional cost (Financial Model Excel)
+  const capacityIncreaseFactor = 1 + (roi.capacityIncreasePct / 100);
+  const additionalConversions = Math.max(0, Math.round((answers.monthlyLeads * (improvedCloseRate - answers.closeRate)) / 100));
+  const potentialMonthlyClients = Math.round(
+    answers.monthlyClients * capacityIncreaseFactor + additionalConversions
+  );
+  const potentialClientIncrease = potentialMonthlyClients - answers.monthlyClients;
 
   // Growth curve calculation
   const monthlyRevenueIncrease = Math.max(0, monthlyRevenuePotential);
@@ -520,7 +533,7 @@ export default function Admin() {
         <div className="w-1/2 overflow-y-auto bg-gray-900">
           <div className="p-6 space-y-6">
             {/* Key Metrics */}
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               <Card className="p-4 bg-gradient-to-br from-blue-600/20 to-purple-600/20 border-2 border-blue-500/40">
                 <DollarSign className="w-8 h-8 text-blue-400 mb-2" />
                 <div className="text-2xl font-black text-blue-400 mb-1">
@@ -541,6 +554,14 @@ export default function Admin() {
                   ${yearlyGrowthPotential.toLocaleString()}+
                 </div>
                 <p className="text-xs text-gray-400">Yearly Growth Potential</p>
+              </Card>
+              <Card className="p-4 bg-gradient-to-br from-cyan-600/20 to-blue-600/20 border-2 border-cyan-500/40">
+                <Users className="w-8 h-8 text-cyan-400 mb-2" />
+                <div className="text-2xl font-black text-cyan-400 mb-1">
+                  {answers.monthlyClients}
+                </div>
+                <div className="text-xs text-green-400 mt-1">→ {potentialMonthlyClients} (+{potentialClientIncrease})</div>
+                <p className="text-xs text-gray-400 mt-1">Potential Monthly Clients</p>
               </Card>
             </div>
 
