@@ -7,7 +7,7 @@ import Index from "./pages/Index";
 import Newsletter from "./pages/Newsletter";
 import NotFound from "./pages/NotFound";
 import AIRoadmap from "./pages/AIRoadmap";
-import SalesFunnelPlaybook from "./pages/SalesFunnelPlaybook";
+import AIPlaybook from "./pages/AIPlaybook";
 import Results from "./pages/Results";
 import Admin from "./pages/Admin";
 
@@ -35,7 +35,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/newsletter" element={<Newsletter />} />
           <Route path="/ai-roadmap" element={<AIRoadmap />} />
-          <Route path="/sales-funnel-playbook" element={<SalesFunnelPlaybook />} />
+          <Route path="/sales-funnel-playbook" element={<AIPlaybook />} />
+          <Route path="/ai-playbook" element={<AIPlaybook />} />
           <Route path="/results" element={<Results />} />
           <Route path="/admin" element={<Admin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
