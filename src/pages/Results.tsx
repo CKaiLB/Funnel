@@ -458,7 +458,7 @@ export default function Results() {
             {answers.firstName}'s AI Revenue Opportunity
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-4 sm:mb-6 md:mb-8 px-2">
-            Based on your inputs, you're missing out on:
+            While you're operating manually, the industry is automating. Here's what it's costing you:
           </p>
 
           {/* Big Animated Stats - Compact on mobile */}
@@ -473,7 +473,7 @@ export default function Results() {
                 <div className="text-2xl sm:text-3xl md:text-4xl font-black text-blue-400 mb-1 sm:mb-2">
                   ${animatedValues.monthlyRevenue.toLocaleString()}
                 </div>
-                <p className="text-xs sm:text-sm md:text-base text-gray-600">Monthly Revenue Potential</p>
+                <p className="text-xs sm:text-sm md:text-base text-gray-600">Monthly Revenue You're Missing</p>
               </Card>
             </motion.div>
 
@@ -487,7 +487,7 @@ export default function Results() {
                 <div className="text-2xl sm:text-3xl md:text-4xl font-black text-purple-400 mb-1 sm:mb-2">
                   {animatedValues.hoursSaved}h
                 </div>
-                <p className="text-xs sm:text-sm md:text-base text-gray-600">Hours Saved/Week</p>
+                <p className="text-xs sm:text-sm md:text-base text-gray-600">Time Lost Weekly</p>
               </Card>
             </motion.div>
 
@@ -501,7 +501,7 @@ export default function Results() {
                 <div className="text-2xl sm:text-3xl md:text-4xl font-black text-green-400 mb-1 sm:mb-2">
                   ${animatedValues.yearlyGrowth.toLocaleString()}+
                 </div>
-                <p className="text-xs sm:text-sm md:text-base text-gray-600">Yearly Growth Potential</p>
+                <p className="text-xs sm:text-sm md:text-base text-gray-600">Yearly Opportunity Cost</p>
               </Card>
             </motion.div>
           </div>
@@ -563,7 +563,7 @@ export default function Results() {
           className="mb-6 sm:mb-12"
         >
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-4 sm:mb-6 md:mb-8 text-center px-2">
-            Your Business Growth Dashboard
+            Scaling Potential with AI Systems
           </h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-4 sm:mb-6 md:mb-8">
@@ -715,7 +715,7 @@ export default function Results() {
           className="mb-6 sm:mb-12"
         >
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-4 sm:mb-6 text-center px-2">
-            Your Business Intelligence Report
+            Key Opportunities for Growth
           </h2>
 
           <div className="space-y-3 sm:space-y-4 md:space-y-6">

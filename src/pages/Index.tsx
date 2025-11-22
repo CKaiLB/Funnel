@@ -197,7 +197,7 @@ export default function Index() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            Calculate Your Free AI Revenue Report for Online Fitness Coaches
+            Check the AI Scaling Potential of your Coaching Business
           </motion.h1>
           
           {/* Subheadline - fades in */}
@@ -207,7 +207,7 @@ export default function Index() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            See exactly how much revenue you're leaving on the table and how top coaches are scaling to 7-figures on autopilot...
+            Top coaches are scaling to 7-figures while you're still trading hours for dollars. See exactly what you're missing and how much it's costing you.
           </motion.p>
 
           {/* AI Revenue Report Graphic - floats upward, larger on mobile */}
@@ -278,7 +278,7 @@ export default function Index() {
                   <DollarSign className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                 </div>
                 <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 sm:mb-3">Find Your Hidden Revenue</h3>
-                <p className="text-sm sm:text-base text-gray-300">See exactly how much revenue you're losing by not automating.</p>
+                <p className="text-sm sm:text-base text-gray-300">Every month without automation, you're leaving money on the table. See exactly how much.</p>
               </div>
             </Card>
           </motion.div>
@@ -296,7 +296,7 @@ export default function Index() {
                   <Clock className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                 </div>
                 <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 sm:mb-3">Spot Operational Leaks</h3>
-                <p className="text-sm sm:text-base text-gray-300">Discover how many hours you're wasting on tasks that could run on autopilot.</p>
+                <p className="text-sm sm:text-base text-gray-300">While you're stuck in admin work, your competitors are scaling. See how many hours you're losing weekly.</p>
               </div>
             </Card>
           </motion.div>
@@ -314,7 +314,7 @@ export default function Index() {
                   <Target className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                 </div>
                 <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 sm:mb-3">Get Your 30-Day AI Blueprint</h3>
-                <p className="text-sm sm:text-base text-gray-300">The exact system top coaches use to scale from 10 to 50+ clients without hiring.</p>
+                <p className="text-sm sm:text-base text-gray-300">The exact system that's helping coaches scale from 10 to 50+ clients—while you're still doing everything manually.</p>
               </div>
             </Card>
           </motion.div>
@@ -359,10 +359,10 @@ export default function Index() {
             transition={{ duration: 0.8, delay: 0.4 }}
             viewport={{ once: true }}
           >
-            Top online fitness coaches are scaling to 7-figures on autopilot while you're still trading time for money.
+            Your competitors are scaling to 7-figures on autopilot. You're still doing everything manually.
             <br className="hidden sm:block" />
             <span className="sm:hidden"> </span>
-            <span className="text-red-400 font-bold">The gap widens every day.</span>
+            <span className="text-red-400 font-bold">Every day you wait, the gap gets wider.</span>
           </motion.p>
 
           <motion.div
