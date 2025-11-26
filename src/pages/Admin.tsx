@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { 
   DollarSign, Clock, TrendingUp, BarChart3, Settings, 
   Target, Users, Zap, AlertTriangle, LineChart as LineChartIcon,
-  Gauge, Activity
+  Gauge, Activity, Star, Calculator, TrendingDown, Calendar
 } from "lucide-react";
 import { computeRoiWithCalibration, type CalibrationKPIs } from "@/lib/roi-admin";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
@@ -52,6 +52,7 @@ export default function Admin() {
     inquiryAutomationRate: 0.50, // 50% inquiry automation
     compoundingGrowthRate: 0.025, // 2.5% monthly compounding
     conservativeLiberalFactor: 0.5, // Middle of the road (0 = conservative, 1 = liberal)
+    showUpRateImprovement: 0.15, // 15% show-up rate improvement
   });
 
   // Calculate derived values
@@ -71,6 +72,10 @@ export default function Admin() {
       currentCloseRatePct: answers.closeRate,
       averageCustomerValueUsd: customerValue,
       avgInitialResponseTimeMinutes: avgResponseMinutes,
+      monthlyClients: answers.monthlyClients,
+      monthlyRevenue: answers.monthlyRevenue,
+      currentChurnRatePct: answers.churnRate,
+      currentShowUpRatePct: answers.showUpRate,
     },
     calibration
   );
@@ -81,15 +86,18 @@ export default function Admin() {
     (roi.additionalAnnualRevenueUsd / 12) + (roi.annualStaffSavingsUsd / 12)
   );
   const yearlyGrowthPotential = roi.totalAnnualImpactUsd;
-  // Close rate: Already calculated asymptotically in ROI (moves closer to 100%, never reaches it)
+  // Close rate: Already calculated asymptotically in ROI (moves closer to 85% max, never reaches 100%)
   const improvedCloseRate = Math.min(99.99, Math.max(0, roi.improvedCloseRatePct));
-  // Show-up rate: 15% improvement - asymptotically approaches 100%
-  // Move 15% closer to 100% (not multiply by 1.15)
-  const showUpRateImprovement = 0.15; // 15% of remaining gap
-  const gapTo100ShowUp = 100 - answers.showUpRate;
-  const improvedShowUpRate = Math.min(99.99, Math.max(0, answers.showUpRate + (gapTo100ShowUp * showUpRateImprovement)));
-  // Churn rate: 40% reduction (multiply by 0.6) - approaches 0% asymptotically
-  const improvedChurnRate = Math.max(0.01, answers.churnRate * 0.6); // Never reach exactly 0%
+  
+  // Show-up rate: Use ROI-calculated value or calculate from calibration
+  const currentShowUpRate = answers.showUpRate;
+  const gapTo100ShowUp = 100 - currentShowUpRate;
+  const improvedShowUpRate = roi.improvedShowUpRatePct || Math.min(99.99, Math.max(0, currentShowUpRate + (gapTo100ShowUp * (roi.showUpRateImprovement || calibration.showUpRateImprovement))));
+  
+  // Churn rate: Calculate from retention improvement (retention × 2 = churn reduction)
+  const churnReductionFromRetention = calibration.retentionImprovement * 2; // 20% retention = 40% churn reduction
+  const churnReductionFactor = Math.min(0.6, 1 - churnReductionFromRetention); // Cap at 60% reduction
+  const improvedChurnRate = roi.improvedChurnRatePct || Math.max(0.01, answers.churnRate * churnReductionFactor);
   
   // Calculate potential increase in clients
   // Based on: improved close rate + capacity increase + reduced churn
@@ -100,6 +108,43 @@ export default function Admin() {
     answers.monthlyClients * capacityIncreaseFactor + additionalConversions
   );
   const potentialClientIncrease = potentialMonthlyClients - answers.monthlyClients;
+
+  // Calculate conservative growth projection for prospect display
+  // Based on conservative AI automation impact data:
+  // - 27% conversion improvement (FM Consulting, midpoint of 25-28% range)
+  // - 20% retention improvement (Financial Model, conservative estimate)
+  const conservativeConversionImprovement = 0.27; // 27% improvement
+  const conservativeRetentionImprovement = 0.20; // 20% improvement
+  
+  // Additional clients from conversion improvement (conservative)
+  const additionalClientsFromConversion = Math.max(0, Math.round(
+    answers.monthlyLeads * (answers.closeRate * conservativeConversionImprovement / 100)
+  ));
+  
+  // Churn reduction (conservative 20% improvement = 40% churn reduction)
+  const churnReductionPct = answers.churnRate * 0.4; // 40% reduction
+  const clientsRetainedFromChurn = Math.max(0, Math.round(
+    answers.monthlyClients * (churnReductionPct / 100)
+  ));
+  
+  // Total additional clients per month (conservative estimate)
+  const totalAdditionalClients = additionalClientsFromConversion + clientsRetainedFromChurn;
+  
+  // Revenue calculations
+  const avgCustomerValue = customerValue;
+  const revenuePerAdditionalClient = avgCustomerValue;
+  
+  // 30-day revenue impact (conservative)
+  const revenue30Days = Math.round(
+    totalAdditionalClients * revenuePerAdditionalClient
+  );
+  
+  // Annual revenue impact (conservative, with retention improvement)
+  // Retention improvement increases lifetime value by ~25% (20% retention = 25% LTV increase)
+  const retentionMultiplier = 1 + (conservativeRetentionImprovement * 1.25);
+  const revenueAnnual = Math.round(
+    totalAdditionalClients * revenuePerAdditionalClient * 12 * retentionMultiplier
+  );
 
   // Growth curve calculation
   const monthlyRevenueIncrease = Math.max(0, monthlyRevenuePotential);
@@ -532,6 +577,87 @@ export default function Admin() {
         {/* Right Panel - Results & Charts */}
         <div className="w-1/2 overflow-y-auto bg-gray-900">
           <div className="p-6 space-y-6">
+            {/* AI Growth Score - Prominent Display */}
+            <Card className="p-6 bg-gradient-to-br from-purple-900/40 via-blue-900/40 to-purple-900/40 border-2 border-purple-500/60 shadow-2xl">
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-2 mb-3">
+                  <Star className="w-6 h-6 text-yellow-400 fill-yellow-400" />
+                  <h2 className="text-xl font-bold text-white">
+                    AI Growth Score
+                  </h2>
+                </div>
+                <div className="mb-4">
+                  <div className="text-5xl font-black bg-gradient-to-r from-purple-600 to-blue-400 bg-clip-text text-transparent mb-2">
+                    {roi.aiGrowthScore.toFixed(1)}
+                  </div>
+                  <div className="text-base text-white mb-2">
+                    out of 10.0
+                  </div>
+                  <p className="text-sm text-white max-w-2xl mx-auto">
+                    Scaling opportunity score based on revenue growth, efficiency gains, capacity expansion, and compounding potential
+                  </p>
+                </div>
+                
+                {/* Score Breakdown */}
+                <div className="mt-6 pt-6 border-t border-gray-700">
+                  <h3 className="text-sm font-semibold text-white mb-4">
+                    Score Breakdown by Category
+                  </h3>
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                    <div className="bg-gray-800/50 p-3 rounded-lg border border-gray-700">
+                      <div className="text-xs text-white mb-1">Revenue Growth</div>
+                      <div className="text-lg font-bold text-blue-400">
+                        {(roi.aiGrowthScoreBreakdown.revenueGrowthScore * 10).toFixed(1)}
+                      </div>
+                      <div className="text-xs text-white mt-1">25% weight</div>
+                    </div>
+                    <div className="bg-gray-800/50 p-3 rounded-lg border border-gray-700">
+                      <div className="text-xs text-white mb-1">Close Rate</div>
+                      <div className="text-lg font-bold text-green-400">
+                        {(roi.aiGrowthScoreBreakdown.closeRateImprovementScore * 10).toFixed(1)}
+                      </div>
+                      <div className="text-xs text-white mt-1">20% weight</div>
+                    </div>
+                    <div className="bg-gray-800/50 p-3 rounded-lg border border-gray-700">
+                      <div className="text-xs text-white mb-1">Cost Savings</div>
+                      <div className="text-lg font-bold text-purple-400">
+                        {(roi.aiGrowthScoreBreakdown.costSavingsScore * 10).toFixed(1)}
+                      </div>
+                      <div className="text-xs text-white mt-1">15% weight</div>
+                    </div>
+                    <div className="bg-gray-800/50 p-3 rounded-lg border border-gray-700">
+                      <div className="text-xs text-white mb-1">Efficiency</div>
+                      <div className="text-lg font-bold text-cyan-400">
+                        {(roi.aiGrowthScoreBreakdown.efficiencyGainsScore * 10).toFixed(1)}
+                      </div>
+                      <div className="text-xs text-white mt-1">15% weight</div>
+                    </div>
+                    <div className="bg-gray-800/50 p-3 rounded-lg border border-gray-700">
+                      <div className="text-xs text-white mb-1">Capacity</div>
+                      <div className="text-lg font-bold text-orange-400">
+                        {(roi.aiGrowthScoreBreakdown.capacityExpansionScore * 10).toFixed(1)}
+                      </div>
+                      <div className="text-xs text-white mt-1">10% weight</div>
+                    </div>
+                    <div className="bg-gray-800/50 p-3 rounded-lg border border-gray-700">
+                      <div className="text-xs text-white mb-1">Retention</div>
+                      <div className="text-lg font-bold text-pink-400">
+                        {(roi.aiGrowthScoreBreakdown.retentionImprovementScore * 10).toFixed(1)}
+                      </div>
+                      <div className="text-xs text-white mt-1">10% weight</div>
+                    </div>
+                    <div className="bg-gray-800/50 p-3 rounded-lg border border-gray-700">
+                      <div className="text-xs text-white mb-1">Compounding</div>
+                      <div className="text-lg font-bold text-yellow-400">
+                        {(roi.aiGrowthScoreBreakdown.compoundingGrowthScore * 10).toFixed(1)}
+                      </div>
+                      <div className="text-xs text-white mt-1">5% weight</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
             {/* Key Metrics */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               <Card className="p-4 bg-gradient-to-br from-blue-600/20 to-purple-600/20 border-2 border-blue-500/40">
@@ -551,7 +677,7 @@ export default function Admin() {
               <Card className="p-4 bg-gradient-to-br from-green-600/20 to-blue-600/20 border-2 border-green-500/40">
                 <TrendingUp className="w-8 h-8 text-green-400 mb-2" />
                 <div className="text-2xl font-black text-green-400 mb-1">
-                  ${yearlyGrowthPotential.toLocaleString()}+
+                  ${yearlyGrowthPotential.toLocaleString()}
                 </div>
                 <p className="text-xs text-gray-400">Yearly Growth Potential</p>
               </Card>
@@ -703,6 +829,62 @@ export default function Admin() {
                     </span>
                   </div>
                 </div>
+              </div>
+            </Card>
+
+            {/* Conservative Growth Projection - Prospect Display */}
+            <Card className="p-6 bg-gradient-to-br from-green-900/40 via-blue-900/40 to-green-900/40 border-2 border-green-500/60 shadow-2xl">
+              <div className="flex items-center gap-2 mb-4">
+                <Calculator className="w-6 h-6 text-green-400" />
+                <h3 className="text-lg font-bold text-white">
+                  Conservative Growth Projection
+                </h3>
+              </div>
+              
+              <div className="bg-gray-800/50 rounded-lg p-4 mb-4 border border-gray-700">
+                <p className="text-sm text-gray-300 leading-relaxed mb-4">
+                  <strong className="text-white">If we close even {totalAdditionalClients} more clients per month</strong> 
+                  {" "}(from {conservativeConversionImprovement * 100}% conversion improvement) 
+                  {" "}and <strong className="text-white">reduced churn by {churnReductionPct.toFixed(1)}%</strong> 
+                  {" "}({conservativeRetentionImprovement * 100}% retention improvement), you'll make:
+                </p>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-gradient-to-br from-blue-600/20 to-green-600/20 border border-blue-500/30 rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Calendar className="w-5 h-5 text-blue-400" />
+                      <span className="text-xs text-gray-400 font-semibold">30 Days</span>
+                    </div>
+                    <div className="text-2xl font-black text-green-400 mb-1">
+                      ${revenue30Days.toLocaleString()}
+                    </div>
+                    <p className="text-xs text-gray-400">
+                      Additional revenue
+                    </p>
+                  </div>
+                  
+                  <div className="bg-gradient-to-br from-green-600/20 to-blue-600/20 border border-green-500/30 rounded-lg p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <TrendingUp className="w-5 h-5 text-green-400" />
+                      <span className="text-xs text-gray-400 font-semibold">1 Year</span>
+                    </div>
+                    <div className="text-2xl font-black text-green-400 mb-1">
+                      ${revenueAnnual.toLocaleString()}
+                    </div>
+                    <p className="text-xs text-gray-400">
+                      With retention improvement
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-blue-500/10 border-l-4 border-blue-500 p-3 rounded-r-lg">
+                <p className="text-xs text-blue-200 leading-relaxed">
+                  <strong className="text-white">Conservative Estimates Used:</strong> Based on industry research - 
+                  27% conversion improvement (FM Consulting, midpoint of 25-28% range) and 
+                  20% retention improvement (Financial Model, conservative estimate). 
+                  These projections reflect realistic, data-backed AI automation impacts.
+                </p>
               </div>
             </Card>
 

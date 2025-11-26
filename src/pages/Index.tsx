@@ -197,7 +197,7 @@ export default function Index() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            Check the AI Scaling Potential of your Coaching Business
+            Check The AI Growth Score<br></br>of Your Coaching Business
           </motion.h1>
           
           {/* Subheadline - fades in */}
@@ -236,7 +236,7 @@ export default function Index() {
               size="lg" 
               className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3 sm:py-4 md:py-5 lg:py-6 px-6 sm:px-8 md:px-10 lg:px-12 text-base sm:text-lg md:text-xl lg:text-2xl rounded-xl sm:rounded-2xl shadow-2xl hover:shadow-2xl transform hover:scale-110 transition-all duration-300 border-2 sm:border-4 border-blue-400/80 shadow-blue-500/60"
             >
-              Get My Free AI Scaling Report <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 ml-2 inline" />
+              Get My AI Growth Score <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 ml-2 inline" />
             </Button>
           </motion.div>
 
@@ -314,7 +314,7 @@ export default function Index() {
                   <Target className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
                 </div>
                 <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 sm:mb-3">Get Your 30-Day AI Blueprint</h3>
-                <p className="text-sm sm:text-base text-gray-300">The exact system that's helping coaches scale from 10 to 50+ clients—while you're still doing everything manually.</p>
+                <p className="text-sm sm:text-base text-gray-300">The exact system that's helping coaches scale from 10 to 50+ clients while you're still doing everything manually.</p>
               </div>
             </Card>
           </motion.div>

@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import { ArrowRight, Download, Calendar, Clock, DollarSign, TrendingUp, Zap, Target, BarChart3, Star, CheckCircle, UserCheck, BookOpen, Users, TrendingDown, AlertTriangle } from "lucide-react";
+import { ArrowRight, Download, Calendar, Clock, DollarSign, TrendingUp, Zap, Target, BarChart3, Star, CheckCircle, UserCheck, BookOpen, Users, TrendingDown, AlertTriangle, ExternalLink } from "lucide-react";
 import { computeRoi } from "@/lib/roi";
 import { Analytics } from "@vercel/analytics/react";
 import { sendWelcomeEmail } from "@/lib/email";
@@ -77,6 +77,8 @@ export default function Results() {
     currentCloseRatePct: calculated.currentCloseRate,
     averageCustomerValueUsd: calculated.customerValue,
     avgInitialResponseTimeMinutes: calculated.avgResponseMinutes,
+    monthlyClients: answers.monthlyClients,
+    monthlyRevenue: answers.monthlyRevenue,
   });
 
   // Calculate improvements with new KPIs (using ROI calculation values)
@@ -201,6 +203,9 @@ export default function Results() {
         title: "Starting from Zero - Massive Opportunity",
         content: `You're currently at 0% close rate with ${answers.monthlyLeads} leads/month. With AI-powered follow-up sequences, you could achieve ${improvedCloseRate.toFixed(1)}% close rate, converting ${additionalConversions} more leads per month. That's an additional $${additionalRevenueFromConversions.toLocaleString()}/month in revenue.`,
         color: "green",
+        productLink: "https://www.sweepai.site/resources/ai-instant-outbound-funnel",
+        productName: "AI Instant Outbound Funnel",
+        productDescription: "Automatically respond to every lead within minutes and follow up consistently until they book. No more missed opportunities or manual follow-up work."
       });
     } else if (answers.closeRate < 20 && answers.closeRate > 0) {
       insights.push({
@@ -208,6 +213,9 @@ export default function Results() {
         title: "Low Close Rate Opportunity",
         content: `Your current close rate of ${answers.closeRate}% is below industry average. With AI-powered follow-up sequences, you could increase this to ${improvedCloseRate.toFixed(1)}%, converting ${additionalConversions} more leads per month. That's an additional $${additionalRevenueFromConversions.toLocaleString()}/month in revenue.`,
         color: "red",
+        productLink: "https://www.sweepai.site/resources/ai-instant-outbound-funnel",
+        productName: "AI Instant Outbound Funnel",
+        productDescription: "Turn your slow-responding leads into booked clients. The system handles initial responses, follow-ups, and booking coordination automatically."
       });
     } else if (answers.closeRate >= 20) {
       insights.push({
@@ -215,6 +223,9 @@ export default function Results() {
         title: "Strong Close Rate with Growth Potential",
         content: `Your ${answers.closeRate}% close rate is solid, but AI automation can push it to ${improvedCloseRate.toFixed(1)}% through faster response times and consistent follow-ups. This would add ${additionalConversions} more clients monthly, generating $${additionalRevenueFromConversions.toLocaleString()}/month.`,
         color: "green",
+        productLink: "https://www.sweepai.site/resources/ai-instant-outbound-funnel",
+        productName: "AI Instant Outbound Funnel",
+        productDescription: "Scale your already-strong close rate by ensuring every lead gets instant attention and systematic follow-up, even when you're busy."
       });
     }
 
@@ -225,6 +236,9 @@ export default function Results() {
         title: "Show-Up Rate Opportunity",
         content: `Starting with 0% show-up rate? AI-powered automated reminders and calendar sync can dramatically improve this to ${improvedShowUpRate.toFixed(1)}%, ensuring you maximize every lead opportunity.`,
         color: "orange",
+        productLink: "https://www.sweepai.site/resources/constant-contact-ecosystem",
+        productName: "Constant Contact Ecosystem",
+        productDescription: "Never lose a booked appointment again. Automated reminders, calendar sync, and confirmation messages ensure clients show up consistently."
       });
     } else if (answers.showUpRate > 0 && answers.showUpRate < 70) {
       insights.push({
@@ -232,6 +246,9 @@ export default function Results() {
         title: "Show-Up Rate Leak",
         content: `With a ${answers.showUpRate}% show-up rate, you're losing ${Math.round(answers.monthlyLeads * (100 - answers.showUpRate) / 100)} potential client meetings per month. AI-powered automated reminders and calendar sync can increase this to ${improvedShowUpRate.toFixed(1)}%, recovering ${Math.round(answers.monthlyLeads * (improvedShowUpRate - answers.showUpRate) / 100)} meetings monthly.`,
         color: "orange",
+        productLink: "https://www.sweepai.site/resources/constant-contact-ecosystem",
+        productName: "Constant Contact Ecosystem",
+        productDescription: "Stop losing revenue to no-shows. The system sends timely reminders, confirms appointments, and reschedules automatically to maximize your show-up rate."
       });
     }
 
@@ -242,6 +259,9 @@ export default function Results() {
         title: "High Churn Impact",
         content: `Your ${answers.churnRate}% monthly churn rate means you're losing ${Math.round(answers.monthlyClients * answers.churnRate / 100)} clients per month, costing $${revenueSavedFromChurn.toLocaleString()}/month. AI-driven engagement sequences and automated check-ins can reduce churn to ${improvedChurnRate.toFixed(1)}%, saving $${revenueSavedFromChurn.toLocaleString()}/month in retained revenue.`,
         color: "purple",
+        productLink: "https://www.sweepai.site/resources/client-retention-engine",
+        productName: "Client Retention Engine",
+        productDescription: "Stop the client leak. Automated check-ins, progress tracking, and personalized engagement keep clients active and prevent them from leaving."
       });
     } else if (answers.churnRate === 0 && answers.monthlyClients > 0) {
       insights.push({
@@ -249,6 +269,9 @@ export default function Results() {
         title: "Maintain Zero Churn",
         content: `Great job maintaining 0% churn! AI-driven engagement sequences and automated check-ins can help you maintain this perfect retention rate as you scale, ensuring long-term client relationships.`,
         color: "green",
+        productLink: "https://www.sweepai.site/resources/client-retention-engine",
+        productName: "Client Retention Engine",
+        productDescription: "Protect your perfect retention rate as you grow. Automated engagement ensures every client feels valued and stays active, even when you're scaling."
       });
     }
 
@@ -259,6 +282,9 @@ export default function Results() {
         title: "Massive Time Bottleneck",
         content: `You're spending ${answers.weeklyAdminHours} hours/week on repetitive tasks—that's ${Math.round(answers.weeklyAdminHours * 52 / 40)} weeks of full-time work per year. AI can automate 70-90% of this, freeing up ${hoursSavedWeekly} hours/week. If reinvested into ${answers.reinvestmentFocus.toLowerCase()}, this could scale your business from ${answers.monthlyClients} to ${Math.round(Math.max(answers.monthlyClients, 1) * 1.8)} clients within 90 days.`,
         color: "blue",
+        productLink: "https://www.sweepai.site/resources/instant-onboarding-pipeline",
+        productName: "Instant Onboarding Pipeline",
+        productDescription: "Eliminate hours of manual onboarding work. New clients get automatically set up, receive welcome sequences, and complete intake forms—all without your time."
       });
     } else if (answers.weeklyAdminHours === 0) {
       insights.push({
@@ -266,6 +292,9 @@ export default function Results() {
         title: "Prevent Future Time Waste",
         content: `As your business grows, admin tasks will multiply. AI automation can prevent you from spending 10-20+ hours/week on repetitive work, allowing you to scale efficiently from day one.`,
         color: "blue",
+        productLink: "https://www.sweepai.site/resources/instant-onboarding-pipeline",
+        productName: "Instant Onboarding Pipeline",
+        productDescription: "Set up automation now before admin tasks overwhelm you. Every new client gets seamlessly onboarded while you focus on what matters most."
       });
     }
 
@@ -276,6 +305,9 @@ export default function Results() {
         title: "Lead Generation Opportunity",
         content: `Starting with 0 leads? AI can help you generate and nurture leads from day one. With automated outreach and follow-up systems, you can scale your lead generation without proportional time investment.`,
         color: "cyan",
+        productLink: "https://www.sweepai.site/resources/ai-instant-outbound-funnel",
+        productName: "AI Instant Outbound Funnel",
+        productDescription: "Build your lead generation system from the ground up. Automated outreach, follow-ups, and booking coordination work 24/7 to fill your calendar."
       });
     } else if (answers.monthlyLeads > 0 && answers.monthlyLeads < Math.max(answers.monthlyClients, 1) * 2) {
       insights.push({
@@ -283,6 +315,9 @@ export default function Results() {
         title: "Lead Generation Opportunity",
         content: `You're currently converting ${answers.monthlyClients} clients from ${answers.monthlyLeads} leads monthly. With AI automating your outreach and follow-up, you could handle ${Math.round(answers.monthlyLeads * capacityIncreaseFactor)} leads/month without additional time investment, potentially growing to ${potentialMonthlyClients} clients (${potentialClientIncrease > 0 ? `+${potentialClientIncrease}` : 'no change'} increase).`,
         color: "cyan",
+        productLink: "https://www.sweepai.site/resources/ai-instant-outbound-funnel",
+        productName: "AI Instant Outbound Funnel",
+        productDescription: "Scale your lead handling without scaling your time. The system responds instantly to every lead and follows up systematically until they book."
       });
     }
 
@@ -293,6 +328,9 @@ export default function Results() {
         title: "Client Capacity Expansion",
         content: `With AI automation handling ${roi.capacityIncreasePct.toFixed(0)}% more capacity without proportional cost (industry standard: 30% from Financial Model Excel), you could scale from ${answers.monthlyClients} to ${potentialMonthlyClients} monthly clients. This includes ${additionalConversions} additional conversions from improved close rates plus capacity expansion from automated systems.`,
         color: "cyan",
+        productLink: "https://www.sweepai.site/resources/instant-onboarding-pipeline",
+        productName: "Instant Onboarding Pipeline",
+        productDescription: "Handle more clients without hiring more staff. Automated onboarding, welcome sequences, and setup processes let you scale capacity by 30%+ without proportional costs."
       });
     }
 
@@ -457,6 +495,46 @@ export default function Results() {
           <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-2 sm:mb-4 md:mb-6 text-white leading-tight px-2">
             {answers.firstName}'s AI Revenue Opportunity
           </h1>
+
+          {/* AI Growth Score - Central Focus */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="mb-6 sm:mb-8 md:mb-12"
+          >
+            <Card className="p-6 sm:p-8 md:p-10 bg-gradient-to-br from-purple-900/40 via-blue-900/40 to-purple-900/40 border-2 border-purple-500/60 shadow-2xl">
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-2 mb-3 sm:mb-4">
+                  <Star className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-400 fill-yellow-400" />
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">
+                    AI Growth Score
+                  </h2>
+                </div>
+                <div className="mb-4 sm:mb-6">
+                  <div className="text-6xl sm:text-7xl md:text-8xl font-black bg-gradient-to-r from-purple-600 to-blue-400 bg-clip-text text-transparent mb-2">
+                    {roi.aiGrowthScore.toFixed(1)}
+                  </div>
+                  <div className="text-base sm:text-lg md:text-xl text-white mb-2">
+                    out of 10.0
+                  </div>
+                  <p className="text-sm sm:text-base text-white max-w-2xl mx-auto">
+                    {(() => {
+                      const score = roi.aiGrowthScore;
+                      if (score < 4) {
+                        return "Your business isn't quite ready for AI systems. Focus on improving close rates, automating admin tasks, and expanding lead capacity to dramatically increase your AI impact.";
+                      } else if (score < 7) {
+                        return "You're on a strong growth trajectory. By optimizing your close rates, reducing time bottlenecks, and scaling capacity, you can unlock even greater AI-driven revenue potential. Review the insights below to accelerate your path forward.";
+                      } else {
+                        return "Your business is primed for enterprise-level growth with AI automation. The insights below reveal how to maximize this competitive advantage and dominate your market through systematic automation.";
+                      }
+                    })()}
+                  </p>
+                </div>
+              </div>
+            </Card>
+          </motion.div>
+
           <p className="text-base sm:text-lg md:text-xl text-gray-300 mb-4 sm:mb-6 md:mb-8 px-2">
             While you're operating manually, the industry is automating. Here's what it's costing you:
           </p>
@@ -507,52 +585,82 @@ export default function Results() {
           </div>
         </motion.section>
 
-        {/* METHODOLOGY & CALCULATION REPORT */}
+        {/* SECTION 2 — DYNAMIC INSIGHTS - Mobile optimized */}
         <motion.section
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="mb-6 sm:mb-8 md:mb-12"
+          className="mb-6 sm:mb-12"
         >
-          <Card className="p-4 sm:p-6 md:p-8 bg-gray-800/50 border border-blue-500/30">
-            <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-4 sm:mb-6 flex items-center gap-2">
-              <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" />
-              Calculation Methodology
-            </h3>
-            
-            <div className="space-y-4 sm:space-y-5 text-sm sm:text-base text-gray-300">
-              {/* Key Metrics */}
-              <div>
-                <h4 className="font-semibold text-white mb-2">Key Metrics Calculation</h4>
-                <ul className="space-y-2 text-gray-400 list-disc list-inside text-sm">
-                  <li>
-                    <strong className="text-white">Monthly Revenue (${monthlyRevenuePotential.toLocaleString()}):</strong> {roi.additionalConversionsPerMonth} conversions/month ({answers.closeRate}% → {roi.improvedCloseRatePct.toFixed(1)}% close rate) × ${calculated.customerValue.toLocaleString()}/client + ${Math.round(roi.annualStaffSavingsUsd / 12).toLocaleString()}/month staff savings.
-                  </li>
-                  <li>
-                    <strong className="text-white">Hours Saved ({hoursSavedWeekly}h/week):</strong> {Math.round(answers.weeklyAdminHours * 0.75)}h from {answers.weeklyAdminHours}h/week admin automation (75% reduction) + inquiry automation + onboarding efficiency.
-                  </li>
-                  <li>
-                    <strong className="text-white">Yearly Growth (${yearlyGrowthPotential.toLocaleString()}):</strong> ${roi.additionalAnnualRevenueUsd.toLocaleString()} revenue + ${roi.annualStaffSavingsUsd.toLocaleString()} savings, with {roi.retentionImprovementPct}% retention improvement increasing lifetime value.
-                  </li>
-                </ul>
-              </div>
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-4 sm:mb-6 text-center px-2">
+            Key Opportunities for Growth
+          </h2>
 
-              {/* Industry Calibration Values */}
-              <div className="pt-3 border-t border-gray-700">
-                <h4 className="font-semibold text-white mb-2">Industry Benchmarks Used</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm text-gray-400">
-                  <div>• <strong className="text-blue-400">30% capacity increase</strong> (Financial Model Excel)</div>
-                  <div>• <strong className="text-blue-400">27% conversion improvement</strong> (FM Consulting)</div>
-                  <div>• <strong className="text-blue-400">75% admin reduction</strong> (70-90% range)</div>
-                  <div>• <strong className="text-blue-400">50% inquiry automation</strong> (Wifitalents)</div>
-                  <div>• <strong className="text-blue-400">35% staff overhead reduction</strong></div>
-                  <div>• <strong className="text-blue-400">2.5% monthly compounding</strong></div>
+          <div className="space-y-3 sm:space-y-4 md:space-y-6">
+            {insights.map((insight, index) => {
+              const colorClasses = {
+                red: "bg-red-500/20",
+                orange: "bg-orange-500/20",
+                purple: "bg-purple-500/20",
+                blue: "bg-blue-500/20",
+                cyan: "bg-cyan-500/20",
+                green: "bg-green-500/20",
+              };
+              return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-gray-900/80 border-2 border-gray-800 rounded-lg hover:border-blue-500/40 transition-all overflow-hidden"
+              >
+                <div className="flex items-start space-x-3 sm:space-x-4 p-4 sm:p-5 md:p-6">
+                  <div className={`w-10 h-10 sm:w-12 sm:h-12 ${colorClasses[insight.color as keyof typeof colorClasses] || "bg-gray-500/20"} rounded-full flex items-center justify-center flex-shrink-0`}>
+                    <div className="w-5 h-5 sm:w-6 sm:h-6">
+                      {insight.icon}
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-base sm:text-lg md:text-xl font-semibold text-white mb-1 sm:mb-2">
+                      {insight.title}
+                    </h3>
+                    <p className="text-sm sm:text-base text-gray-300 leading-relaxed mb-3 sm:mb-4">
+                      {insight.content}
+                    </p>
+                    {insight.productLink && insight.productName && (
+                      <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-700">
+                        <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 sm:p-4">
+                          <div className="flex items-start justify-between gap-3 sm:gap-4">
+                            <div className="flex-1">
+                              <h4 className="text-sm sm:text-base font-semibold text-blue-400 mb-1 sm:mb-2">
+                                Recommended Solution
+                              </h4>
+                              <p className="text-xs sm:text-sm text-gray-300 mb-3 sm:mb-4 leading-relaxed">
+                                {insight.productDescription}
+                              </p>
+                              <a
+                                href={insight.productLink}
+                                className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold rounded-lg transition-all duration-200 hover:scale-105 shadow-md hover:shadow-lg"
+                              >
+                                Learn more about {insight.productName}
+                                <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4" />
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </div>
-          </Card>
+              </motion.div>
+              );
+            })}
+          </div>
         </motion.section>
+
+        
 
         {/* CEO DASHBOARD SECTION - Mobile optimized */}
         <motion.section
@@ -703,56 +811,6 @@ export default function Results() {
               <div className="text-xl sm:text-2xl font-bold text-cyan-400">{answers.monthlyClients}</div>
               <div className="text-xs text-green-400 mt-1">→ {potentialMonthlyClients} (+{potentialClientIncrease})</div>
             </Card>
-          </div>
-        </motion.section>
-
-        {/* SECTION 2 — DYNAMIC INSIGHTS - Mobile optimized */}
-        <motion.section
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="mb-6 sm:mb-12"
-        >
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-4 sm:mb-6 text-center px-2">
-            Key Opportunities for Growth
-          </h2>
-
-          <div className="space-y-3 sm:space-y-4 md:space-y-6">
-            {insights.map((insight, index) => {
-              const colorClasses = {
-                red: "bg-red-500/20",
-                orange: "bg-orange-500/20",
-                purple: "bg-purple-500/20",
-                blue: "bg-blue-500/20",
-                cyan: "bg-cyan-500/20",
-                green: "bg-green-500/20",
-              };
-              return (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="flex items-start space-x-3 sm:space-x-4 p-4 sm:p-5 md:p-6 bg-gray-900/80 border-2 border-gray-800 rounded-lg hover:border-blue-500/40 transition-all"
-              >
-                <div className={`w-10 h-10 sm:w-12 sm:h-12 ${colorClasses[insight.color as keyof typeof colorClasses] || "bg-gray-500/20"} rounded-full flex items-center justify-center flex-shrink-0`}>
-                  <div className="w-5 h-5 sm:w-6 sm:h-6">
-                    {insight.icon}
-                  </div>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-base sm:text-lg md:text-xl font-semibold text-white mb-1 sm:mb-2">
-                    {insight.title}
-                  </h3>
-                  <p className="text-sm sm:text-base text-gray-300 leading-relaxed">
-                    {insight.content}
-                  </p>
-                </div>
-              </motion.div>
-              );
-            })}
           </div>
         </motion.section>
 

@@ -352,10 +352,10 @@ export function QuizModal({ isOpen, onClose }: QuizModalProps) {
               className="text-center mb-8"
             >
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4">
-                Let's Calculate Your AI Revenue Opportunity
+                Let's Calculate Your <br></br>Potential AI Revenue
               </h2>
               <p className="text-lg md:text-xl text-gray-300 mb-8">
-                Answer {totalSteps} simple questions. No technical experience needed.
+                Instant results. No technical experience needed.
               </p>
             </motion.div>
           )}
